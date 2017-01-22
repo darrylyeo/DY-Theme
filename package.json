@@ -4,6 +4,7 @@
   "description": "Theme for darryl-yeo.com",
   "main": "index.js",
   "scripts": {
+    "build": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
