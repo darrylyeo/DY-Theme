@@ -1,0 +1,131 @@
+<script>
+const MIN_COMMENT_LENGTH = 20
+const MAX_COMMENT_LENGTH = 1000
+
+class DYComments extends DYElement {
+	connectedCallback(){
+		const postID = this.closest('main').dataset.postId
+		if(postID) this.dataset.id = postID
+	}
+
+	static get observedAttributes() {
+		return ['data-id']
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal){
+		const root = this.root
+		
+		if(attr === 'data-id'){
+			const id = newVal
+			//windowLoad.then(() => {
+				getJSON(`./wp-json/wp/v2/comments?post=${id}&per_page=100`).then(comments => {
+					root.updateWithModel({
+						'.comment-count': comments.length,
+						'.reactions': comments.length === 1 ? 'Reaction' : 'Reactions'
+					})
+
+					const $comments = []
+					for(let comment of comments){
+						const $comment = $$$('dy-comment').appendTo(root)
+						$comment.data = comment
+						$comments[comment.id] = $comment
+					}
+					for(let comment of comments){
+						if(comment.parent)
+							$comments[comment.parent].$replies.append($comments[comment.id])
+					}
+				})
+			//})
+		}
+	}
+}
+customElements.define('dy-comments', DYComments)
+
+
+class DYComment extends DYElement {
+	set data(data){
+		const root = this.root
+		
+		this.dataset.id = data.id
+
+		root.updateWithModel({
+			'#content': data.content.rendered,
+			'#comment-date[data-date]': data.date,
+			'.link[href]': data.link,
+			'#author': data.author_name,
+			'#author[href]': data.author_url,
+			'#avatar[src]': data.author_avatar_urls[96]
+		})
+
+		/*if(){
+
+		}*/
+
+		root.find('#reply-button')[0].on('click', () => {
+			this.$replies.prependChild(DYCommentReply.$reply)
+		})
+	}
+
+	get $replies(){
+		const root = this.root
+		return root.find('#replies')
+	}
+}
+customElements.define('dy-comment', DYComment)
+
+
+class DYCommentReply extends DYComment {
+	connectedCallback(){
+		const root = this.root
+		this.addStyle($('#dy-comment').content.find('style')[0])
+		
+		const $parent = this.getRootNode().host
+
+		this.formData = {
+			'post': $('dy-comments').dataset.id,
+			'parent': $parent instanceof DYComment ? $parent.dataset.id : 0,
+			'author_user_agent': navigator.userAgent,
+			'author_ip': '???',
+		}
+
+		const _this = this
+
+		root.find('form').on('submit', function(e){
+			e.preventDefault()
+			const formData = new FormData(this)
+			for(let key in _this.formData){
+				formData.set(key, _this.formData[key])
+			}
+			X(_this.formData, formData, formData.entries())
+			for(let entry of formData.entries()){
+				X(entry)
+			}
+			X(formData.getAll('*'))
+			//const xhr = new XMLHttpRequest()
+			//xhr.send(new FormData(this))
+
+			e.preventDefault()
+		})
+
+		const $submit = root.find('[type=submit]')[0]
+		const $textarea = root.find('textarea')[0]
+
+		const update = () => {
+			const text = $textarea.value.trim()
+
+			if(text.length >= MIN_COMMENT_LENGTH){
+				$submit.disabled = false
+				$submit.text(`Post reaction`)
+			}else{
+				$submit.disabled = true
+				$submit.text(`${MIN_COMMENT_LENGTH - text.length} characters to go`)
+			}
+		}
+
+		$textarea.on('input', update)
+	}
+}
+customElements.define('dy-comment-reply', DYCommentReply)
+
+DYCommentReply.$reply = new DYCommentReply
+</script>

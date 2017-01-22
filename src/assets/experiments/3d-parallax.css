@@ -1,0 +1,39 @@
+html {
+	background: none;
+	overflow: hidden;
+}
+body {
+	padding-top: 50vh;
+	padding-bottom: 50vh;
+	height: 100vh;
+	overflow-y: auto;
+	perspective: 200px;
+	/*perspective-origin: 75%;*/
+	transition: 0.3s;
+}
+html:active body {
+	perspective: 100px;
+}
+html:hover body {
+	/*transform: perspective(200px) rotateX(1deg);
+	transform-origin: bottom;*/
+}
+*, #wrapper {
+	transform-style: preserve-3d;
+	transition: 2.5s;
+	transform-origin: top;
+	transform: none;
+}
+html:hover #wrapper {
+	transform: translateZ(-20px) /*rotateY(-1deg) translateX(-50px)*/;
+}
+html:hover #wrapper :nth-child(odd) {
+	transform: rotateX(0.05deg) translateZ(4px);
+}
+html:hover #wrapper :nth-child(even) {
+	transform: rotateX(0.05deg) translateZ(-4px);
+}
+html:hover #experiments .sub-menu {
+	transform: translateZ(20px);
+	z-index: 1000px;
+}

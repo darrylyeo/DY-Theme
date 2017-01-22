@@ -1,0 +1,93 @@
+#notifications {
+	display: flex;
+	flex-direction: column;
+	/*justify-content: flex-end;*/
+	align-items: flex-end;
+	font-size: 0.9em;
+	margin: -3px;
+	overflow-y: auto;
+	position: fixed;
+	text-align: justify;
+	bottom: 0;
+	right: 0;
+	padding: 6px;
+	max-height: min-content;
+	height: 100%;
+	z-index: 1;
+	transition: padding 0.3s;
+}
+#to-top.show ~ #notifications {
+	padding-bottom: 34px;
+}
+
+dy-notification {
+	background-color: rgba(255,255,255,0.9);
+	border-radius: 7px;
+	border-bottom-right-radius: 4px;
+	box-shadow: rgba(0,0,0,.118) 0 4px 3px -3px;
+	box-sizing: content-box;
+	display: flex;
+	line-height: 1.4;
+	margin: 3px;
+	overflow: hidden;
+	padding: 0.4em 0.5em;
+	width: max-content;
+	min-width: 10vw;
+	max-width: 360px;
+	min-height: min-content;
+	max-height: 100px;
+	transform-origin: right bottom;
+	animation: NotificationShow .5s;
+}
+dy-notification.success {
+	background-color: rgba(139,195,74,0.9);
+	color: rgba(255, 255, 255, 0.9);
+}
+dy-notification.warning {
+	background-color: rgba(255, 213, 79, 0.9);
+}
+dy-notification.error {
+	background-color: rgba(255,87,34,0.9);
+	color: rgba(255, 255, 255, 0.9);
+}
+
+dy-notification.remind {
+	animation: NotificationShow 0.3s, NotificationRepeat 0.3s;
+}
+dy-notification.hide {
+	animation: NotificationHide 0.3s ease-out forwards;
+}
+
+@keyframes NotificationShow {
+	from {
+		margin: 0;
+		min-height: 0;
+		max-height: 0;
+		opacity: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		transform: scale(0);
+	}
+}
+@keyframes NotificationHide {
+	to {
+		margin: 0;
+		min-height: 0;
+		max-height: 0;
+		opacity: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		transform: scale(0);
+	}
+}
+@keyframes NotificationRepeat {
+	50% {
+		transform: scale(1.1);
+	}
+}
+
+dy-notification > i {
+	background-color: rgba(0, 0, 0, 0.05);
+	width: 1em;
+	height: 1em;
+}

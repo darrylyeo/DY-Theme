@@ -1,0 +1,894 @@
+<!DOCTYPE HTML>
+<head>
+	<link rel="prefetch" href="https://fonts.googleapis.com/css?family=Asap:400,400i,700,700i|Slabo+13px">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Asap:400,400i,700,700i|Slabo+13px">
+	<meta charset="utf-8">
+	<link rel="dns-prefetch" href="https://www.khanacademy.org/">
+	<style id="main">
+		:root {
+			--accent-1: hsla(201,67%,64%,1);
+			--accent-1-half: hsla(201,67%,64%,0.5);
+			--accent-2: hsla(176,100%,72%,.96);
+			--accent-3: #67b7e1;
+			--body-font: Asap, Roboto, sans-serif;
+			--heading-font: 'Slabo 13px', var(--body-font);
+			
+			--site-width: 94%;
+			--padding: 1.75rem;
+			--padding-neg: calc(var(--padding) * -1);
+			--padding-small: calc(var(--padding) * 0.75);
+			
+			--shadow-dark-0: rgba(0, 0, 0, 0.1) 0 1px 1px;
+			--shadow-dark-1: rgba(0, 0, 0, 0.2) 0 1px 2px;
+			--shadow-light-1: rgba(255, 255, 255, 0.2) 0 1px 2px;
+			--transition-fast: 0.15s;
+			--transition-medium: 0.3s;
+			--transition-slow: 0.5s;
+			--ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			--ease-out-back-2: cubic-bezier(0.0875, 0.4425, 0.16, 2.55);
+			--ease-in-out-back: cubic-bezier(0.3,4,.25,-0.2);
+			--ease-in-out-back: cubic-bezier(.87,-1,.19,2);
+
+			--page-background: radial-gradient(var(--accent-1) 30%, var(--accent-2)) fixed 0 0/100vmax 100vmax;
+			background: var(--page-background);
+			color: rgba(0, 0, 0, 0.66);
+			/*-webkit-text-fill-color: transparent !important;
+			text-shadow: currentColor 0 0;*/
+			font-family: var(--body-font);
+			font-size: calc(14px + 0.4vw);
+			font-synthesis: weight;
+			line-height: 1.75;
+			text-decoration-color: --accent-1-half;
+			text-decoration-skip: ink;
+		}
+		
+		*, :before, :after {
+			box-sizing: border-box;
+			transition: color var(--transition-fast), background var(--transition-fast);
+		}
+		
+		div, header, main, footer, article, section, aside, nav, nav > ul, nav > ul > li, nav > a {
+			display: flex;
+		}
+		body, p, h1, h2, h3, h4, h5, h6, ul, ol {
+			margin: 0;
+		}
+		h1, h2, h3, h4, h5, h6, #main-menu > ul > li > a {
+			font-family: var(--heading-font);
+		}
+		* + p, * + h1, * + h2, * + h3, * + h4, * + h5, * + h6, article * + ul, * + ol {
+			margin-top: 1em;
+		}
+		#wrapper {
+			box-shadow: rgba(0, 0, 0, 0.2) 0 0 30px;
+			box-shadow: rgba(0,0,0,.15) 0 0 20px, rgba(0,0,0,.15) 0 0 100px;
+			margin: auto;
+			min-height: 100vh;
+			width: var(--site-width);
+			isolation: isolate;
+			/*perspective: 1000px;*/
+		}
+		#wrapper, article, section {
+			flex-direction: column;
+		}
+		
+		
+		header {
+			--main-menu-height: 5rem;
+			padding-bottom: var(--main-menu-height);
+			transition: padding-bottom var(--transition-slow);
+		}
+		header.sticky {
+			--main-menu-height: 4.25rem;
+		}
+		
+		#main-menu {
+			background: rgba(255, 255, 255, 0.95) url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 13"><g opacity=".5" transform="scale(.5)><rect width="18" height="3" rx="1"/><rect y="5" width="18" height="3" rx="1"/><rect y="10" width="18" height="3" rx="1"/></g></svg>') 200% center/cover no-repeat;
+			box-shadow: rgba(0,0,0,0.1) 0 -1px inset;
+			color: rgba(0,0,0,0.75);
+			flex: 0 auto;
+			position: absolute;
+			transition: var(--transition-slow);
+			width: var(--site-width);
+			height: var(--main-menu-height);
+			z-index: 1;
+		}
+		header.sticky #main-menu {
+			box-shadow: var(--shadow-dark-0);
+			position: fixed;
+			top: 0;
+		}
+		header #logo {
+			align-items: center;
+			line-height: var(--main-menu-height);
+			margin-right: auto;
+		}
+		header #logo img {
+			width: auto;
+			height: 52.5%;
+			transform: perspective(500px);
+			transform-origin: left;
+			transition: var(--transition-slow) var(--ease-in-out-back);
+		}
+		header #logo:hover img {
+			transform: perspective(500px) rotateY(20deg);
+		}
+		
+		#secondary-menu {
+			background-color: var(--accent-1);
+			color: #fff;
+			font-size: 0.75em;
+			line-height: 3.5;
+		}
+		
+		nav ul {
+			flex-wrap: wrap;
+			padding: 0;
+		}
+		#secondary-menu > ul {
+			width: 100%;
+		}
+		#secondary-menu > ul > li {
+			position: relative;
+		}
+		#secondary-menu > ul > :nth-last-child(2) {
+			margin-left: auto;
+		}
+		#secondary-menu > ul > li + li:not(:nth-last-child(2)):before {
+			content: "●";
+			transform: scale(0.5);
+		}
+		nav > ul > li > a {
+			color: inherit;
+			width: 100%;
+		}
+		#main-menu > ul > li > a {
+			padding: 0 0.8em;
+			line-height: var(--main-menu-height);
+			transition: var(--transition-fast), font-size var(--transition-slow);
+		}
+		header.sticky #main-menu > ul > li > a {
+			font-size: 0.9em;
+		}
+		#main-menu > ul > li > a:hover {
+			color: var(--accent-1);
+		}
+		#secondary-menu > ul > li > a {
+			padding: 0 0.75em;
+		}
+		#main-menu #logo,
+		#secondary-menu > ul > :first-child > a {
+			padding-left: var(--padding);
+		}
+		#main-menu > ul:before,
+		#main-menu ul > :last-child > a,
+		#secondary-menu > ul > :last-child > a {
+			padding-right: var(--padding);
+		}
+		@media (max-width: 38rem) {
+			#main-menu {
+				background-position: right;
+			}
+			#main-menu > ul {
+				justify-content: flex-end;
+				position: absolute;
+				width: 100%;
+				top: 100%;
+				transition: var(--transition-fast);
+			}
+			#main-menu:not(:hover):not(:focus) > ul {
+				opacity: 0;
+				pointer-events: none;
+			}
+			/*#main-menu > ul:before {
+				content: 'Menu';
+				display: block;
+				line-height: var(--main-menu-height);
+				pointer-events: auto;
+			}*/
+			#main-menu > ul > li {
+				flex: 100%;
+			}
+			#main-menu > ul > li > a {
+				background: rgba(255, 255, 255, 0.925);
+				line-height: 2.5;
+				padding: 0 var(--padding);
+			}
+		}
+		
+		nav > ul > li > ul {
+			background-color: rgba(255, 255, 255, 0.95);
+			margin: 0;
+			position: absolute;
+			top: 100%;
+			z-index: 1;
+		}
+		
+		main, footer {
+			padding: var(--padding);
+		}
+		
+		main {
+			--main-background-color: rgba(255, 255, 255, 0.6);
+			background-color: var(--main-background-color);
+			flex: 1;
+			transition: filter var(--transition-slow);
+		}
+		@media (max-width: 38rem) {
+			header:hover ~ main {
+				filter: blur(10px);
+			}
+		}
+		main > aside {
+			flex: 0 300px;
+			margin-left: var(--padding);
+		}
+		
+		a, main a {
+			border-radius: 1px;
+			text-shadow: var(--shadow-dark-0);
+		}
+		main a:link {
+			box-shadow: 0 0.2px, inset 0 -0.4px;
+		}
+		
+		/* -- Text underline skip technique - requires background on main container -- */
+		/*main {
+			background: linear-gradient(var(--main-background-color), var(--main-background-color)), var(--page-background);
+		}
+		main a:link {
+			mix-blend-mode: multiply;
+			text-shadow: #fff -2px 2px, #fff -1px 2px, #fff 0 2px, #fff 1px 2px, #fff 2px 2px;
+		}
+		/* -- End -- */
+		
+		article {
+			max-width: 100%;
+			text-align: justify;
+		}
+		article > * + * {
+			margin-top: 2em;
+		}
+		article h1, article h2 {
+			line-height: 1.5;
+		}
+		article h1 {
+			font-size: 2em;
+		}
+		article h2 {
+			position: relative;
+			display: flex;
+			align-items: center;
+		}
+		article h2:before {
+			content: "";
+			background-color: rgba(0,0,0,.05);
+			box-shadow: .4em .4em rgba(0,0,0,.025),.8em .8em rgba(0,0,0,.0125),.12em .12em rgba(0,0,0,.00625);
+			background-color: rgba(255,255,255,.4);
+			box-shadow: .4em .4em rgba(255,255,255,.2),.8em .8em rgba(255,255,255,.1),.12em .12em rgba(255,255,255,.05);
+			border-radius: 15%;
+			position: absolute;
+			height: 1.5em;
+			transform: translateX(-0.6em) rotate(-45deg);
+			width: 1.5em;
+			z-index: -1;
+		}
+		article h2:after {
+			content: "";
+			background-color: rgba(0,0,0,.05);
+			flex: 1;
+			height: 2px;
+			margin-left: .75em;
+		}
+		article section:first-of-type p:first-of-type:first-letter {
+			color: var(--accent-1);
+			float: left;
+			font-family: var(--heading-font);
+			font-weight: bold;
+			font-size: 3.5em;
+			margin-right: 0.1em;
+			line-height: 1;
+			text-shadow: rgba(0, 0, 0, 0.1) 2px 2px, rgba(0, 0, 0, 0.05) 4px 4px;
+		}
+		
+		footer {
+			background-color: rgba(0, 0, 0, 0.8);
+			color: rgba(255, 255, 255, 0.5);
+			flex: 0 auto;
+		}
+		
+		a {
+			color: var(--accent-1);
+			text-decoration: none;
+			transition: var(--transition-fast);
+		}
+		a:hover {
+			opacity: 0.75;
+		}
+		
+		img {
+			max-width: 100%;
+			vertical-align: middle;
+		}
+		
+		
+		input, textarea, keygen, select, button {
+			-webkit-appearance: none;
+			border: none;
+			border-radius: 0.5em;
+			font: inherit;
+		}
+		button, [type=button], [role=button] {
+			background-color: var(--accent-1);
+			color: #fff;
+			font-weight: bold;
+			line-height: 1;
+			padding: 1ch 1em;
+			text-transform: uppercase;
+			transition: var(--transition-fast);
+			white-space: nowrap;
+		}
+		
+		
+		iframe {
+			border: none;
+		}
+		
+		
+		:disabled {
+			cursor: default;
+			filter: grayscale();
+			opacity: 0.75;
+		}
+		:focus {
+			box-shadow: var(--accent-1) 0 0 2px 2px;
+			outline: none;
+			transition: var(--transition-fast);
+			z-index: 1;
+		}
+		
+		::selection,
+		a:focus, main a:focus {
+			background-color: var(--accent-1-half);
+			box-shadow: var(--accent-1-half) 0 0 0 0.2em;
+			color: #fff;
+			text-shadow: var(--shadow-dark-1);
+		}
+		
+		
+		
+		
+		
+		
+		#background, #background * {
+			position: fixed;
+			width: 100%;
+			height: 100%;
+		}
+		
+		
+		#to-top {
+			background: rgba(50,50,50,.9) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -5.2 8 8"><polyline points="-2,0 0,-2 2,0" stroke-width="0.75" fill="none" stroke="#fff"/></svg>') center/24px no-repeat;
+			background-size: 18px;
+			border-radius: 4px;
+			color: #fff;
+			width: 28px;
+			height: 24px;
+			right: 6px;
+			bottom: 6px;
+			position: fixed;
+			transition: var(--transition-medium);
+		}
+		#to-top:not(.show) {
+			opacity: 0;
+			transform: translateY(100%);
+		}
+		#to-top:hover {
+			background-color: var(--accent-1);
+		}
+		
+		
+		
+		
+		/*:root.load * {
+			transition: 3s cubic-bezier(0, 1, 0, 1);
+			text-shadow: 0 0 !important;
+			-webkit-text-fill-color: transparent !important;
+		}*/
+		/*:root:not(.load) * {
+			-webkit-text-fill-color: transparent !important;
+			text-shadow: 0 0 2em !important;
+		}*/
+		/*:root:not(.load), :root:not(.load) * {
+			transform: translateZ(100px) !important;
+			transform-style: preserve-3d !important;
+		}*/
+	</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+</head>
+<body>
+	<div id="background">
+		<iframe></iframe>
+		<canvas></canvas>
+	</div>
+	<div id="wrapper">
+		<nav id="secondary-menu">
+			<ul>
+				<li>
+					<a href="/about">About Me</a>
+				</li>
+				<li>
+					<a href="/about-this-site">About This Site</a>
+				</li>
+				<li>
+					<a href="/contact">Contact</a>
+				</li>
+				<li>
+					<a>Social Profiles</a>
+					<ul>
+						<li>
+							<a>Facebook</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a>Experiments</a>
+				</li>
+			</ul>
+		</nav>
+		<header>
+			<!--<h1>Darryl Yeo</h1>-->
+			<nav id="main-menu">
+				<a href="/" id="logo"><img src="https://darryl-yeo.com/assets/themes/DY/logo/Darryl-Yeo-Logo-Cropped.svg"></a>
+				<ul>
+					<li>
+						<a href="/#projects">Projects</a>
+					</li>
+					<li>
+						<a href="/blog">Blog</a>
+					</li>
+					<li>
+						<a href="/learn">Learn</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<article>
+				<hgroup>
+					<h1>Floating Rainbow 3D Easter Eggs!</h1>
+				</hgroup>
+				<section>
+					<p>Lorem <a>ipsum</a> dolor sit amet. Lorem <a href="https://darryl-yeo.com">ipsum</a> dolor sit amet. <em>Lorem ipsum dolor sit amet</em>. Lorem ipsum dolor sit amet.</p>
+					<p>Lorem ipsum <strong>dolor sit amet</strong>. Lorem <a href="#">ipsum</a> dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+					<p>Lorem <a href="https://google.com">ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. <em>Lorem ipsum dolor</em> sit amet</a>.</p>
+				</section>
+				<section>
+					<h2>That's one jittery critter.</h2>
+					<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+					<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+					<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+				</section>
+				<dy-khan data-id="2722008038"></dy-khan>
+				<section>
+					<h2>That's one jittery critter.</h2>
+					<p>Lorem ipsum dolor <button>sit amet</button>. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+					<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+					<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+				</section>
+			</article>
+			<aside>
+				<section>
+					<h3>Subscribe For Email Updates!</h3>
+				</section>
+			</aside>
+		</main>
+		<footer>
+			<p>Website Design and Content © 2014-2016 Darryl Yeo. All Rights Reserved.<br>Powered by <a href="https://platformmeister.com">Platform Meister</a>.</p>
+		</footer>
+	</div>
+	<div id="to-top"></div>
+</body>
+
+
+<template id="dy-khan">
+	<h3 id="title"></h3>
+	<dy-khan-stats id="stats">
+		<span class="votes"></span>
+		<span class="spin-offs"></span>
+		<span class="lines"></span>
+	</dy-khan-stats>
+	<!--<div id="project">
+		<img id="thumbnail">
+		<iframe></iframe>
+	</div>-->
+	<div id="project">
+		<iframe></iframe>
+		<img id="thumbnail">
+		<span>►Play</span>
+	</div>
+	<div class="buttons">
+		<button>Play</button>
+		<button disabled>No Clicky</button>
+		<button>Restart</button>
+	</div>
+	<dy-khan-badge id="fork"></dy-khan-badge>
+	<style>
+		:host {
+			background-color: rgba(255, 255, 255, 0.6);
+			border-radius: var(--padding-small);
+			margin: auto;
+			padding: var(--padding-small);
+			text-align: center;
+			width: min-content;
+			max-width: 100%;
+		}
+		:host > * + * {
+			margin-top: 0.5em;
+		}
+		#project * {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
+		
+		#project {
+			will-change: transform;
+			border-radius: 5px;
+			cursor: pointer;
+			overflow: hidden;
+			/*width: var(--width, 300);
+			height: var(--height, 300);*/
+			max-width: 100%;
+			margin-top: 0.5em;
+			position: relative;
+		}
+		#thumbnail {
+			background-color: #000;
+			background: radial-gradient(rgba(0, 0, 0, 0.6), #000);
+			position: relative;
+			transition: 0.3s;
+		}
+		#project.play #thumbnail {
+			opacity: 0;
+			pointer-events: none;
+		}
+		#project span {
+			background-image: radial-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5));
+			color: #fff;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 3em;
+			opacity: 0;
+			text-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
+			transition: 0.3s;
+			width: 100%;
+		}
+		#project:hover span {
+			opacity: 1;
+			transform: scale(1.2);
+		}
+		#project.play span {
+			opacity: 0;
+			transform: scale(2);
+		}
+		#project:hover img {
+			transform: scale(1.05);
+		}
+		iframe {
+			position: absolute;
+			width: 100%;
+			transform-origin: left top;
+		}
+		#buttons {
+			overflow: hidden;
+			max-height: 0;
+			text-align: left;
+			transition: 0.3s;
+		}
+		#project.play #buttons {
+			margin-top: 5px;
+			max-height: 42px;
+		}
+		#buttons > * + * {
+			float: right;
+		}
+	</style>
+</template>
+
+<template id="dy-khan-badge">
+	<a class="link">
+		<img id="thumbnail">
+	</a>
+	<div>
+		<p><a class="link"><span id="title-prefix"></span> <span id="title"></span></a></p>
+		<dy-khan-stats id="stats">
+			<span class="votes"></span>
+			<span class="spin-offs"></span>
+			<span class="lines"></span>
+		</dy-khan-stats>
+	</div>
+	<style>
+		:host {
+			display: flex;
+			align-items: stretch;
+			text-align: left;
+		}
+		img {
+			height: 4em;
+		}
+		div {
+			flex-direction: column;
+			margin-left: 1em;
+		}
+	</style>
+</template>
+
+<template id="dy-khan-stats">
+	<span class="votes"><content select=".votes"></content> Votes</span>
+	<span class="spin-offs"><content select=".spin-offs"></content> Spin-offs</span>
+	<span class="lines"><content select=".lines"></content> Lines</span>
+	<style>
+		:host {
+			
+		}
+		span + span {
+			margin-left: 0.5em;
+		}
+		.votes {
+			color: #7cb342;
+		}
+		.spin-offs {
+			color: #7986cb;
+		}
+		.lines {
+			color: #ec407a;
+		}
+	</style>
+</template>
+
+<script>
+	let $ = function(sel){return document.querySelector(sel)}
+	let $$ = function(sel){return document.querySelectorAll(sel)}
+	
+	Function.prototype.debounce = function(wait, immediate) {
+		var timeout;
+		var func = this;
+		return function() {
+			var context = this, args = arguments;
+			var later = function() {
+				timeout = null;
+				if (!immediate) func.apply(context, args);
+			};
+			var callNow = immediate && !timeout;
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (callNow) func.apply(context, args);
+		};
+	};
+	Function.prototype.throttle = function(time){
+		var wait = false;
+		var func = this;
+		return function(){
+			var context = this, args = arguments;
+			if (!wait) {
+				func.apply(context, args);
+				wait = true;
+			}else{
+				setTimeout(function(){
+					wait = false;
+					func.apply(context, args);
+				}, time);
+			}
+		}
+	}
+	Element.prototype.click_ = function(f){
+		this.addEventListener('click', f)
+	}
+	NodeList.prototype.addEventListener = function(handle, f){
+		this.forEach(function(element){
+			element.addEventListener(handle, f)
+		})
+	}
+	
+	function getJSON(url, onload, onerror, onabort, onprogress){
+		var oReq = new XMLHttpRequest();
+		onload && oReq.addEventListener("load", function(){
+			onload(JSON.parse(this.responseText));
+		});
+		onerror && oReq.addEventListener("error", onerror);
+		onabort && oReq.addEventListener("abort", onabort);
+		onprogress && oReq.addEventListener("progress", onprogress);
+		oReq.open("GET", url);
+		oReq.send();
+	}
+	
+	setTimeout(function(){
+		document.documentElement.classList.add('load')
+	}, 2000)
+	window.addEventListener('scroll', function(e){
+		$('header').classList[this.scrollY > $('#secondary-menu').clientHeight ? 'add' : 'remove']('sticky');
+		$('#to-top').classList[this.scrollY > window.innerHeight * 0.5 ? 'add' : 'remove']('show')
+	}.throttle(10))
+	$('#to-top').click_(function(){
+		var s = function(){console.log(window.scrollY)
+			if(window.scrollY > 0){
+				window.scrollTo(0, window.scrollY * 0.92);
+				requestAnimationFrame(s)
+			}
+		}
+		s();
+	})
+	
+	
+	
+	
+	
+	$$('a').addEventListener(function(){
+		let link = document.createElement('link');
+		link.setAttribute('rel', 'prerender');
+		link.setAttribute('href', this.href);
+		document.head.appendChild(link)
+	})
+	
+	
+	function styleToString(style){
+		return Object.keys(style).map(function(prop){
+			var value = style[prop];
+			if(['width', 'height'].includes(prop) && typeof value === 'number') value += 'px'
+			return prop + ':' + value
+		}).join(';')
+	}
+	
+
+	Element.prototype.updateWithModel = DocumentFragment.prototype.updateWithModel = function(model){
+		for(let handle in model){
+			var value = model[handle];
+			if(handle.includes('[')){
+				let parts = handle.match(/(.+?)\[(.+?)]/);
+				let selector = parts[1];
+				let attrName = parts[2];
+				this.querySelectorAll(selector).forEach(function(element){
+					if(attrName === 'style' && typeof value === 'object'){
+						value = styleToString(value)
+						/*console.log(element.style, Object.assign(new CSSStyleDeclaration(), value))
+						//Object.assign(element.style, value)
+						for(let prop in value){console.log(element, element.style, prop, element.style[prop])
+							element.style.setProperty(prop, value[prop])
+						}*/
+					}//else{
+						element.setAttribute(attrName, value);
+					//}
+				});
+			}else{
+				this.querySelector(handle).innerHTML = value;
+			}
+		}
+	}
+	
+	
+	
+	
+	/*function registerElement(name){
+		var template = document.getElementById(name);
+		return document.registerElement(name, {
+			prototype: Object.assign(Object.create(HTMLElement.prototype), {
+				createdCallback: function(){
+					var root = this.createShadowRoot();
+					root.appendChild(document.importNode(template.content, true));
+				},
+				detachedCallback: function(){
+					
+				},
+				attributeChangedCallback: function(attr, oldVal, newVal){
+					
+				}
+			})
+		});
+	}*/
+	
+	var KhanProject = function(id){
+		return {
+			scratchpad: 'https://www.khanacademy.org/api/labs/scratchpads/' + id
+		}
+	}
+	var DYKhan = document.registerElement('dy-khan', {
+		prototype: Object.assign(Object.create(HTMLElement.prototype), {
+			createdCallback: function(){
+				let root = this.createShadowRoot();console.log(root, root.prototype)
+				root.appendChild(document.importNode(document.getElementById('dy-khan').content, true));
+				root.appendChild(document.importNode(document.querySelector('style#main'), true));
+				
+				let id = this.dataset.id;
+				let project = KhanProject(id);
+				getJSON(project.scratchpad, function(data){
+					root.updateWithModel({
+						'#title': data.title,
+						'#stats .votes': data.sumVotesIncremented,
+						'#stats .spin-offs': data.spinoffCount,
+						'#stats .lines': data.revision.code.split('\n').length,
+						'#thumbnail[src]': data.imageUrl,
+						'#project[style]': {
+							'width': data.width + 'px',
+						},
+						'#fork[data-id]': data.originScratchpadId,
+					})
+				})
+			},
+			detachedCallback: function(){
+				
+			},
+			attributeChangedCallback: function(attr, oldVal, newVal){
+				
+			}
+		})
+	});
+	var DYKhanBadge = document.registerElement('dy-khan-badge', {
+		prototype: Object.assign(Object.create(HTMLElement.prototype), {
+			createdCallback: function(){
+				
+			},
+			detachedCallback: function(){
+				
+			},
+			attributeChangedCallback: function(attr, oldVal, newVal){
+				var root = this.shadowRoot;
+				if(!this.shadowRoot){
+					root = this.createShadowRoot();
+					root.appendChild(document.importNode(document.getElementById('dy-khan-badge').content, true));
+					root.appendChild(document.importNode(document.querySelector('style#main'), true));
+				}
+				
+				if(attr !== 'data-id') return;
+				
+				let id = this.dataset.id;
+				
+				let project = KhanProject(id);
+				getJSON(project.scratchpad, function(data){
+					root.updateWithModel({
+						'#title': data.title,
+						'#stats .votes': data.sumVotesIncremented,
+						'#stats .spin-offs': data.spinoffCount,
+						'#stats .lines': data.revision.code.split('\n').length,
+						'#thumbnail[src]': data.imageUrl
+					})
+				})
+			}
+		})
+	});
+	
+	var DYKhanStats = document.registerElement('dy-khan-stats', {
+		prototype: Object.assign(Object.create(HTMLElement.prototype), {
+			createdCallback: function(){
+				let root = this.createShadowRoot();
+				root.appendChild(document.importNode(document.getElementById('dy-khan-stats').content, true));
+				root.appendChild(document.importNode(document.querySelector('style#main'), true));
+			},
+			detachedCallback: function(){
+				
+			},
+			attributeChangedCallback: function(attr, oldVal, newVal){
+				
+			}
+		})
+	});
+	
+	
+	let canvas = $('canvas');
+	canvas.width = canvas.clientWidth;
+	canvas.height = canvas.clientHeight;
+	
+	window.addEventListener('resize', function(){
+		canvas.width = canvas.clientWidth;
+		canvas.height = canvas.clientHeight;
+		draw()
+	})
+	
+	function draw(){
+		let c = canvas.getContext('2d');
+		c.fillStyle = "green";
+		c.fillRect(0, 0, 100, 100);
+	}
+	draw()
+</script>

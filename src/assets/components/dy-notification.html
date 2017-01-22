@@ -1,0 +1,45 @@
+<script>
+class DYNotification extends DYElement {
+	constructor(){
+		super()
+
+		const root = this.root
+		
+		$('#notifications').append(this)
+		this.on('click', () => {
+			this.dismiss()
+		})
+	}
+
+	remind(dismiss){
+		this
+			.removeClass('hide')
+			.animateClass('remind')
+			.dismiss(dismiss || this.duration)
+	}
+
+	// .dismiss(duration)
+	// .dismiss(promise)
+	dismiss(){
+		if(arguments.length){
+			if(arguments[0] instanceof Promise){
+				const promise = arguments[0]
+				promise.then(() => {
+					this.dismiss()
+				})
+			}else if(typeof arguments[0] === 'number'){
+				this.duration = arguments[0]
+				clearTimeout(this.timeout)
+				this.timeout = setTimeout(() => {
+					this.dismiss()
+				}, this.duration * 1000)
+			}
+		}else{
+			this.classList.add('hide')
+			this.classList.remove('remind')
+		}
+		return this
+	}
+}
+customElements.define('dy-notification', DYNotification)
+</script>

@@ -1,0 +1,95 @@
+<script>
+const KhanProject = function(id){
+	return {
+		url: `https://www.khanacademy.org/computer-programming/p/${id}`,
+		embedded: `https://www.khanacademy.org/computer-programming/p/${id}/embedded?editor=no`,
+		scratchpad: `https://www.khanacademy.org/api/labs/scratchpads/${id}`
+	}
+}
+
+class DYKhan extends DYElement {
+	static get observedAttributes() {
+		return ['data-id']
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal){
+		if(attr !== 'data-id') return
+
+		const root = this.root
+		
+		const id = this.dataset.id
+		const project = KhanProject(id)
+
+		getJSON(project.scratchpad).then(data => {
+			this.classList.add('load')
+			root.updateWithModel({
+				'#title': data.title,
+				'#stats [slot=votes]': data.sumVotesIncremented,
+				'#stats [slot=spin-offs]': data.spinoffCount,
+				'#stats [slot=lines]': data.revision.code.split('\n').length,
+				'#thumbnail[src]': data.imageUrl,
+				'#project[style]': {
+					'width': data.width + 'px',
+				},
+				'#fork[data-id]': data.originScratchpadId,
+				'.link[href]': data.url
+			})
+		})
+		
+		const $project = root.find('#project')
+		const $playRestartButton = root.find('.play-restart')
+		root.find('#project, .play-restart').on('click', function(){
+			$project.addClass('play')
+			//$project.find('iframe').src = project.embedded
+			$project.find('iframe').attr('src', project.embedded)
+			$playRestartButton.text('Restart')
+		})
+		root.find('.stop').on('click', function(){
+			$project.removeClass('play')
+			$project.find('iframe').attr('src', '')
+			$playRestartButton.text('Play')
+		})
+	}
+}
+customElements.define('dy-khan', DYKhan)
+
+
+class DYKhanBadge extends DYElement {
+	static get observedAttributes() {
+		return ['data-id', 'title-prefix']
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal){
+		const root = this.root
+
+		if(attr === 'data-id'){
+			const id = this.dataset.id
+			
+			const project = KhanProject(id)
+			getJSON(project.scratchpad).then(data => {
+				root.updateWithModel({
+					'#title': data.title,
+					'#stats [slot=votes]': data.sumVotesIncremented,
+					'#stats [slot=spin-offs]': data.spinoffCount,
+					'#stats [slot=lines]': data.revision.code.split('\n').length,
+					'#thumbnail[src]': data.imageUrl,
+					'.link[href]': data.url
+				})
+			})
+		}else if(attr === 'title-prefix'){
+			const titlePrefix = newVal
+			root.updateWithModel({
+				'.title-prefix': titlePrefix
+			})
+		}
+	}
+}
+customElements.define('dy-khan-badge', DYKhanBadge)
+
+class DYKhanStats extends DYElement {
+	connectedCallback(attr, oldVal, newVal){
+		const root = this.root
+	}
+}
+customElements.define('dy-khan-stats', DYKhanStats)
+</script>

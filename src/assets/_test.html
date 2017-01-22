@@ -1,0 +1,382 @@
+<dy-date data-date="1"></dy-date>
+
+<template id="dy-date">
+	<style>
+	:host {
+		display: inline;
+	}
+	</style>
+	<date></date>
+</template>
+
+<script>
+const X = console.log
+
+// document.querySelector is eventually overridden by webcomponents.js, save a copy beforehand
+const dqs = document.querySelector
+const dqsa = document.querySelectorAll
+const $ = s => dqs.call(document, s)
+const $$ = s => dqsa.call(document, s)
+const $$$ = function(name, opts){
+	const el = document.createElement(name)
+	if(opts && opts.html) el.innerHTML = opts.html
+	return el
+}
+
+
+const originalNode = Node
+window.WRAP = function(object){
+	if(!window.wrap){
+		if (window.ShadowDOMPolyfill && originalNode !== Node) {
+			window.wrap = ShadowDOMPolyfill.wrapIfNeeded;
+			window.unwrap = ShadowDOMPolyfill.unwrapIfNeeded;
+		} else {
+			window.wrap = window.unwrap = function(n) {
+				return n;
+			}
+		}
+	}
+	return window.wrap(object)
+}
+
+Node.prototype._insertBefore = Node.prototype.insertBefore
+Node.prototype.insertBefore = function(targetNode){X('insertBefore', arguments.length)
+	// Emulate default behavior as according to spec... sigh
+	if(arguments.length === 2){console.log(arguments)
+		let [newNode, referenceNode] = arguments
+		if(referenceNode === null){
+			this._insertBefore.apply(this, arguments)
+			//this.append(WRAP(newNode))
+		}else{
+			referenceNode.insertAdjacentElement('beforebegin', newNode)
+		}
+		return
+	}
+	//if(arguments.length === 2) return this._insertBefore.apply(this, arguments)
+
+	targetNode.insertAdjacentElement('beforebegin', this)
+	//targetNode.parentNode.insertBefore(this, targetNode)
+	return this
+}
+Node.prototype.insertAfter = function(targetNode){
+	targetNode.insertAdjacentElement('afterend', this)
+	return this
+}
+Node.prototype.prependTo = function(targetNode){
+	targetNode.prependChild(this)
+	//targetNode.insertBefore(this, targetNode.firstChild)
+	return this
+}
+Node.prototype.appendTo = function(targetNode){
+	wrap(targetNode).append(wrap(this))
+	return this
+}
+Node.prototype.prependChild = function(targetNode){
+	this.insertAdjacentElement('afterbegin', targetNode)
+	//this.insertBefore(targetNode, this.firstChild)
+}
+/*Node.prototype._appendChild = Node.prototype.appendChild
+Node.prototype.appendChild = function(){
+	this._appendChild.apply(this, arguments)
+	return this
+}*/
+Node.prototype.replaceWith = function(targetNode){
+	this.parentNode.replaceChild(this, targetNode)
+	return targetNode
+}
+Node.prototype.empty = function(){
+	while (this.firstChild) {
+		this.removeChild(this.firstChild)
+	}
+	return this
+}
+Node.prototype.clone = function(deep = true){
+	return document.importNode(this, deep)
+	//return wrap(this.cloneNode(deep))
+}
+// Naming this "Node.prototype.import" results in "TypeError: null is not an object (evaluating 'node.__proto__')" from webcomponents.js"
+// Use .clone() instead, there's no difference: http://stackoverflow.com/q/39372886/5545315
+/*Node.prototype.import = function(deep = true){
+	return document.importNode(unwrap(this), deep)
+}*/
+Node.prototype.importTo = function(doc = document, deep = true){
+	return doc.importNode(unwrap(this), deep)
+}
+Element.prototype.find = DocumentFragment.prototype.find = function(s){
+	return this.querySelectorAll(s)
+}
+Element.prototype.hasClass = function(c){
+	return this.classList.contains(c)
+}
+Element.prototype.addClass = function(...classes){
+	for(let className of classes){
+		this.classList.add(className)
+	}
+	return this
+}
+Element.prototype.removeClass = function(...classes){
+	for(let className of classes){
+		this.classList.remove(className)
+	}
+	return this
+}
+Element.prototype.toggleClass = function(addClass, ...classes){
+	if(typeof arguments[0] === 'boolean'){
+		for(let className of classes){
+			this.classList[addClass ? 'add' : 'remove'](className)
+		}
+	}else{
+		for(let className of arguments){
+			this.classList.toggle(className)
+		}
+	}
+	return this
+}
+Element.prototype.animateClass = function(...classes){
+	this.removeClass(...classes)
+	this.width
+	this.addClass(...classes)
+	return this
+}
+Element.prototype.html = function(html){
+	if(!arguments.length) return this.innerHTML
+	this.innerHTML = html
+	return this
+}
+Element.prototype.text = function(text){
+	if(!arguments.length) return this.innerText
+	this.innerText = text
+	return this
+}
+Element.prototype.attr = function(attr, value){
+	let attrs = {}
+	if(arguments.length === 2){
+		attrs[attr] = value
+	}else if(typeof arguments[0] === 'object'){
+		attrs = arguments[0]
+	}else if(typeof arguments[0] === 'string'){
+		return this.getAttribute(attr)
+	}
+	for(attr in attrs){
+		const value = attrs[attr]
+		if(value === null || typeof value === 'undefined'){
+			this.removeAttribute(attr)
+		}else if(attr === 'style' && typeof value === 'object'){
+			this.css(value)
+		}else{
+			this.setAttribute(attr, value)
+		}
+	}
+	return this
+}
+Element.prototype.css = function(style){
+	if(arguments.length === 1){
+		Object.assign(this.style, style)
+	}else if(arguments.length === 2){
+		const [attr, value] = arguments
+		this.style[attr] = value
+	}
+	return this
+}
+Element.prototype.updateWithModel = DocumentFragment.prototype.updateWithModel = function(model){
+	for(let handle in model){
+		let value = model[handle]
+		if(handle.includes('[')){
+			const parts = handle.match(/(.+?)\[(.+?)]/)
+			const selector = parts[1]
+			const attrName = parts[2]
+			for(let element of this.find(selector)){
+				if(attrName === 'style' && typeof value === 'object'){
+					element.css(value)
+				}else{
+					element.attr(attrName, value)
+				}
+			}
+		}else{
+			const $el = this.querySelector(handle)
+			if($el) $el.innerHTML = value
+		}
+	}
+	return this
+}
+Element.prototype.animateScrollY = function(y, speedFactor = 0.08, stopPromise){
+	let stop = false
+	stopPromise && stopPromise.then(() => stop = true)
+	/*let isProgrammaticScroll = false
+	this.on('scroll', () => {
+		X(2)
+		if(isProgrammaticScroll) isProgrammaticScroll = false
+		else stop = true,X('stop!')
+	})*/
+	;(() => {
+		//isProgrammaticScroll = true
+		this.scrollTop = this.scrollTop * (1 - speedFactor)
+		return this.scrollTop > 0 && !stop
+	}).interval(1)
+	return this
+}
+
+/*Element.prototype.click_ = function(f){
+	this.addEventListener('click', f)
+}*/
+
+for(let method in Element.prototype){
+	if(!NodeList.prototype[method]){
+		NodeList.prototype[method] = function(){
+			let returnValue
+			for(let element of this){
+				const value = typeof element[method] === 'function' ? element[method](...arguments) : element[method]
+				returnValue = returnValue || value
+			}
+			return returnValue
+		}
+	}
+}
+</script>
+<!--<script src="libraries/webcomponents.js"></script>-->
+
+<script>
+
+/*const dqs = document.querySelector
+const dqsa = document.querySelectorAll
+const $ = s => dqs.call(document, s)
+const $$$ = function(name, opts){
+	const el = document.createElement(name)
+	if(opts && opts.html) el.innerHTML = opts.html
+	return el
+}
+Element.prototype.attr = function(attr, value){
+	let attrs = {}
+	if(arguments.length === 2){
+		attrs[attr] = value
+	}else if(typeof arguments[0] === 'object'){
+		attrs = arguments[0]
+	}else if(typeof arguments[0] === 'string'){
+		return this.getAttribute(attr)
+	}
+	for(attr in attrs){
+		const value = attrs[attr]
+		if(value === null || typeof value === 'undefined'){
+			this.removeAttribute(attr)
+		}else if(attr === 'style' && typeof value === 'object'){
+			this.css(value)
+		}else{
+			this.setAttribute(attr, value)
+		}
+	}
+	return this
+}
+Node.prototype.appendTo = function(targetNode){
+	targetNode.append(this)
+	return this
+}*/
+
+/*const l = $$$('link').attr({
+	rel: 'import',
+	href: `components/dy-date.html`
+}).appendTo(document.head)
+//l.rel = "import"
+//l.href = "components/dy-projects.html"
+//document.head.append(l)*/
+
+//console.log(document.querySelector('#dy-date').content)
+//document.importNode(document.querySelector('#dy-date').content, true).appendTo(document.body)
+</script>
+<script>
+
+let DYElement
+
+(function(document){
+
+/*const*/ DYElement = class extends HTMLElement {
+	createdCallback(){
+		
+	}
+
+	detachedCallback(){
+		
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal){
+
+	}
+
+	/* Need a way to get this.tagName but from Constructor
+	static get $template(){
+		return $('#' + this.tagName.toLowerCase())
+	}
+
+	static get $style(){
+		return this.$template.find('style')[0]
+	}*/
+	
+	get $template(){
+		return $('#' + this.tagName.toLowerCase())
+	}
+
+	get $style(){
+		return wrap(this.root.find('style')[0])
+	}
+
+	get root(){
+		let root = this.shadowRoot
+		if(!root){
+			root = this.attachShadow({mode: 'open'})
+
+			this.$template.content.clone().appendTo(root)
+			console.log('root', root)
+
+			let $style = this.$style
+			if($style)
+				wrap(DYElement.$style.clone()).insertBefore(root.firstChild.nextSibling)
+				//DYElement.$style.clone().insertBefore($style)
+			else
+				DYElement.$style.clone().appendTo(root)
+		}
+		return root
+	}
+}
+DYElement.$style = $$$('style', {
+	html: Array.from(document.styleSheets, s => s.href ? `@import "${s.href}";` : '').join('\n')
+
+	// Doesn't work in Safari (TypeError: ...document.styleSheets is not a function?!)
+		//html: [...document.styleSheets].map(s => s.href ? `@import "${s.href}";` : '').join('\n')
+})
+
+})(document)
+
+const webComponents = [
+	//'dy-projects',
+	//'dy-project',
+	//'dy-project-header',
+	//'dy-notification',
+	//'dy-date',
+	//'dy-comments',
+	//'khan',
+]
+for(let handle of webComponents){
+	$$$('link').attr({
+		rel: 'import',
+		href: `components/${handle}.html`
+	}).appendTo(document.head)
+}
+
+const DYDate = document.registerElement('dy-date', class extends DYElement {
+	createdCallback(){
+		this.root
+		this.dataset.date = 3
+		this.setAttribute('data-date', 3)
+	}
+	attributeChangedCallback(attr, oldVal, newVal){
+		const root = this.root
+		
+		if(attr === 'data-date'){
+			const dateString = newVal
+			if(!dateString) return
+			root.find('date').html(dateString)
+		}
+	}
+})
+
+$('dy-date').dataset.date = 2
+</script>

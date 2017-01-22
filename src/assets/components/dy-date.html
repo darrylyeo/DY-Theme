@@ -1,0 +1,24 @@
+<script>
+class DYDate extends DYElement {
+	constructor(){
+		super()
+
+		this.root
+	}
+	
+	static get observedAttributes() {
+		return ['data-date']
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal){
+		const root = this.root
+
+		if(attr === 'data-date'){
+			const dateString = newVal
+			if(!dateString) return
+			root.find('date').html(moment(dateString).format('MMMM Do, YYYY'))
+		}
+	}
+}
+customElements.define('dy-date', DYDate)
+</script>

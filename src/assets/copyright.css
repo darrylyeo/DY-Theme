@@ -1,0 +1,15 @@
+:root {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+form, input, select, textarea, main article {
+	-webkit-user-select: initial;
+	-moz-user-select: initial;
+	-ms-user-select: initial;
+	user-select: initial;
+}
+img {
+	pointer-events: none;
+}

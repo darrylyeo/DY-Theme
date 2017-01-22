@@ -1,0 +1,16 @@
+/**
+ * shadows.css [EXPERIMENTAL]
+ * spotlight the hovered DOM node - great for DOM visualization
+ *
+ * @copyright 2015-2016 Darryl Yeo
+ */
+
+* {
+	transition: box-shadow 0.2s;
+}
+*:hover {
+	box-shadow: rgba(0, 0, 0, 0.2) 0 0 900px 1000px;
+}
+*:hover {
+	box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 1000px;
+}

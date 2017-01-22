@@ -1,0 +1,142 @@
+<script>
+class DYProjects extends DYElement {
+	set filter(filter){
+		this.isotope.arrange({ filter })
+	}
+
+	constructor(){
+		super()
+
+		const root = this.root
+		
+		const $projects = root.find('.dy-projects')[0]//this.find
+
+		Promise.all([
+			windowLoad,
+			DY.getData,
+			customElements.whenDefined('dy-project')
+		]).then(() => {
+			const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
+			for(let postID in DY.data.posts){
+				const post = DY.data.posts[postID]
+				if(!post['page-category'].includes(pageCategory_project_id)) continue
+
+				const $project = $$$('dy-project')
+				$project.prependTo($projects)
+				$project.dataset.id = post.id
+			}
+
+			imagesLoaded($projects, () => {
+				this.isotope = new Isotope( $projects, {
+					//itemSelector: '.dy-projects > *',//'dy-project',
+					getSortData: {
+						date: '[data-date]',
+						modifiedDate: '[data-modified-date]'
+					},
+					sortBy: 'modifiedDate',
+					sortAscending: false,
+					hiddenStyle: {
+						opacity: 0,
+						transform: "perspective(1000px) scale(0.75) rotateY(180deg)"
+					},
+					visibleStyle: {
+						opacity: 1,
+						transform: "none"
+					},
+					stagger: 20
+				})
+
+				DYProjectFilters.update()
+			})
+		})
+	}
+
+	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
+	get root(){
+		this.init()
+		return this
+	}
+}
+customElements.define('dy-projects', DYProjects)
+
+class DYProjectFilters extends DYElement {
+	constructor(){
+		super()
+
+		const root = this.root
+
+		DYProjectFilters.instance = this
+		
+		DY.getData.then(() => {
+			const $taxonomies = {}
+
+			for(let taxonomyName in DY.data.taxonomies){
+				if(taxonomyName === 'page-category') continue
+
+				const taxonomy = DY.data.taxonomies[taxonomyName]
+				const $taxonomy = $$$('div')
+					.attr({
+						'data-taxonomy': taxonomyName
+					})
+					.append(
+						$$$('h3').html(taxonomy.name)
+					)
+					.appendTo(root)
+				$taxonomies[taxonomyName] = $taxonomy
+			}
+			for(let term of Object.values(DY.data.termsBySlug).sort((term1, term2) => term1.count - term2.count)){
+				if(term.taxonomy === 'page-category') continue
+				if(term.slug === 'uncategorized') continue
+
+				const $taxonomy = $taxonomies[term.taxonomy] // root.find(`[data-taxonomy=${term.taxonomy}`)
+				if(!$taxonomy) continue
+
+				const _this = this
+
+				const $term = $$$('a')
+					.attr('rel', 'tag')
+					.attr('data-term', term.slug)
+					.attr('data-selector', `.${term.taxonomy}-${term.slug}`)
+					.html(term.name)
+					.on('click', function(){X(this, _this)
+						this.toggleClass('active')
+						_this.update()
+					})
+					.appendTo($taxonomy)
+			}
+		})
+	}
+
+	update(){
+		const root = this.root
+
+		this.$DYProjects.filter = Array.from(root.find('a[rel=tag].active'))
+			.map($term => $term.dataset.selector)
+			.join('')
+		for(let $term of root.find('a[rel=tag]')){
+			const filteredElements = this.$DYProjects.isotope.getFilteredItemElements()
+
+			if(filteredElements.filter($element => $element.matches($term.dataset.selector)).length > 0) // this.$DYProjects.root.find(`${$term.dataset.selector}:not(.isotope-hidden)`).length
+				$term.removeClass('disabled')
+			else
+				$term.addClass('disabled')
+		}
+	}
+
+	static update(){
+		if(this.instance) this.instance.update()
+	}
+
+	get $DYProjects(){//X('$DYProjects', this.closest('dy-projects'), this.parentNode, this.parentNode.host, this, this.getRootNode(), this.getRootNode())
+		//return this.parentNode.host || this.parentNode//this.closest('dy-projects')
+		return this.closest('dy-projects') || this.getRootNode().host
+	}
+
+	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
+	/*get root(){
+		this.init()
+		return this
+	}*/
+}
+customElements.define('dy-project-filters', DYProjectFilters)
+</script>

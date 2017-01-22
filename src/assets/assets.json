@@ -1,0 +1,47 @@
+{
+	"css": [
+		"libraries/prism",
+		
+		"fonts",
+		"css",
+		"copyright",
+		"scrollbars",
+		"forms",
+		"header",
+		"main",
+		"article",
+		"sidebar",
+		"footer",
+		"notifications",
+		"modal",
+
+		"dy-project"
+	],
+	"js": [
+		"libraries/imagesloaded.pkgd.min",
+		"libraries/web-animations.min",
+		"libraries/gsap/TweenLite",
+		"libraries/gsap/easing/EasePack.min",
+		"libraries/isotope.pkgd",
+		"libraries/moment.min",
+		"libraries/prism",
+		
+		"fit-text",
+		"js",
+		"notify",
+		"modal",
+		"DY",
+		"DY.data",
+		"experiments/experiments",
+		"navigation",
+
+		"libraries/custom-elements",
+		"libraries/html-imports.min",
+		"libraries/shadydom.min",
+		"libraries/shadycss.min",
+		"web-components",
+
+		"main",
+		"canvas"
+	]
+}

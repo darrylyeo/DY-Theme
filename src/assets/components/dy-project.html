@@ -1,0 +1,78 @@
+<script>
+class DYProject extends DYElement {
+	static get observedAttributes() {
+		return ['data-id']
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal){
+		const root = this.root
+		
+		if(attr === 'data-id'){
+			const id = newVal
+			const data = DY.data.posts[id]
+			
+			root.updateWithModel({
+				'#title': data.title.rendered,
+				'#project-date[data-date]': data.meta.projectDate,
+				'#modified-date[data-date]': data.date,
+				'.link[href]': data.link,
+				'#excerpt': data.excerpt.rendered
+			})
+			if(data.featuredImage){
+				root.css('backgroundImage', `url(${data.featuredImage.source_url})`)
+				root.updateWithModel({
+					'img[src]': data.featuredImage.source_url,
+					'img[alt]': data.featuredImage.alt_text
+				})
+			}else{
+				root.addClass('no-featured-image')
+			}
+			this.attr({
+				'data-date': data.meta.projectDate,
+				'data-modified-date': data.date,
+			})
+
+			// Add terms
+			const $terms = root.find('#terms')
+			for(let taxonomyName in DY.data.taxonomies){
+				if(taxonomyName === 'page-category') continue
+
+				const terms = data[DY.mapTaxonomyName(taxonomyName)]
+				if(!terms.length) continue
+				for(let termID of terms){
+					const term = DY.data.terms[termID]
+
+					const $term = $$$('a').attr('rel', 'tag').appendTo($terms)
+					$term.innerHTML = term.name
+					this.addClass(`${taxonomyName}-${term.slug}`)
+				}
+			}
+
+			/*root.find('#details').on('mouseleave', function(){
+				this.animateScrollY(0, undefined, new Promise((resolve) => {
+					this.once('mouseenter', resolve);
+				}))
+			})*/
+
+			this.modalize().on('modalize', function(e){
+				const img = root.find('img')[0]
+				Object.assign(e.detail.finalStyle, {
+					width: '100%',
+					maxWidth: (img.naturalWidth * 2.5 || 500) + 'px',
+					//height: '80vh',
+					//maxHeight: 'max-content',
+					height: (img.naturalHeight || 400) + 'px',
+					maxHeight: '80vh',
+				})
+			})
+		}
+	}
+
+	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
+	get root(){
+		this.init()
+		return this
+	}
+}
+customElements.define('dy-project', DYProject)
+</script>

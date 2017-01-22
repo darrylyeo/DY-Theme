@@ -1,0 +1,310 @@
+:root {
+	--accent-1-values: 201,67%,64%;
+	--accent-1: hsla(var(--accent-1-values),1);
+	--accent-1-half: hsla(var(--accent-1-values),0.5);
+	--accent-1-quarter: hsla(var(--accent-1-values),0.25);
+	--accent-1-light: hsla(201,67%,72%,1);
+	--accent-1-dark: hsla(201,67%,56%,1);
+	--accent-1-rotate: hsla(231,67%,64%,1);
+	--accent-2: hsla(176,100%,72%,.96);
+	--accent-3: #67b7e1;
+	--body-font: 'Hallo Sans', Asap, Roboto, sans-serif;
+	--color: rgba(0, 0, 0, 0.66);
+	--heading-font: /*'Fun Font',*/ 'Klinic Slab', 'Slabo 13px', var(--body-font);
+	
+	--site-width: 94vw;
+	--site-padding: calc((100vw - var(--site-width)) / 2);
+	/*--padding: 1.75rem;*/
+	--padding: calc(10px + 2vw);
+	--padding-neg: calc(var(--padding) * -1);
+	--padding-small: calc(var(--padding) * 0.75);
+	--padding-small-neg: calc(var(--padding-small) * -1);
+	--padding-smaller: calc(var(--padding) * 0.5);
+
+	--main-menu-height: 5rem;
+	--main-menu-height: calc(50px + 3.5vw);
+	--secondary-menu-height: 2.625rem;
+	
+	--shadow-dark-0: rgba(0, 0, 0, 0.1) 0 1px 1px;
+	--shadow-dark-1: rgba(0, 0, 0, 0.2) 0 1px 2px;
+	--shadow-light-1: rgba(255, 255, 255, 0.2) 0 1px 2px;
+	--transition-fast: 0.15s;
+	--transition-medium: 0.3s;
+	--transition-slow: 0.5s;
+	--ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	--ease-out-back-2: cubic-bezier(0.0875, 0.4425, 0.16, 2.55);
+	--ease-in-out-back: cubic-bezier(0.3,4,.25,-0.2);
+	--ease-in-out-back: cubic-bezier(.87,-1,.19,2);
+
+	--page-background: radial-gradient(var(--accent-1) 30%, var(--accent-2)) fixed 0 0/100vmax 100vmax;
+	background: var(--page-background);
+	color: var(--color);
+	/*-webkit-text-fill-color: transparent !important;
+	text-shadow: currentColor 0 0;*/
+	font-family: var(--body-font);
+	font-size: calc(14px + 0.4vw);
+	font-synthesis: weight;
+	line-height: 1.75;
+	overflow-x: hidden;
+	overflow-y: auto;
+	/*perspective: 1000px;*/
+	tab-size: 4;
+	text-decoration-color: var(--accent-1-half);
+	text-decoration-skip: ink;
+}
+
+*, :before, :after {
+	box-decoration-break: clone;
+	box-sizing: border-box;
+	/*border-radius: 0.5px;*/
+	transition:
+		background var(--transition-fast),
+		box-shadow var(--transition-fast),
+		color var(--transition-fast),
+		filter var(--transition-medium);
+	/*animation: Whee 1s;*/
+}
+/*@keyframes Whee {
+	from {
+		transform: scale(0.9) translate(0, 10vh);
+	}
+}*/
+
+div, header, main, footer, article, section, aside, nav, nav > ul, nav > ul > li, nav > a, blockquote, form, fieldset, label {
+	display: flex;
+}
+body, p, h1, h2, h3, h4, h5, h6, ul, ol, figure, pre, blockquote, hr {
+	margin: 0;
+}
+* + p, * + h1, * + h2, * + h3, * + h4, * + h5, * + h6, article * + ul, * + ol, * + figure, * + pre, * + hr {
+	margin-top: 1em;
+}
+h1, h2, h3, h4, h5, h6, legend {
+	font-family: var(--heading-font);
+}
+
+/*body {
+	overflow-y: auto;
+	height: 100vh;
+	position: relative;
+}
+body * {
+	transform-style: preserve-3d;
+	transform: translateZ(20px);
+}*/
+
+#wrapper {
+	box-shadow: rgba(0, 0, 0, 0.2) 0 0 30px;
+	box-shadow: rgba(0,0,0,.15) 0 0 20px, rgba(0,0,0,.15) 0 0 100px;
+	margin: auto;
+	min-height: 100vh;
+	width: var(--site-width);
+	position: relative;
+	/*perspective: 1000px;*/
+}
+#wrapper, article, section {
+	flex-direction: column;
+}
+
+
+pre, xmp, plaintext, listing {
+	font-family: Inconsolata, Roboto Mono, Ayuthaya, monospace;
+}
+tt, code, kbd, samp {
+	font-family: Inconsolata, Roboto Mono, Ayuthaya, monospace;
+	font-size: 0.85em;
+}
+:not(pre) > code {
+	background-color: rgba(255, 255, 255, 0.6);
+	border-radius: 0.75ch;
+	padding: 0.5ch 0.75ch;
+}
+pre[class*=language],
+pre code {
+	display: block;
+	line-height: 1.5;
+	overflow-x: auto;
+}
+pre[class*=language],
+pre:not([class*=language]) > code {
+	background: rgba(255, 255, 255, 0.6) linear-gradient(rgba(255, 255, 255, 0.4) 50%, transparent 50%) 1px var(--padding-smaller)/1px 3em;
+	border-radius: var(--padding-smaller);
+	padding: var(--padding-smaller);
+}
+
+
+img {
+	display: block;
+	max-width: 100%;
+	margin: 0 auto;
+	vertical-align: middle;
+}
+main img, :host img {
+	background-color: rgba(0, 0, 0, 0.05);
+	border-radius: 0.5rem;
+	text-indent: -100vmax;
+}
+section figure {
+	padding-top: 0.5em;
+}
+figure img {
+	box-shadow: rgba(0,0,0,.15) 0 2px 5px;
+}
+figcaption {
+	font-size: 0.85em;
+	margin-top: 0.5em;
+	text-align: center;
+}
+
+
+
+iframe {
+	border: none;
+}
+
+
+
+
+hr {
+	border: none;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	width: 100%;
+}
+
+
+
+
+:disabled {
+	filter: grayscale();
+}
+:disabled, .disabled {
+	cursor: default;
+	opacity: 0.75;
+	pointer-events: none;
+}
+:focus {
+	--jump-height: 1.5;
+	--jump-bounce: 0.7;
+	--jump-shake: 2;
+	filter: drop-shadow(var(--accent-1) 0 1px 3px);
+	outline: none;
+	transition: var(--transition-fast);
+	z-index: 1;
+}
+:focus:not(:active) {
+	animation: ButtonMouseUpJump 0.4s;
+}
+
+a {
+	border-radius: 1px;
+	color: var(--accent-1-dark);
+	text-decoration: none;
+	text-shadow: var(--shadow-dark-0);
+	transition: var(--transition-fast);
+}
+a:hover {
+	opacity: 0.75;
+}
+
+main :visited {
+	color: var(--accent-1-rotate);
+	
+	/* Why doesn't this work? */
+	/*filter: hue-rotate(10deg);*/
+}
+
+::selection,
+main :link:hover, main :visited:hover,
+a:focus, main :link:focus, main :visited:focus {
+	background-color: var(--accent-1-half);
+	color: #fff;
+	text-shadow: var(--shadow-dark-1);
+}
+main :link:hover, main :visited:hover,
+main :link:focus, main :visited:focus {
+	background-color: var(--accent-1-half);
+	box-shadow: /*var(--accent-1-half) 0 0 0, var(--accent-1-half) 0 0 0,*/ var(--accent-1-half) 0 0 0 0.2em;
+}
+
+
+[rel=tag] {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background-color: rgba(255,255,255,.5);
+	border-radius: 1ch;
+	color: rgba(0,0,0,.75);
+	cursor: pointer;
+	font-size: .8em;
+	padding: 0 1.5ch;
+	vertical-align: .15em;
+	line-height: 2;
+	margin: 2px;
+	flex: auto;
+	text-align: center;
+	white-space: nowrap;
+}
+[rel=tag]:hover,
+[rel=tag].active {
+	background-color: var(--accent-1);
+	color: #fff;
+}
+[rel=tag].active {
+	opacity: 1;
+}
+[rel=tag].disabled {
+	background-color: rgba(0, 0, 0, .05);
+	opacity: 0.3;
+}
+
+
+
+
+
+
+#background, #background * {
+	pointer-events: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+}
+
+
+#to-top {
+	background: rgba(50,50,50,.9) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -5.2 8 8"><polyline points="-2,0 0,-2 2,0" stroke-width="0.75" fill="none" stroke="#fff"/></svg>') center/24px no-repeat;
+	background-size: 18px;
+	border-radius: 4px;
+	color: #fff;
+	width: 28px;
+	height: 24px;
+	right: 6px;
+	bottom: 6px;
+	position: fixed;
+	transition: var(--transition-medium);
+	z-index: 2;
+}
+#to-top:not(.show) {
+	opacity: 0;
+	transform: translateY(100%);
+}
+#to-top:hover {
+	background-color: var(--accent-1);
+}
+
+
+
+
+/*:root.load * {
+	transition: 3s cubic-bezier(0, 1, 0, 1);
+	text-shadow: 0 0 !important;
+	-webkit-text-fill-color: transparent !important;
+}*/
+/*:root:not(.load) * {
+	-webkit-text-fill-color: transparent !important;
+	text-shadow: 0 0 2em !important;
+}*/
+/*:root:not(.load), :root:not(.load) * {
+	transform: translateZ(100px) !important;
+	transform-style: preserve-3d !important;
+}*/

@@ -1,0 +1,111 @@
+<script>
+class DYProjectHeader extends DYElement {
+	constructor(){
+		super()
+
+		const root = this.root
+		this.addStyle($('#dy-project-filters').content.find('style')[0])
+	}
+	connectedCallback(){
+		const postID = this.closest('main').dataset.postId
+		if(postID) this.dataset.id = postID
+	}
+
+	static get observedAttributes() {
+		return ['data-id']
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal){
+		const root = this.root
+		
+		if(attr === 'data-id'){
+			const id = newVal
+			//windowLoad.then(() => {
+				DY.getData.then(() => {
+					const data = DY.data.posts[id]
+					root.updateWithModel({
+						'#title': data.title.rendered,
+						'#project-date[data-date]': data.meta.projectDate,
+						'#modified-date[data-date]': data.date,
+						'.link[href]': data.link,
+						'#excerpt': data.excerpt.rendered,
+					})
+					root.find('#title').fitText('7.5em')
+
+					if(data.featuredImage){
+						const imageData = data.featuredImage
+
+						root.updateWithModel({
+							'img[src]': imageData.source_url,
+							'img[alt]': imageData.alt_text,
+							'figcaption': imageData.caption || imageData.alt_text,
+							'#background[style]': {
+								'background-image': `url(${imageData.source_url})`
+							}
+						})
+
+						let loadImage
+						root.find('#background canvas')[0].draw(function(){
+							if(!loadImage){
+								loadImage = this.loadImage(imageData.source_url)
+								this.blur(7)
+							}
+							loadImage.then(img => {
+								//this.clear()
+								this.blur(30)
+								this.drawImage(img, 0, 0, this.width, this.width / img.ratio)
+							})
+						}, true)
+						/*root.find('#background canvas')[0].draw(context => {
+							with(context){
+								loadImage(imageData.source_url).then(img => {
+									image(img, 0, 0)
+								})
+							}
+						})*/
+
+						root.find('#featured-image')[0].modalize().on('modalize', function(e){
+							const img = this.find('img')[0]
+							Object.assign(e.detail.finalStyle, {
+								width: img.naturalWidth + 'px',
+								maxWidth: img.naturalWidth + 'px',
+								height: img.naturalHeight + 'px',
+								maxHeight: '80vh',
+							})
+						})
+					}
+
+
+					// Add terms
+					const $terms = root.find('#terms')
+					for(let taxonomyName in DY.data.taxonomies){
+						if(taxonomyName === 'page-category') continue
+						
+						const terms = data[DY.mapTaxonomyName(taxonomyName)]
+						if(!terms.length) continue
+						
+						const taxonomy = DY.data.taxonomies[taxonomyName]
+						
+						const $taxonomy = $$$('div')
+							.addClass('taxonomy')
+							.attr('data-taxonomy', taxonomyName)
+							.append(
+								$$$('h3').html(taxonomy.name)
+							)
+							.appendTo($terms)
+
+						for(let termID of terms){
+							const term = DY.data.terms[termID]
+
+							const $term = $$$('a').attr('rel', 'tag').appendTo($taxonomy)
+							$term.innerHTML = term.name
+							this.addClass(`${taxonomyName}-${term.slug}`)
+						}
+					}
+				})
+			//})
+		}
+	}
+}
+customElements.define('dy-project-header', DYProjectHeader)
+</script>

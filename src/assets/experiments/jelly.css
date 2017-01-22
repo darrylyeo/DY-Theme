@@ -1,0 +1,14 @@
+/**
+ * jelly.css [EXPERIMENTAL]
+ * everything you touch turns to jelly
+ *
+ * @copyright 2015-2016 Darryl Yeo
+ */
+
+* {
+	transition: margin 0.3s, padding 0.3s;
+}
+#wrapper :hover {
+	margin: 5px;
+	padding: 5px;
+}

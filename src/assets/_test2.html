@@ -1,0 +1,101 @@
+<dy-date></dy-date>
+
+<template id="dy-date">
+	<style>
+	:host {
+		display: inline;
+	}
+	</style>
+	<date></date>
+</template>
+
+<script src="libraries/webcomponents.js"></script>
+<script>
+const X = console.log
+
+// document.querySelector is eventually overridden by webcomponents.js, save a copy beforehand
+const dqs = document.querySelector
+const dqsa = document.querySelectorAll
+const $ = s => dqs.call(document, s)
+const $$ = s => dqsa.call(document, s)
+const $$$ = function(name, opts){
+	const el = document.createElement(name)
+	if(opts && opts.html) el.innerHTML = opts.html
+	return el
+}
+
+let DYElement = class extends HTMLElement {
+	createdCallback(){
+		
+	}
+
+	detachedCallback(){
+		
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal){
+
+	}
+
+	/* Need a way to get this.tagName but from Constructor
+	static get $template(){
+		return $('#' + this.tagName.toLowerCase())
+	}
+
+	static get $style(){
+		return this.$template.find('style')[0]
+	}*/
+	
+	get $template(){
+		return $('#' + this.tagName.toLowerCase())
+	}
+
+	get $style(){
+		return wrap(this.root.querySelector('style')[0])
+	}
+
+	get root(){
+		let root = this.shadowRoot || this._shadowRoot
+		if(!root){
+			root = this._shadowRoot = this.attachShadow({mode: 'open'})
+
+			/*root.appendChild(
+				wrap(document.importNode(this.$template.content, true))
+			)*/
+			root.appendChild(wrap(this.$template.content))
+			console.log('root', root, this.$template.content, document.importNode(this.$template.content, true))
+
+			let $style = this.$style
+			if($style)
+				root.insertBefore(wrap(DYElement.$style.cloneNode()), $style)
+				//DYElement.$style.clone().insertBefore($style)
+			else
+				root.append(wrap(document.importNode(DYElement.$style, true)))
+		}
+		return root
+	}
+}
+DYElement.$style = $$$('style', {
+	html: Array.from(document.styleSheets, s => s.href ? `@import "${s.href}";` : '').join('\n')
+
+	// Doesn't work in Safari (TypeError: ...document.styleSheets is not a function?!)
+		//html: [...document.styleSheets].map(s => s.href ? `@import "${s.href}";` : '').join('\n')
+})
+
+
+const DYDate = document.registerElement('dy-date', class extends DYElement {
+	createdCallback(){
+		this.root
+		this.dataset.date = 3
+	}
+	attributeChangedCallback(attr, oldVal, newVal){
+		const root = this.root
+		
+		if(attr === 'data-date'){
+			const dateString = newVal
+			if(!dateString) return
+			root.find('date').html(dateString)
+		}
+	}
+})
+</script>

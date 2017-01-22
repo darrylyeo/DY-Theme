@@ -1,0 +1,348 @@
+form {
+	flex-direction: column;
+}
+form > * + * {
+	margin-top: 1.5em;
+}
+/*fieldset > * + *, form > div > * + * {
+	margin-top: 0.25em;
+}
+
+fieldset {
+	margin: 0;
+}
+fieldset, form > div {
+	border: rgba(0, 0, 0, 0.2) solid 2px;
+	border-radius: 0.5em;
+	flex-wrap: wrap;
+}
+footer fieldset, footer form > div {
+	border: rgba(255, 255, 255, 0.4) solid 2px;
+}
+fieldset + fieldset {
+	margin-top: 1em;
+}
+legend {
+	font-size: 1.2em;
+	padding: 0 1ch;
+}*/
+
+label {
+	align-items: center;
+}
+fieldset > label, form > div > label {
+	margin: 0;
+	padding: 0.5ch;
+	flex: 220px;
+	flex-direction: column;
+	align-items: stretch;
+}
+/*label * + * {
+	margin-left: 1ch;
+}*/
+label :not([type=radio]):not([type=checkbox]) + span {
+	font-size: 0.85em;
+	order: -1;
+	margin-right: 1ch;
+}
+input, textarea, keygen, select, button, .button {
+	-webkit-appearance: none;
+	border: none;
+	border-radius: 0.5em;
+	color: inherit;
+	font: inherit;
+}
+input:focus, textarea:focus, keygen:focus, select:focus {
+	--jump-height: 1.02;
+	--jump-bounce: 0.98;
+	--jump-shake: 0.15;
+
+	--jump-height: 1.00;
+	--jump-bounce: 1;
+	--jump-shake: 0;
+	box-shadow: var(--accent-1) 0 0 2px 2px;
+}
+button, .button, [type=button], [role=button], [type=submit], ::-webkit-file-upload-button {
+	--button-height: 4px;
+	background-color: var(--accent-1-light);
+	box-shadow: var(--accent-1) 0 var(--button-height);
+	color: rgba(255, 255, 255, 0.95);
+	font-weight: bold;
+	line-height: 1;
+	margin-bottom: calc(var(--button-height) / 2);
+	padding: 1ch 1em;
+	position: relative;
+	text-align: center;
+	text-transform: uppercase;
+	text-shadow: rgba(0, 0, 0, 0.1) 0 1px 1px;
+	transition: 0.2s;
+	top: calc(var(--button-height) / -2);
+	white-space: nowrap;
+}
+button.small {
+	font-size: 0.75em;
+}
+button:active, .button:active, [type=button]:active, [role=button]:active, [type=submit]:active, ::-webkit-file-upload-button:active {
+	box-shadow: var(--accent-1) 0 0, var(--accent-1-quarter) 0 0;
+	top: calc(var(--button-height) / 2);
+}
+button:not(:active):focus, .button:not(:active):focus, [type=button]:not(:active):focus, [role=button]:not(:active):focus, [type=submit]:not(:active):focus, ::-webkit-file-upload-button:not(:active):focus {
+	--jump-height: 3;
+	--jump-bounce: 0.7;
+	--jump-shake: 2;
+	animation: ButtonMouseUpJump 0.5s, ButtonMouseUpShadow 0.5s 0.25s backwards;
+	box-shadow: var(--accent-1) 0 var(--button-height);
+	z-index: 1;
+}
+/*button:focus {
+	box-shadow: var(--accent-1) 0 var(--button-height), transparent 0 0 0 5em;
+}*/
+@keyframes ButtonMouseUpJump {
+	from {
+		transform: scale(0.95);
+	}
+	25% {
+		transform: scale(var(--jump-height)) rotate(calc(var(--jump-shake) * 1deg));
+		animation-timing-function: ease-in;
+	}
+	50% {
+		box-shadow: var(--accent-1) 0 0, var(--accent-1-quarter) 0 0;
+		transform: scale(var(--jump-bounce)) rotate(calc(var(--jump-shake) * -2deg));
+		opacity: 0.9;
+	}
+	to {
+		transform: none;
+	}
+}
+@keyframes ButtonMouseUpShadow {
+	from {
+		box-shadow: var(--accent-1) 0 0, var(--accent-1-quarter) 0 0;
+		top: calc(var(--button-height) / 2);
+	}
+	/*50% {
+		box-shadow: var(--accent-1) 0 0, var(--accent-1-quarter) 0 0;
+	}*/
+	to {
+		box-shadow: var(--accent-1) 0 var(--button-height), transparent 0 0 0 5em;
+		top: calc(var(--button-height) / -2);
+	}
+}
+
+.buttons button {
+	border-radius: 0;
+}
+.buttons button:first-child {
+	border-top-left-radius: 0.5em;
+	border-bottom-left-radius: 0.5em;
+}
+.buttons button:last-child {
+	border-top-right-radius: 0.5em;
+	border-bottom-right-radius: 0.5em;
+}
+
+input, select, textarea {
+	background-color: rgba(255, 255, 255, 0.8);
+	flex: 1;
+	padding: 0.5em;
+}
+footer input, footer select, footer textarea {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+input, select {
+	display: flex;
+	justify-content: center;
+	line-height: 1;
+}
+
+
+select {
+	background-color: rgba(255,255,255,.8);
+	-webkit-appearance: none;
+	background: rgba(255,255,255,.8) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" opacity="0.5"><polyline points="0,0 2,0 1,2"/></svg>') -1em/200% 30% no-repeat;
+	border: rgba(0, 0, 0, 0.12) 1px solid;
+}
+option {
+	background-color: rgba(255, 255, 255, 0.9);
+}
+footer option {
+	background-color: rgba(38, 38, 38, 0.9);
+}
+
+textarea {
+	text-align: justify;
+	width: 100%;
+	padding-top: 0.4em;
+	padding-bottom: 0.4em;
+}
+
+
+
+::-webkit-input-placeholder {
+	color: inherit;
+	opacity: 0.55;
+}
+:-moz-placeholder {
+	color: inherit;
+	opacity: 0.55;
+}
+::-moz-placeholder {
+	color: inherit;
+	opacity: 0.55;
+}
+::placeholder {
+	color: inherit;
+	opacity: 0.55;
+}
+
+
+::-webkit-clear-button {
+	-webkit-appearance: none;
+	background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 6 6"><g stroke-width="0.75" fill="none" stroke="#000" opacity="0.3"><polyline points="-2,-2 2,2"/><polyline points="-2,2 2,-2"/></g></svg>') center/contain no-repeat;
+	width: 1em;
+	height: 1em;
+}
+::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	width: 1em;
+	height: 1em;
+	background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -5.5 4 11"><g stroke-width="0.75" fill="none" stroke="#000" opacity="0.3"><polyline points="-2,-2 0,-4 2,-2"/><polyline points="-2,2 0,4 2,2"/></g></svg>') center/contain no-repeat;
+	align-self: center;
+	height: 1.5em;
+	margin-top: -0.25em;
+}
+
+/* Override browser form filling */
+input:-webkit-autofill {
+	background: var(--accent-half);
+}
+
+::-webkit-search-cancel-button {
+	position: relative;
+	right: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* CHECKBOX/RADIO */
+
+input[type=checkbox], input[type=radio] {
+	color: rgba(0, 0, 0, 0.2);
+	font-size: 1.5em;
+	/*visibility: hidden;*/
+	background: none;
+	border-radius: 0.2em;
+	max-width: 1em;
+	height: 1em;
+	-webkit-appearance: none;
+}
+input[type=radio] {
+	border-radius: 50%;
+}
+input[type=checkbox], input[type=radio],
+input[type=checkbox]:before, input[type=checkbox]:after,
+input[type=radio]:before, input[type=radio]:after {
+	display: inline-block;
+	margin: 0;
+	margin-right: 0.2em;
+	width: 1em;
+	height: 1em;
+	line-height: 1em;
+	position: relative;
+	transition: 0.3s;
+}
+/* checkbox/radio :before and :after don't wotk in Firefox */
+.ua-firefox input[type=checkbox], .ua-firefox input[type=radio] {
+	visibility: initial;
+}
+
+input[type=checkbox]:before, input[type=checkbox]:after,
+input[type=radio]:before, input[type=radio]:after {
+	content: "";
+	position: absolute;
+	visibility: visible;
+	top: 0;
+	left: 0;
+}
+
+input[type=checkbox]:before,
+input[type=radio]:before {
+	border: 0.111em solid;
+	border-radius: inherit;
+	cursor: pointer;
+}
+/* Different color scheme in footer area */
+footer input[type=checkbox]:before, footer input[type=radio]:before {
+	background-color: rgba(0, 0, 0, 0.2);
+	color: rgba(255, 255, 255, 0.3);
+	box-shadow: rgba(0, 0, 0, 0.15) 1px 2px 2px;
+}
+
+input[type=checkbox]:checked:before,
+input[type=radio]:checked:before {
+	border-color: #14b4ff;
+	border-width: 0.5em;
+}
+
+input[type=checkbox]:after,
+input[type=radio]:after {
+	color: #fff;
+	opacity: 0;
+	pointer-events: none;
+	text-align: center;
+	text-shadow: rgba(0, 0, 0, 0.3) 1px 1px 2px;
+}
+input[type=checkbox]:after {
+	background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"><defs><polyline id="c" points="7,13 13,19 24,8" stroke-width="6" fill="none"/></defs><use href="#c" stroke="rgba(0,0,0,0.1)" transform="translate(0 2.5)"/><use href="#c" stroke="#fff"/></svg>') 0/1em;
+	transform: scale(3);
+	transform-origin: 44.5% 70%;
+}
+input[type=radio]:after {
+	background-color: #fff;
+	border-radius: 50%;
+}
+
+input[type=checkbox]:checked:after,
+input[type=radio]:checked:after {
+	opacity: 1;
+}
+input[type=checkbox]:checked:after {
+	transform: none;
+}
+input[type=radio]:checked:after {
+	transform: scale(0.4);
+}
+
+
+
+input[type=color] {
+	padding: 0;
+}
+::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+::-webkit-color-swatch {
+	border: none;
+	border-radius: 5px;
+}

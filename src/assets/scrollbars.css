@@ -1,0 +1,84 @@
+/**
+ * webkit.css
+ * webkit-powered custom scrollbars!
+ *
+ * @copyright 2015-2016 Darryl Yeo
+ */
+
+/* https://www.webkit.org/blog/363/styling-scrollbars/ */
+
+
+::-webkit-scrollbar {
+	visibility: hidden;
+	width: 10px;
+	height: 10px;
+}
+/*::-webkit-scrollbar:hover {
+	width: 12px;
+}*/
+
+::-webkit-scrollbar-track {
+	visibility: hidden;
+}
+
+
+::-webkit-scrollbar-track-piece {
+	color: rgba(255, 255, 255, 0.2);
+}
+body::-webkit-scrollbar-track-piece {
+	border-radius: 0;
+}
+::-webkit-scrollbar-track-piece:hover {
+	color: rgba(255, 255, 255, 0.5);
+}
+::-webkit-scrollbar-track-piece:active {
+	color: rgba(255, 255, 255, 0.8);
+}
+::-webkit-scrollbar-track-piece:vertical:increment {
+	background: -webkit-linear-gradient(-90deg, rgba(255, 255, 255, 0.5) 60px, currentColor);
+}
+::-webkit-scrollbar-track-piece:vertical:increment:not(:corner-present) {
+	border-radius: 0 0 6px 6px;
+}
+::-webkit-scrollbar-track-piece:vertical:decrement {
+	background: -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0.5) 60px, currentColor);
+	border-radius: 6px 6px 0 0;
+}
+::-webkit-scrollbar-track-piece:horizontal:increment {
+	background: -webkit-linear-gradient(180deg, rgba(255, 255, 255, 0.5) 60px, currentColor);
+}
+::-webkit-scrollbar-track-piece:horizontal:increment:not(:corner-present) {
+	border-radius: 0 6px 6px 0;
+}
+::-webkit-scrollbar-track-piece:horizontal:decrement {
+	background: -webkit-linear-gradient(0, rgba(255, 255, 255, 0.5) 60px, currentColor);
+	border-radius: 6px 0 0 6px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(103, 183, 225, 0.85);
+	-webkit-background-clip: content-box;
+	border: 2px solid transparent;
+	border-radius: 10px;
+	min-height: 40px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(103, 183, 225, 0.9);
+}
+::-webkit-scrollbar-thumb:active {
+	background-color: rgba(103, 183, 225, 0.95);
+	/*box-shadow: 0 0 25px rgba(103, 183, 225, 0.9);*/
+}
+
+::-webkit-scrollbar-corner {
+	background-color: rgba(103, 183, 225, 0.2);
+	border: none;
+	border-bottom-right-radius: 50%;
+}
+::-webkit-resizer {
+	background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 10 10"><polyline stroke-width="1" fill="none" stroke="rgba(0,0,0,0.3)" points="-4,1 0,0 1,-4"/></svg>') center/contain no-repeat;
+}
+
+::-webkit-scrollbar-corner:active {
+	background-color: rgba(255, 182, 55, .9);
+}

@@ -1,0 +1,608 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script>console.time('ready');console.time('load')</script>
+	<link rel="prefetch" href="https://fonts.googleapis.com/css?family=Asap:400,400i,700,700i|Slabo+13px">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Asap:400,400i,700,700i|Slabo+13px">
+	<meta charset="utf-8">
+	<link rel="dns-prefetch" href="https://www.khanacademy.org/">
+	<?php wp_head() ?>
+	<!--<link rel="stylesheet" href="fonts.css">-->
+	<link rel="stylesheet" href="css.css">
+	<link rel="stylesheet" href="copyright.css">
+	<link rel="stylesheet" href="scrollbars.css">
+	<link rel="stylesheet" href="forms.css">
+	<link rel="stylesheet" href="header.css">
+	<link rel="stylesheet" href="main.css">
+	<link rel="stylesheet" href="article.css">
+	<link rel="stylesheet" href="sidebar.css">
+	<link rel="stylesheet" href="footer.css">
+	<link rel="stylesheet" href="notifications.css">
+</head>
+<body>
+	<div id="background">
+		<iframe></iframe>
+		<canvas></canvas>
+	</div>
+	<div id="wrapper">
+		<nav id="secondary-menu">
+			<ul>
+				<li>
+					<a href="/about">About Me</a>
+				</li>
+				<li>
+					<a href="/about-this-site">About This Site</a>
+				</li>
+				<li>
+					<a href="/contact">Contact</a>
+				</li>
+				<li class="has-sub-menu">
+					<a>Social Profiles</a>
+					<ul>
+						<li>
+							<a>Facebook</a>
+						</li>
+						<li>
+							<a>Twitter</a>
+						</li>
+						<li>
+							<a>Google+</a>
+						</li>
+						<li>
+							<a>Pinterest</a>
+						</li>
+						<li>
+							<a>LinkedIn</a>
+						</li>
+						<li>
+							<a>Khan Academy</a>
+						</li>
+					</ul>
+				</li>
+				<li class="has-sub-menu">
+					<a>Experiments</a>
+					<ul>
+						<li>
+							<a>Night Mode</a>
+						</li>
+						<li>
+							<a>Jelly</a>
+						</li>
+						<li>
+							<a>Spotlight</a>
+						</li>
+						<li>
+							<a>Tornado</a>
+						</li>
+						<li>
+							<a>3D Parallax</a>
+						</li>
+						<li>
+							<a>AJAX Navigation</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+		<header>
+			<!--<h1>Darryl Yeo</h1>-->
+			<nav id="main-menu">
+				<a href="/" id="logo"><img src="https://darryl-yeo.com/assets/themes/DY/logo/Darryl-Yeo-Logo-Cropped.svg"></a>
+				<ul>
+					<li>
+						<a href="/#projects">Projects</a>
+					</li>
+					<li>
+						<a href="/blog">Blog</a>
+					</li>
+					<li class="has-sub-menu">
+						<a href="/learn">Learn</a>
+						<ul>
+							<li>
+								<a href="/make-a-website-autobiography">Make A Website Autobiography!</a>
+							</li>
+							<li>
+								<a href="/make-a-website-autobiography">A Visual Inroduction To JavaScript Programming</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<article>
+				<hgroup>
+					<h1>Floating Rainbow 3D Easter Eggs!</h1>
+				</hgroup>
+				<section>
+					<p>Lorem <a>ipsum</a> dolor sit amet. Lorem <a href="https://darryl-yeo.com">ipsum</a> dolor sit amet. <em>Lorem ipsum dolor sit amet</em>. Lorem ipsum dolor sit amet.</p>
+					<p>Lorem ipsum <strong>dolor sit amet</strong>. Lorem <a href="#">ipsum</a> dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+					<p>Lorem <a href="https://google.com">ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. <em>Lorem ipsum dolor</em> sit amet</a>.</p>
+				</section>
+				<section>
+					<h2>That's one jittery critter.</h2>
+					<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+					<pre><code>* {
+	--whee: #C0FFEE;
+}
+var DYKhan = document.registerElement('dy-khan', {
+	prototype: Object.assign(Object.create(HTMLElement.prototype), {
+		createdCallback: function(){
+			let _this = this
+			let root = this.createShadowRoot()
+			root.appendChild(document.importNode(document.getElementById('dy-khan').content, true))
+			document.importNode(style, true).insertBefore(root.querySelector('style'))
+			
+			let id = this.dataset.id
+			let project = KhanProject(id)
+			getJSON(project.scratchpad, function(data){
+				_this.classList.add('load')
+				root.updateWithModel({
+					'#title': data.title,
+					'#stats .votes': data.sumVotesIncremented,
+					'#stats .spin-offs': data.spinoffCount,
+					'#stats .lines': data.revision.code.split('\n').length,
+					'#thumbnail[src]': data.imageUrl,
+					'#project[style]': {
+						'width': data.width + 'px',
+					},
+					'#fork[data-id]': data.originScratchpadId,
+				})
+			})
+			
+			root.find('#project').on('click', function(){
+				this.classList.add('play')
+				X(this.find('iframe'), project.embedded)
+				this.find('iframe').src = project.embedded
+				this.find('iframe').setAttribute('src', project.embedded)
+			})
+		},
+		detachedCallback: function(){
+			
+		},
+		attributeChangedCallback: function(attr, oldVal, newVal){
+			
+		}
+	})
+})</code></pre>
+					<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+					<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+				</section>
+				<aside>
+					<dy-khan data-id="2722008038"></dy-khan>
+				</aside>
+				<section>
+					<h2>That's one jittery critter.</h2>
+					<p>Lorem ipsum dolor <button>sit amet</button>. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+					<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+					<figure>
+						<img src="?" width="400" height="300" title="And don't let the Man in the Moon get to you." alt="And don't let the Man in the Moon get to you.">
+						<figcaption>"Whee!"</figcaption>
+					</figure>
+					<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+					<div class="buttons">
+						<button>Play</button>
+						<button disabled>No Clicky</button>
+						<button>Restart</button>
+					</div>
+				</section>
+			</article>
+			<aside>
+				<section>
+					<h3>Subscribe For Email Updates!</h3>
+				</section>
+			</aside>
+		</main>
+		<footer>
+			<form>
+				<fieldset>
+					<legend>Title</legend>
+					<input type="radio" id="radio">
+					<label for="radio">Click me</label>
+				</fieldset>
+				<div>
+					<label>
+						<input type="text" placeholder="First Name" required>
+						<span>First Name</span>
+					</label>
+					<label>
+						<input type="number" placeholder="Age">
+						<span>Age</span>
+					</label>
+					<label>
+						<input type="date" disabled>
+						<span>Start Date</span>
+					</label>
+					<label>
+						<input type="url">
+						<span>Website</span>
+					</label>
+					<label>
+						<input type="color" mode="hsl" value="hsl(201,67%,64%)">
+						<span>Site Color</span>
+					</label>
+				</div>
+				<fieldset>
+					<legend>Your Details</legend>
+					<label>
+						<input type="text" placeholder="First Name" required>
+						<span>First Name</span>
+					</label>
+					<label>
+						<input type="number" placeholder="Age">
+						<span>Age</span>
+					</label>
+					<label>
+						<input type="date" disabled>
+						<span>Start Date</span>
+					</label>
+					<label>
+						<input type="url">
+						<span>Website</span>
+					</label>
+					<label>
+						<input type="color" value="#67b7e1">
+						<span>Site Color</span>
+					</label>
+				</fieldset>
+				<fieldset>
+					<legend>Check all that apply:</legend>
+					<label>
+						<input type="checkbox">
+						<span>I just like to check boxes.</span>
+					</label>
+					<label>
+						<input type="radio" value="Yes">
+						<input type="radio" value="No">
+						<input type="radio" value="Maybe">
+						<span>Are you ready?</span>
+					</label>
+					<label>
+						<label>
+							<input type="radio" value="Yes">
+							<span>Yes</span>
+						</label>
+						<label>
+							<input type="radio" value="No">
+							<span>No</span>
+						</label>
+						<label>
+							<input type="radio" value="Maybe">
+							<span>Maybe</span>
+						</label>
+						<span>Are you ready?</span>
+					</label>
+				</fieldset>
+				<fieldset>
+					<legend>Other</legend>
+					<label>
+						<input type="password">
+						<span>Passcode:</span>
+					</label>
+					<input type="range">
+					<input type="bloink">
+					<textarea></textarea>
+					<select>
+						<optgroup name="Group">
+							Hey
+							<option name="whee" value="whee">Whee</option>
+							<option value="value1">Value 1</option>
+							<option value="value2" selected>Value 2</option>
+							<option value="value3">Value 3</option>
+						</optgroup>
+					</select>
+					<label>Choose a browser from this list:
+					<input list="browsers" name="myBrowser" /></label>
+					<datalist id="browsers">
+						<option value="Chrome">
+						<option value="Firefox">
+						<option value="Internet Explorer">
+						<option value="Opera">
+						<option value="Safari">
+						<option value="Microsoft Edge">
+					</datalist>
+				</fieldset>
+				<input type="submit">
+				<input type="hidden">
+			</form>
+			<p>Website Design and Content © 2014-2016 Darryl Yeo. All Rights Reserved.<br>Powered by <a href="https://platformmeister.com">Platform Meister</a>.</p>
+		</footer>
+	</div>
+	<div id="to-top"></div>
+	<div id="notifications"></div>
+</body>
+
+
+<template id="dy-projects">
+	<style>
+		:host {
+			display: flex;
+			flex-wrap: wrap;
+			margin: -2px;
+		}
+		dy-project {
+			border-radius: var(--padding-small);
+			flex: 1 250px;
+			margin: 2px;
+		}
+	</style>
+</template>
+
+<template id="dy-project">
+	<div id="featured-image">
+		<a class="link"><img></a>
+	</div>
+	<div id="details">
+		<div id="title-wrapper">
+			<a class="link"><h2 id="title"></h2></a>
+		</div>
+		<date id="project-date"></date>
+		<p>Updated <date id="modified-date"></date></p>
+		<div id="excerpt"></div>
+		<a class="link button read-more">Read More</a>
+	</div>
+	<style>
+		:host {
+			align-items: stretch;
+			background-color: rgba(255, 255, 255, 0.6);
+			border-radius: var(--padding-small);
+			display: flex;
+			flex-direction: column;
+			position: relative;
+			max-width: max-content;
+			overflow: hidden;
+		}
+		div {
+			flex-direction: column;
+		}
+		#featured-image {
+			overflow: hidden;
+		}
+		#featured-image img {
+			filter: blur(2rem);
+		}
+		#details {
+			height: 100%;
+			padding: var(--padding-small);
+			position: absolute;
+			overflow: hidden;
+			text-align: justify;
+			transition: var(--transition-fast);
+		}
+		#details {
+			mix-blend-mode: screen;
+			mix-blend-mode: overlay;
+		}
+		#details {
+			color: #fff;
+			text-shadow: #888 0 1px;
+		}
+		#details {
+			color: rgba(255, 255, 255, 0.75);
+			mix-blend-mode: luminosity;
+		}
+		#details:hover {
+			background-color: #666;
+			overflow-y: auto;
+		}
+		#details #title-wrapper {
+			min-height: 100%;
+			line-height: 1.25;
+			padding: 1em 0;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			transition: var(--transition-medium);
+		}
+		#details:hover #title-wrapper {
+			min-height: 1em;
+		}
+		#details #title-wrapper h2 {
+			color: rgba(255, 255, 255, 0.85);
+		}
+		#details #title-wrapper ~ * {
+			transform-origin: center top;
+			transition: var(--transition-medium) var(--transition-fast);
+		}
+		#details:not(:hover) #title-wrapper ~ * {
+			opacity: 0;
+			transform: perspective(100px) rotateX(90deg);
+			transition: var(--transition-medium);
+		}
+	</style>
+</template>
+
+
+<template id="dy-notification">
+	<i id="icon"></i>
+	<div>
+		<content></content>
+	</div>
+	<button class="small">OK</button>
+	<style>
+		:host {
+			display: flex;
+		}
+	</style>
+</template>
+
+<template id="dy-project-header">
+	
+</template>
+
+<template id="dy-khan">
+	<a class="link"><h3 id="title"></h3></a>
+	<dy-khan-stats id="stats">
+		<span class="votes"></span>
+		<span class="spin-offs"></span>
+		<span class="lines"></span>
+	</dy-khan-stats>
+	<div id="project">
+		<iframe></iframe>
+		<img id="thumbnail">
+		<span>►Play</span>
+	</div>
+	<div class="buttons">
+		<button class="play-restart">Play</button>
+		<button class="stop">Stop</button>
+	</div>
+	<dy-khan-badge id="fork"></dy-khan-badge>
+	<style>
+		:host {
+			background-color: rgba(255, 255, 255, 0.6);
+			border-radius: var(--padding-small);
+			display: inline-block;
+			padding: var(--padding-small);
+			margin-left: 0;
+			margin-right: 0;
+			max-width: 100%;
+			text-align: center;
+		}
+		:host > * + * {
+			margin-top: 0.5em;
+		}
+		
+		#project {
+			background-color: rgba(0, 0, 0, 0.02);
+			border-radius: 5px;
+			overflow: hidden;
+			/*width: var(--width, 300);
+			height: var(--height, 300);*/
+			max-width: 100%;
+			margin-top: 0.5em;
+			position: relative;
+			will-change: transform;
+		}
+		/* Can't combine :host with class selector, doesn't work. */
+		:host:not(.load) #project {
+			width: 400px;
+			height: 400px;
+		}
+		#project * {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
+		iframe {
+			position: absolute;
+			width: 100%;
+			transform-origin: left top;
+		}
+		#project.play iframe ~ * {
+			pointer-events: none;
+		}
+		#project img {
+			background-color: #000;
+			background: radial-gradient(rgba(0, 0, 0, 0.6), #000);
+			position: relative;
+			transition: 0.3s;
+		}
+		#project img:not([src]) {
+			width: 400px;
+			padding-top: 100%;
+		}
+		#project:hover img {
+			transform: scale(1.05);
+		}
+		#project.play img {
+			opacity: 0;
+			pointer-events: none;
+			transform: scale(1.2);
+		}
+		#project span {
+			background-image: radial-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5));
+			color: #fff;
+			cursor: pointer;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 3em;
+			opacity: 0;
+			text-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
+			transition: 0.3s;
+			width: 100%;
+		}
+		#project:hover span {
+			opacity: 1;
+			transform: scale(1.2);
+		}
+		#project.play span {
+			opacity: 0;
+			transform: scale(2);
+		}
+		#buttons {
+			overflow: hidden;
+			max-height: 0;
+			text-align: left;
+			transition: 0.3s;
+		}
+		#project.play #buttons {
+			margin-top: 5px;
+			max-height: 42px;
+		}
+		#buttons > * + * {
+			float: right;
+		}
+	</style>
+</template>
+
+<template id="dy-khan-badge">
+	<a class="link">
+		<img id="thumbnail">
+	</a>
+	<div>
+		<p><a class="link"><span id="title-prefix"></span> <span id="title"></span></a></p>
+		<dy-khan-stats id="stats">
+			<span class="votes"></span>
+			<span class="spin-offs"></span>
+			<span class="lines"></span>
+		</dy-khan-stats>
+	</div>
+	<style>
+		:host {
+			display: flex;
+			align-items: stretch;
+			text-align: left;
+		}
+		img {
+			border-radius: 5px;
+			height: 4em;
+		}
+		div {
+			flex-direction: column;
+			margin-left: 1em;
+		}
+	</style>
+</template>
+
+<template id="dy-khan-stats">
+	<span class="votes"><content select=".votes"></content> Votes</span>
+	<span class="spin-offs"><content select=".spin-offs"></content> Spin-offs</span>
+	<span class="lines"><content select=".lines"></content> Lines</span>
+	<style>
+		:host {
+		}
+		span + span {
+			margin-left: 0.5em;
+		}
+		.votes {
+			color: #7cb342;
+		}
+		.spin-offs {
+			color: #7986cb;
+		}
+		.lines {
+			color: #ec407a;
+		}
+	</style>
+</template>
+<?php wp_footer() ?>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>-->
+<script src="libraries/moment.min.js"></script>
+<script src="js.js"></script>
+<script src="notify.js"></script>
+<script src="DY.js"></script>
+<script src="web-components.js"></script>
+<script src="main.js"></script>
+<script src="canvas.js"></script>
+</html>
