@@ -824,22 +824,4 @@
 	<span class="lines"><slot name="lines"></slot> Lines</span>
 </template>
 <?php wp_footer() ?>
-
-<!-- build:js assets/all.min.js -->
-<!--
-<script src="assets/libraries/moment.min.js"></script>
-
-<script src="assets/libraries/prism.js"></script>
-
-<script src="assets/js.js"></script>
-<script src="assets/notify.js"></script>
-<script src="assets/DY.js"></script>
-
-<script src="assets/libraries/webcomponents.min.js"></script>
-<script src="assets/web-components.js"></script>
-
-<script src="assets/main.js"></script>
-<script src="assets/canvas.js"></script>
--->
-<!-- endbuild -->
 </html>
