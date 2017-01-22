@@ -1,4 +1,4 @@
 # DY Theme
-## WordPress theme for darryl-yeo.com.
+## WordPress theme for https://darryl-yeo.com.
 
-created by Darryl Yeo
+Copyright © 2016-2017 Darryl Yeo.
