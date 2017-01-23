@@ -22,11 +22,12 @@ const DYElement = class extends HTMLElement {
 	}*/
 	
 	get $template(){
+		const id = '#' + this.tagName.toLowerCase()
 		if(document.currentScript){
 			// Called from within HTML Import, when the <template> may not yet have been added to the main document
-			return document.currentScript.ownerDocument.find(`template#${this.tagName.toLowerCase()}`)[0]
+			return document.currentScript.ownerDocument.find(`template${id}`)[0]
 		}else{
-			return $('#' + this.tagName.toLowerCase())
+			return $(id)
 		}
 	}
 
