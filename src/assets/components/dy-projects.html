@@ -1,3 +1,87 @@
+<template id="dy-projects">
+	<style>
+		.dy-projects {
+			--dy-project-margin: 0.25%;
+			--dy-project-columns: 5;
+			display: flex;
+			flex-wrap: wrap;
+			margin: calc(var(--dy-project-margin) * -1);
+			margin-top: 1em;
+			min-height: 90vh;
+			transition: height var(--transition-fast);
+			width: 100%;
+		}
+		@media (max-width: 93rem) {
+			.dy-projects {
+				--dy-project-columns: 4;
+			}
+		}
+		@media (max-width: 74rem) {
+			.dy-projects {
+				--dy-project-columns: 3;
+			}
+		}
+		@media (max-width: 55rem) {
+			.dy-projects {
+				--dy-project-columns: 2;
+			}
+		}
+		@media (max-width: 36rem) {
+			.dy-projects {
+				--dy-project-margin: 1%;
+				--dy-project-columns: 1;
+			}
+		}
+		dy-project {
+			border-radius: var(--padding-small);
+			flex: 1 250px;
+			margin: var(--dy-project-margin);
+			width: calc(100% / var(--dy-project-columns) - var(--dy-project-margin) * 2);
+		}
+	</style>
+	<dy-project-filters></dy-project-filters>
+	<div class="dy-projects"></div>
+</template>
+
+<template id="dy-project-filters">
+	<style>
+		:host, #terms {
+			display: flex;
+			justify-content: space-between;
+			margin: -0.25em -0.5em;
+		}
+		div[data-taxonomy] {
+			justify-content: space-between;
+			align-items: center;
+			align-items: stretch;
+			flex-wrap: wrap;
+			align-content: flex-start;
+			align-content: stretch;
+			margin: -2px;
+			padding: 0.25em 0.5em;
+		}
+		h3 {
+			line-height: 0.5;
+			margin: 2px;
+			padding-right: 0.5ch;
+			margin-right: auto;
+			align-self: center;
+		}
+		[rel=tag] {
+			margin: 2px;
+		}
+		@media (max-width: 36rem) {
+			:host {
+				flex-wrap: wrap;
+			}
+			div[data-taxonomy] {
+				width: 100%;
+			}
+		}
+	</style>
+</template>
+
+
 <script>
 class DYProjects extends DYElement {
 	set filter(filter){

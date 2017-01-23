@@ -1,3 +1,27 @@
+<template id="dy-project">
+	<style>
+		
+	</style>
+	<a id="featured-image" class="link"><img></a>
+	<div id="details-wrapper">
+		<div id="details">
+			<div id="title-wrapper">
+				<a class="link"><h2 id="title"></h2></a>
+			</div>
+			<div id="details-inner">
+				<blockquote id="excerpt"></blockquote>
+				<a class="link button read-more">Read More</a>
+				<div id="dates">
+					<h3><dy-date id="project-date"></dy-date></h3>
+					<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
+				</div>
+				<div id="terms"></div>
+			</div>
+		</div>
+	</div>
+</template>
+
+
 <script>
 class DYProject extends DYElement {
 	static get observedAttributes() {

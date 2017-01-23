@@ -22,7 +22,12 @@ const DYElement = class extends HTMLElement {
 	}*/
 	
 	get $template(){
-		return $('#' + this.tagName.toLowerCase())
+		if(document.currentScript){
+			// Called from within HTML Import, when the <template> may not yet have been added to the main document
+			return document.currentScript.ownerDocument.find(`template#${this.tagName.toLowerCase()}`)[0]
+		}else{
+			return $('#' + this.tagName.toLowerCase())
+		}
 	}
 
 	get $style(){
@@ -110,6 +115,12 @@ for(let handle of webComponents){
 	const $link = document.createElement('link')
 	$link.rel = 'import'
 	$link.href = WP.parentTheme + `/assets/components/${handle}.html`
+	$link.id = handle + '-import'
+	$link.on({
+		load(){
+			document.body.append(this.import.find('template'))
+		}
+	})
 	document.head.appendChild($link)
 
 	/*const $link = $$$('link').attr({
