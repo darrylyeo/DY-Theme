@@ -3,69 +3,20 @@ const THEME_NAME = 'DY'
 const THEME_DIR = `/wp-content/themes/${THEME_NAME}/`
 const BUILD_DIR = `build/${THEME_NAME}`
 
-
 // Node Modules
 const gulp = require('gulp')
-
-const lintspaces = require('gulp-lintspaces')
 const concat = require('gulp-concat')
-
-const htmlmin = require('gulp-htmlmin')
-
+const browserSync = require('browser-sync').create()
 const babel = require('gulp-babel')
-
 const cssnano = require('gulp-cssnano')
+const lintspaces = require('gulp-lintspaces')
 const postcss = require('gulp-postcss')
 const postcss_import = require('postcss-import')
 const postcss_url = require('postcss-url')
 const postcss_cssnext = require('postcss-cssnext')
 
-const browserSync = require('browser-sync').create()
-
-
 // Assets
 const assets = require('./src/assets/assets')
-
-
-// html: lint, minify, concatenate, and output all of the HTML Import files listed in assets.json
-gulp.task('html', () => {
-	const htmlFiles = assets.html.map(handle => `src/assets/components/${handle}.html`)
-
-	return gulp.src(htmlFiles)
-		/*// Lint
-		.pipe(
-			lintspaces({
-				newlineMaximum: 3,
-				trailingspaces: true,
-				indentation: 'tabs'
-			})
-		)*/
-
-		// Minify
-		.pipe(
-			htmlmin({
-				minifyCSS: true,
-				minifyJS: true,
-				collapseWhitespace: true,
-				decodeEntities: true,
-				quoteCharacter: '"',
-				removeComments: true,
-				removeEmptyAttributes: true,
-				sortAttributes: true,
-				sortClassName: true
-			})
-		)
-
-		// Concatenate
-		.pipe(
-			concat('all.min.html')
-		)
-
-		// Output
-		.pipe(
-			gulp.dest(`${BUILD_DIR}/assets/components`)
-		)
-})
 
 
 // css: transpile, lint, minify, concatenate, and output all of the CSS files listed in assets.json
@@ -89,14 +40,14 @@ gulp.task('css', () => {
 			])
 		)
 
-		/*// Lint
+		// Lint
 		.pipe(
 			lintspaces({
 				newlineMaximum: 3,
 				trailingspaces: true,
 				indentation: 'tabs'
 			})
-		)*/
+		)
 
 		// Minify
 		.pipe(
@@ -132,14 +83,14 @@ gulp.task('js', () => {
 			})
 		)
 
-		/*// Lint
+		// Lint
 		.pipe(
 			lintspaces({
 				newlineMaximum: 3,
 				trailingspaces: true,
 				indentation: 'tabs'
 			})
-		)*/
+		)
 
 		// Concatenate
 		.pipe(
@@ -153,8 +104,8 @@ gulp.task('js', () => {
 })
 
 
-// assets: process CSS, JS, and HTML simultaneously
-gulp.task('assets', gulp.parallel('css', 'js', 'html'))
+// assets: process CSS and JS simultaneously
+gulp.task('assets', gulp.parallel('css', 'js'))
 
 
 // copy-directories: copy all files to the build directory
