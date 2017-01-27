@@ -182,7 +182,7 @@ class DYProjectFilters extends DYElement {
 					.attr('data-term', term.slug)
 					.attr('data-selector', `.${term.taxonomy}-${term.slug}`)
 					.html(term.name)
-					.on('click', function(){X(this, _this)
+					.on('click', function(){
 						this.toggleClass('active')
 						_this.update()
 					})
