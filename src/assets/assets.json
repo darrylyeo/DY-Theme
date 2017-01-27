@@ -1,4 +1,13 @@
 {
+	"html": [
+		"dy-project",
+		"dy-projects",
+		"dy-project-header",
+		"dy-notification",
+		"dy-date",
+		"dy-comments",
+		"khan"
+	],
 	"css": [
 		"libraries/prism",
 		

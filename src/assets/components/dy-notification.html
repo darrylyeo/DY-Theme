@@ -1,3 +1,105 @@
+<template id="dy-notification">
+	<style>
+		dy-notification, :host {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			
+			background-color: rgba(255,255,255,0.9);
+			border-radius: 7px;
+			border-bottom-right-radius: 4px;
+			box-shadow: rgba(0,0,0,.118) 0 4px 3px -3px;
+			box-sizing: content-box;
+			position: relative;
+			line-height: 1.4;
+			margin: 3px;
+			overflow: hidden;
+			padding: 0.4em 0.5em;
+			width: max-content;
+			min-width: 10vw;
+			max-width: 360px;
+			min-height: min-content;
+			max-height: 100px;
+			transform-origin: right bottom;
+			animation: NotificationShow .5s;
+		}
+		:host.success {
+			background-color: rgba(139,195,74,0.9);
+			color: rgba(255, 255, 255, 0.9);
+		}
+		:host.warning {
+			background-color: rgba(255, 213, 79, 0.9);
+		}
+		:host.error {
+			background-color: rgba(255,87,34,0.9);
+			color: rgba(255, 255, 255, 0.9);
+		}
+
+		:host.repeat {
+			animation: NotificationShow 0.3s, NotificationRepeat 0.3s;
+		}
+		:host.hide {
+			animation: NotificationHide 0.3s ease-out forwards;
+		}
+
+		@keyframes NotificationShow {
+			from {
+				margin: 0;
+				min-height: 0;
+				max-height: 0;
+				opacity: 0;
+				padding-top: 0;
+				padding-bottom: 0;
+				transform: scale(0);
+			}
+		}
+		@keyframes NotificationHide {
+			to {
+				margin: 0;
+				min-height: 0;
+				max-height: 0;
+				opacity: 0;
+				padding-top: 0;
+				padding-bottom: 0;
+				transform: scale(0);
+			}
+		}
+		@keyframes NotificationRepeat {
+			50% {
+				transform: scale(1.1);
+			}
+		}
+
+		:host > i {
+			background-color: rgba(0, 0, 0, 0.05);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: -0.4em -0.5em;
+			/*height: 1.5em;*/
+			margin-right: 1ch;
+			position: absolute;
+			width: 1.5em;
+			height: 100%;
+			right: 100%;
+			top: 0;
+		}
+		:host > * + button {
+			margin-left: 1ch;
+		}
+		:host > div {
+			display: block;
+		}
+	</style>
+	<i id="icon">i</i>
+	<div>
+		<content></content>
+		<slot></slot>
+	</div>
+	<button class="small">OK</button>
+</template>
+
+
 <script>
 class DYNotification extends DYElement {
 	constructor(){

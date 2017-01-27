@@ -1,3 +1,211 @@
+<template id="dy-comments">
+	<style>
+		#reaction {
+			flex-direction: column;
+			/*align-items: center;*/
+		}
+		#reaction ~ * {
+			margin-top: 1em;
+		}
+		dy-comment, dy-comment-reply {
+			font-size: 0.9em;
+		}
+	</style>
+	<div id="reaction">
+		<!--<h2><span class="comment-count">Loading</span> <span class="reactions">Reactions</span></h2>-->
+		<h2>Choose One or More Reactions: </h2>
+		<ul>
+			<li>Don't like it. Like it. Love it!</li>
+			<li>Wow. Mind-blowing! HELP, I need a neurosurgeon!!</li>
+			<li>Boring. Helpful.</li>
+			<li>Learned something new.</li>
+			<li>I have a question...</li>
+			<li>I have some feedback...</li>
+		</ul>
+	</div>
+	<dy-comment-reply></dy-comment-reply>
+</template>
+
+<template id="dy-comment">
+	<style>
+		:host {
+			display: flex;
+			/*flex-wrap: wrap;*/
+			align-items: flex-start;
+		}
+		div {
+			flex-direction: column;
+		}
+		div > * + *, div > * + p {
+			margin-top: 0.5em;
+		}
+
+		#inner-wrapper {
+			flex: 1;
+		}
+		blockquote, form {
+			background-color: rgba(255, 255, 255, 0.5);
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+			border-radius: 0.75em;
+			padding: 0.75em 1em;
+			position: relative;
+			flex-direction: column;
+		}
+		blockquote:before, form:before {
+			content: '';
+			border: solid transparent;
+			border-width: 0.4em 0.5em;
+			border-right-color: rgba(255, 255, 255, 0.5);
+			position: absolute;
+			right: 100%;
+			top: 2em;
+		}
+
+		#avatar {
+			border-radius: 0.75em;
+			flex: 0 auto;
+			margin: 0;
+			margin-right: 0.75em;
+			max-width: 10vw;
+			width: 5em;
+		/*}
+		#avatar:not([src]) {*/
+			height: 5em;
+		}
+		header {
+			align-items: center;
+			flex: 100%;
+			font-size: 0.8em;
+		}
+		header * + * {
+			margin-left: 0.5em;
+		}
+		cite {
+			font-style: normal;
+		}
+		#author {
+			font-family: var(--heading-font);
+			font-size: 1.5em;
+			font-weight: bold;
+		}
+		#comment-date {
+			background: rgba(0, 0, 0, 0.05);
+			padding: 0.25em;
+			border-radius: 0.25em;
+			display: inline-block;
+			line-height: 1;
+		}
+		#content {
+			display: block;
+			margin-top: 0.25em;
+		}
+		#reply-button {
+			margin-left: auto;
+		}
+
+		#replies:not(:empty) {
+			font-size: 0.9em;
+		}
+		#replies > * {
+			margin-top: 1em;
+		}
+	</style>
+	<img id="avatar">
+	<div id="inner-wrapper">
+		<blockquote>
+			<header>
+				<cite>
+					<a id="author" rel="nofollow"></a>
+				</cite>
+				<a class="link"><dy-date id="comment-date"></dy-date></a>
+				<a id="reply-button">Reply</a>
+				<a id="edit-button">Edit</a>
+			</header>
+			<div id="content"></div>
+		</blockquote>
+		<div id="replies">
+
+		</div>
+	</div>
+</template>
+
+<template id="dy-comment-reply">
+	<style>
+		:host {
+			animation: Reply var(--transition-slow);
+		}
+		@keyframes Reply {
+			from {
+				max-height: 0;
+				overflow: hidden;
+				transform: scale(0.9);
+			}
+			to {
+				max-height: 100vh;
+			}
+		}
+
+		input, input:focus, textarea, textarea:focus {
+			background: unset;
+			border: unset;
+    		border-radius: unset;
+			box-shadow: unset;
+			filter unset;
+			margin: unset;
+			padding: unset;
+			display: inline;
+		}
+		textarea {
+			max-width: 100%;
+			width: 100%;
+			min-height: 10em;
+		}
+
+		[name="author_email"] {
+			font-family: var(--heading-font);
+			font-size: 1.25em;
+			text-align: right;
+		}
+	</style>
+	<img id="avatar">
+	<div id="inner-wrapper">
+		<form action="">
+			<div>
+				<p><a id="sign-in">Sign in with a social account</a> to skip entering credentials: </p>
+			</div>
+			<hr>
+			<header>
+				<cite>
+					<input type="text" id="author" placeholder="Your Name" name="author_name" required>
+				</cite>
+				<input type="email" placeholder="your_email@example.com" name="author_email" required>
+			</header>
+			<div id="content">
+				<textarea name="content" placeholder="Your reaction..." required></textarea>
+			</div>
+			<button type="submit">Post Reaction</button>
+		</form>
+		<div>
+			<h3>Formatting</h3>
+			<p>**Bold** and *italics* and `code`</p>
+			<p>[Link](https://darryl-yeo.com)</p>
+			<p>```Code Block```</p>
+		</div>
+	</div>
+	
+	<!--<form>
+		<label>
+			<input type="text" name="author_name">
+			<span>Name</span>
+		</label>
+		<label>
+			<input type="email" name="author_email">
+			<span>Email</span>
+		</label>
+	</form>-->
+</template>
+
+
 <script>
 const MIN_COMMENT_LENGTH = 20
 const MAX_COMMENT_LENGTH = 1000

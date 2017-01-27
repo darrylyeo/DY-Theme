@@ -283,7 +283,13 @@ Node.prototype.appendChild = function(targetNode){
 	return this
 }*/
 Node.prototype.append = function(targetNode){
-	this.appendChild(targetNode)
+	if(arguments[0] instanceof NodeList){
+		for(let targetNode of arguments[0]){
+			this.appendChild(targetNode)
+		}
+	}else{
+		this.appendChild(targetNode)
+	}
 	return this
 }
 /*for(let Prototype of [Document, Element, DocumentFragment]){
@@ -406,11 +412,9 @@ Object.defineProperties(Element.prototype, {
 		}
 	}*/
 })
-Element.prototype.find = Element.prototype.querySelectorAll
-DocumentFragment.prototype.find = DocumentFragment.prototype.querySelectorAll
-/*Element.prototype.find = DocumentFragment.prototype.find = function(s){
-	return this.querySelectorAll(s)
-}*/
+for(let Prototype of [Document, Element, DocumentFragment]){
+	Prototype.prototype.find = Prototype.prototype.querySelectorAll
+}
 Element.prototype.hasClass = function(c){
 	return this.classList.contains(c)
 }

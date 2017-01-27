@@ -1,3 +1,108 @@
+<template id="dy-project-header">
+	<style>
+		dy-project-header, :host {
+			flex-direction: column;
+			flex: 100%;
+			margin: 0;
+			overflow: hidden;
+			padding: var(--padding);
+			position: relative;
+		}
+		#background, #background:before, #background * {
+			background-size: 0;
+			overflow: hidden;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			left: 0;
+			top: 0;
+		}
+		#background:before {
+			content: '';
+			background: center/contain fixed;
+			background-image: inherit;
+			/*filter: blur(2rem);*/background-size: 1px;
+			transform: scale(1.2);
+		}
+		#background ~ * {
+			z-index: 1;
+		}
+		#title-wrapper {
+			background-image: radial-gradient(rgba(255, 255, 255, 0.25), transparent 75%);
+			mix-blend-mode: overlay;
+			text-shadow: 0 0 5rem #fff;
+
+			margin-bottom: var(--padding-small);
+			width: 100%;
+		}
+		#title-wrapper h1 {
+			font-size: 3.5em;
+			line-height: 1.2;
+			text-align: center;
+			width: 100%;
+		}
+		#inner-wrapper {
+			margin: calc(var(--padding-small-neg) / 2);
+		}
+		#inner-wrapper > * {
+			margin: calc(var(--padding-small) / 2);
+		}
+		#featured-image {
+			flex: 1 100%;
+			max-width: max-content;
+		}
+		#details {
+			flex-direction: column;
+		}
+		#details > * + * {
+			margin-top: 1em;
+		}
+		#excerpt {
+			background-color: rgba(255, 255, 255, 0.2);
+			border-radius: 0.5em;
+			font-size: 0.9em;
+			font-style: italic;
+			line-height: 1.6;
+			padding: 0.75em;
+			text-align: justify;
+		}
+		#dates {
+			justify-content: space-between;
+		}
+
+		@media (max-width: 35rem) {
+			#inner-wrapper {
+				flex-direction: column;
+				align-items: center;
+			}
+			#featured-image {
+				flex: 0;
+			}
+		}
+	</style>
+	<div id="background">
+		<canvas></canvas>
+	</div>
+	<div id="title-wrapper">
+		<h1 id="title"></h1>
+	</div>
+	<div id="inner-wrapper">
+		<figure id="featured-image">
+			<img>
+			<figcaption></figcaption>
+		</figure>
+		<div id="details">
+			<blockquote id="excerpt"></blockquote>
+			<div id="dates">
+				<h3><dy-date id="project-date"></dy-date></h3>
+				<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
+			</div>
+			<div id="terms"></div>
+		</div>
+	</div>
+</template>
+
+
 <script>
 class DYProjectHeader extends DYElement {
 	constructor(){
