@@ -100,16 +100,23 @@ String.prototype.replaceAll = function(replace, replaceWith) {
 
 
 Array.prototype.remove = function(obj){
-	const i = array.indexOf(obj)
+	const i = this.indexOf(obj)
 	if(i > -1) this.splice(i, 1)
 	return this
+}
+Array.prototype.clear = function(obj){
+	this.length = 0
+	return this
+}
+Array.prototype.last = function(){
+	return this[this.length - 1]
 }
 
 
 
 
 //const π = Math.PI
-//const τ = Math.TAU = Math.PI * 2
+/*const τ =*/ Math.TAU = Math.PI * 2
 Math.stdNorm = x => Math.E**(x*x/-2)/* / Math.sqrt(Math.TAU)*/
 Math.stdNormSlope = x => Math.stdNorm(x) * -x
 
@@ -129,6 +136,9 @@ Number.prototype.normMap = function(A, B){
 Number.prototype.constrainMap = function(a, b, A = 0, B = 1){
 	return this.map(a, b, A, B).constrain(A, B)
 }
+Number.prototype.normConstrainMap = function(A, B){
+	return this.map(0, 1, A, B).constrain(A, B)
+}
 
 Number.prototype.constrain = function(a = 0, b = 1){
 	if(a > b) [a, b] = [b, a]
@@ -147,31 +157,33 @@ Number.prototype.sign = function(){
 	return Math.sign(this)
 }
 
+Number.prototype.abs = function(){
+	return Math.abs(this)
+}
+
 
 
 // Execute this function after a delay. A time of 0 uses RAF, otherwise setTimeout. A combination of the two can be used by passing true as the second argument.
-Function.prototype.delay = function(time, useRAF = false){
-	const func = this
+Function.prototype.delay = function(time = 0, useRAF = false){
 	if(time > 0){
-		setTimeout(function(){
+		return setTimeout(() => {
 			if(useRAF){
-				requestAnimationFrame(func)
+				requestAnimationFrame(this)
 			}else{
-				func()
+				this()
 			}
 		}, time)
 	}else{
-		requestAnimationFrame(func)
+		requestAnimationFrame(this)
 	}
 }
 
 // Execute this function repeatedly over a given time interval. A time of 0 uses RAF, otherwise setTimeout. A combination of the two can be used by passing true as the second argument.
-Function.prototype.interval = function(time, useRAF = false){
-	const func = this
+Function.prototype.interval = function(time = 0, useRAF = false){
 	if(time > 0){
-		const i = setInterval(function(){
-			const call = function(){
-				if(func() == false){
+		const i = setInterval(() => {
+			const call = () => {
+				if(this() == false){
 					clearInterval(i)
 				}
 			}
@@ -181,9 +193,10 @@ Function.prototype.interval = function(time, useRAF = false){
 				call()
 			}
 		}, time)
+		return i
 	}else{
-		const call = function(){
-			if(func() !== false){
+		const call = () => {
+			if(this() !== false){
 				requestAnimationFrame(call)
 			}
 		}
@@ -220,14 +233,14 @@ Function.prototype.debounce = function(time, immediate) {
 	let timeout
 	const func = this
 	return function() {
-		const later = () => {
-			timeout = null
-			if (!immediate) func.apply(this, arguments)
-		}
-		const callNow = immediate && !timeout
+		if(immediate && !timeout) func.apply(this, arguments)
+
 		clearTimeout(timeout)
-		timeout = setTimeout(later, time)
-		if (callNow) func.apply(this, arguments)
+
+		timeout = setTimeout(() => {
+			timeout = undefined
+			if(!immediate) func.apply(this, arguments)
+		}, time)
 	}
 }
 
@@ -552,13 +565,7 @@ Element.prototype.animateScrollY = function(y, speedFactor = 0.08, stopPromise){
 EventTarget.prototype.on = function(eventNames, callback, optionsOrUseCapture){
 	if(typeof eventNames === 'object'){
 		for(let eventName in eventNames){
-			const callback = eventNames[eventName]
-			if(eventName === 'scroll' && this === document.body){
-				window.addEventListener(eventName, callback, optionsOrUseCapture)
-				continue
-			}
-			if(typeof callback === 'function')
-				this.addEventListener(eventName, callback, optionsOrUseCapture)
+			this.on(eventName, eventNames[eventName], optionsOrUseCapture)
 		}
 	}else{
 		//for(let eventName of [...eventNames])){
@@ -569,6 +576,29 @@ EventTarget.prototype.on = function(eventNames, callback, optionsOrUseCapture){
 			}
 			if(typeof callback === 'function')
 				this.addEventListener(eventName, callback, optionsOrUseCapture)
+		}
+	}
+	return this
+}
+EventTarget.prototype.off = function(eventName, callback){
+	if(typeof eventNames === 'object'){
+		for(let eventName in eventNames){
+			const callback = eventNames[eventName]
+			if(eventName === 'scroll' && this === document.body){
+				window.removeEventListener(eventName, callback)
+				continue
+			}
+			if(typeof callback === 'function')
+				this.removeEventListener(eventName, callback)
+		}
+	}else{
+		for(let eventName of resolveArgumentAsArray(eventNames)){
+			if(eventName === 'scroll' && this === document.body){
+				window.removeEventListener(eventName, callback)
+				continue
+			}
+			if(typeof callback === 'function')
+				this.removeEventListener(eventName, callback)
 		}
 	}
 	return this
@@ -604,7 +634,7 @@ const eventNames = Object.getOwnPropertyNames(Document.prototype).filter(p => p.
 for(let eventName of eventNames){
 	EventTarget.prototype[eventName] = function(callback){
 		if(arguments.length === 0){
-			this.dispatchEvent(eventName)
+			this.dispatchEvent(new Event(eventName))
 		}else if(arguments.length === 1){
 			this.on(eventName, callback)
 		}
@@ -650,12 +680,12 @@ Storage.prototype.set = function(key, obj) {
 }
 Storage.prototype.get = function(key) {
 	const data = window.LZString ? LZString.decompress(this.getItem(key)) : this.getItem(key)
-	if(!data) return {}
+	if(!data) return null
 	try{
 		return JSON.parse(data)
 	}catch(e){
 		console.error(e, data)
-		return {}
+		return null
 	}
 }
 
@@ -789,6 +819,49 @@ CanvasRenderingContext2D.prototype.background = function(color){
 	this.fillRect(0, 0, this.width, this.height)
 	this.fillStyle = fillStyle
 }
+CanvasRenderingContext2D.prototype.circle = function(x = 0, y = 0, radius = 1){
+	this.beginPath()
+	this.arc(x, y, radius, startAngle = 0, endAngle = Math.TAU)
+	this.closePath()
+	return this
+}
+/*CanvasRenderingContext2D.prototype._ellipse = CanvasRenderingContext2D.prototype.ellipse
+CanvasRenderingContext2D.prototype.ellipse = function(x = 0, y = 0, radiusX = 1, radiusY = radiusX, rotation = 0, startAngle = 0, endAngle = Math.TAU, anticlockwise){
+	this._ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise)
+	return this
+}*/
+CanvasRenderingContext2D.prototype.line = function(x1, y1, x2, y2){
+	if(arguments.length === 2){
+		x1 = arguments[0].x
+		y1 = arguments[0].y
+		x2 = arguments[1].x
+		y2 = arguments[1].y
+	}
+	this.beginPath()
+	this.moveTo(x1, y1)
+	this.lineTo(x2, y2)
+	this.stroke()
+	return this
+}
+CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r = 0) {
+	if (w < 2 * r) r = w / 2
+	if (h < 2 * r) r = h / 2
+	r = r.abs()
+	this.beginPath()
+	this.moveTo(x + r, y)
+	this.arcTo(x + w, y, x + w, y + h, r)
+	this.arcTo(x + w, y + h, x, y + h, r)
+	this.arcTo(x, y + h, x, y, r)
+	this.arcTo(x, y, x + w, y, r)
+	this.closePath()
+	return this
+}
+
+CanvasRenderingContext2D.prototype._scale = CanvasRenderingContext2D.prototype.scale
+CanvasRenderingContext2D.prototype.scale = function(x, y = x){
+	this._scale(x, y)
+} 
+
 CanvasRenderingContext2D.prototype.loadImage = function(url){
 	return new Promise((resolve, reject) => {
 		const img = new Image()
