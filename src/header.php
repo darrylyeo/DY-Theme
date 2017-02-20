@@ -44,7 +44,7 @@
 		<canvas></canvas>
 	</div>
 	<div id="wrapper">
-		<nav id="secondary-menu">
+		<nav id="secondary-menu" class="immersive">
 			<ul>
 				<li>
 					<a href="./about">About Me</a>
@@ -118,40 +118,69 @@
 				</li>
 			</ul>
 		</nav>
-		<header class="immersive">
+
+
+		<!--<dy-header logo="<?php echo get_stylesheet_directory_uri() ?>"></dy-header>-->
+		<!--<dy-header is="dy-header">-->
+		<header class="full">
 			<!--<h1>Darryl Yeo</h1>-->
 			<nav id="main-menu">
 				<a href="./" id="logo"><img src="<?php echo get_stylesheet_directory_uri() ?>/logo/Darryl-Yeo-Logo-Cropped.svg"></a>
 				<ul>
 					<li>
-						<a href="./#projects">Projects</a>
-						<ul>
-							<li>
-								<a href="./#code">Code</a>
-							</li>
-							<li>
-								<a href="./#art">Art</a>
-							</li>
-							<li>
-								<a href="./#music">Music</a>
-							</li>
-						</ul>
+						<a href="./category/code">Code</a>
+						<svg class="icon code">
+							<use href="<?php echo get_stylesheet_directory_uri() ?>/assets/icons.svg#code" />
+						</svg>
+					</li>
+					<li>
+						<a href="./category/art">Art</a>
+						<svg class="icon art">
+							<use href="<?php echo get_stylesheet_directory_uri() ?>/assets/icons.svg#art" />
+						</svg>
+					</li>
+					<li>
+						<a href="./category/music">Music</a>
+						<svg class="icon music">
+							<use href="<?php echo get_stylesheet_directory_uri() ?>/assets/icons.svg#music" />
+						</svg>
 					</li>
 					<li>
 						<a href="./blog">Blog</a>
 					</li>
 					<li class="has-sub-menu">
 						<a href="./learn">Learn</a>
-						<ul>
+						<!--<ul>
 							<li>
 								<a href="./make-a-website-autobiography">Make A Website Autobiography!</a>
 							</li>
 							<li>
 								<a href="./a-visual-introduction-to-javascript-programming">A Visual Inroduction To JavaScript Programming</a>
 							</li>
-						</ul>
+						</ul>-->
 					</li>
 				</ul>
+				<div id="navigation">
+					<a rel="prev">Previous: <span></span></a>
+					<a rel="next">Next: <span></span></a>
+				</div>
 			</nav>
 		</header>
-		<main data-post-id="<?php echo get_queried_object_id() ?>">
+
+		<?php
+		if(is_archive())
+			$type = 'archive';
+
+		if(is_single())
+			$type = 'single';
+
+		if(is_404())
+			$type = '404';
+
+		if(is_search())
+			$type = 'search';
+
+		if(is_author())
+			$type = 'author';
+		?>
+		<main data-type="<?php echo $type ?>" data-id="<?php echo get_queried_object_id() ?>">
