@@ -117,7 +117,7 @@ Array.prototype.last = function(){
 
 //const π = Math.PI
 /*const τ =*/ Math.TAU = Math.PI * 2
-Math.stdNorm = x => Math.E**(x*x/-2)/* / Math.sqrt(Math.TAU)*/
+Math.stdNorm = x => Math.pow(Math.E, (x*x/-2))/* / Math.sqrt(Math.TAU)*/
 Math.stdNormSlope = x => Math.stdNorm(x) * -x
 
 Math._random = Math.random
@@ -424,6 +424,11 @@ Object.defineProperties(Element.prototype, {
 			return this.offsetLeft + this.height/2
 		}
 	}*/
+	computedStyle: {
+		get(){
+			return window.getComputedStyle(this)
+		}
+	}
 })
 for(let Prototype of [Document, Element, DocumentFragment]){
 	Prototype.prototype.find = Prototype.prototype.querySelectorAll
@@ -629,6 +634,9 @@ EventTarget.prototype.hover = function(on, off){
 	if(on) this.on('mouseover', on)
 	if(off) this.on('mouseout', off)
 }
+EventTarget.prototype.trigger = function(eventName){
+	this.dispatchEvent(new Event(eventName))
+}
 
 const eventNames = Object.getOwnPropertyNames(Document.prototype).filter(p => p.startsWith('on')).map(name => name.slice(2))
 for(let eventName of eventNames){
@@ -709,24 +717,26 @@ History.prototype.pushState = function(state) {
 
 
 
-function get(url, postHeaders, mimeType){
+function get(url, options = {}){
 	return new Promise((resolve, reject) => {
 		const xhr = new XMLHttpRequest()
-		xhr.open(postHeaders ? 'POST' : 'GET', url)
+		xhr.open(options.type || 'GET', url)
 
-		if(mimeType){
-			xhr.overrideMimeType(mimeType)
+		if(options.mimeType){
+			xhr.overrideMimeType(options.mimeType)
 		}
+
+		if(options.responseType) xhr.responseType = options.responseType
 		
-		for(let header in postHeaders){
-			xhr.setRequestHeader(header, headers[header])
+		for(let header in options.headers){
+			xhr.setRequestHeader(header, options.headers[header])
 		}
 		
 		xhr.on({
 			load(){
 				if (this.status >= 200 && this.status < 300) {
 					//onload && onload(JSON.parse(this.responseText))
-					resolve(this.responseText)
+					resolve(this.response/*, this*/)
 				} else {
 					reject({
 						status: this.status,
@@ -748,9 +758,9 @@ function get(url, postHeaders, mimeType){
 		xhr.send()
 	})
 }
-function getJSON(url, headers){
+function getJSON(url, options){
 	return new Promise((resolve, reject) => {
-		get(url, headers)
+		get(url, options)
 			.then(response => resolve(JSON.parse(response)))
 			.catch(response => reject(response))
 	})
