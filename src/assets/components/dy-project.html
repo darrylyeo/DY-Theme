@@ -1,21 +1,149 @@
 <template id="dy-project">
 	<style>
-		
+		:host, dy-project {
+			flex: 1 10rem;
+			padding: 0.5em;
+			width: 30vmax;
+			max-width: 300px;
+			max-height: 100vh;
+
+			position: relative;
+			transition: var(--transition-medium);
+		}
+		:host(.hide) {
+			/*flex: 0;
+		    height: 0;
+		    margin: 0;
+		    padding: 0;*/
+		    flex: 0.5 5rem;
+		    transform: rotateX(-10deg) translateY(50%) rotateX(10deg);
+			transition: var(--transition-slow);
+
+			pointer-events: none;
+		}
+		:host(.focused) {
+			z-index: 1;
+		}
+
+
+		:host, :host * {
+			transform-style: preserve-3d;
+			transition: var(--transition-medium);
+		}
+		:host(:not(.focused)) * {
+			pointer-events: none;
+		}
+
+		#inner-wrapper {
+			display: block;
+			position: absolute;
+			transform: scale(1) rotateX(-10deg);
+			transform-origin: top;
+		}
+		:host(:hover) #inner-wrapper {
+			transform: rotateX(-2.5deg) translateZ(-0.5rem) translateY(-1rem);
+			/*transform: translateZ(0.5rem);*/
+		}
+		:host(.focused) #inner-wrapper {
+			transform: none;
+			transform: rotateX(0) translateZ(var(--perspective));
+		}
+
+		#inner-wrapper > * {
+			/*filter: drop-shadow(#fff 0 0 4em);*/
+			/*box-shadow: #fff 0 0 4em, #fff 0 0 1em inset;*/
+		}
+		:host(.hide) #inner-wrapper > *,
+		:host-context(.has-focused-project):host(:not(.focused)) #inner-wrapper > * {
+		    opacity: 0.1;
+		}
+
+		#title-wrapper {
+			/*background-color: rgba(255, 255, 255, 0.9);*/
+			font-size: 0.8em;
+			transform: rotateX(10deg);
+			transform-origin: bottom;
+		}
+		:host(:hover) #title-wrapper {
+			transform: none;
+		}
+		h2 {
+			color: rgba(0, 0, 0, 0.85);
+			line-height: 1.25;
+			text-shadow: #fff 0 0 1em, #fff 0 0 1em, #fff 0 0 5em, #fff 0 0 5em/*, #fff 0 0 10em*/;
+		}
+
+		.card {
+			border-radius: 0.5rem;
+			flex-direction: column;
+			overflow: hidden;
+			transition: var(--transition-medium);
+		}
+		:host(:not(.focused)) .card {
+			-webkit-mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
+			-moz-mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
+			mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
+		}
+
+		#details {
+			background-color: rgba(255, 255, 255, 0.2);
+			overflow-y: auto;
+		}
+		#details-inner {
+			min-height: 100%;
+			flex-direction: column;
+			justify-content: space-between;
+			padding: var(--padding-small);
+		}
+		#dates {
+			justify-content: space-between;
+		}
+		#terms {
+			flex-wrap: wrap;
+		}
+
+		/*@media (max-height: 40rem){*/
+			:host(.focused) #inner-wrapper {
+			    margin-left: -80%;
+			    margin-right: -80%;
+			}
+			:host(.focused) #title-wrapper {
+				margin-bottom: 0.5em;
+			}
+			:host(.focused) .card {
+				flex-direction: row;
+			}
+			:host(.focused) #featured-image {
+				flex: 1;
+			}
+			:host(.focused) #featured-image img {
+				min-height: 40vh;
+			}
+			:host(.focused) #details {
+				flex: 1.5;
+			}
+			:host(:not(.focused)) #details {
+				flex: 0;
+				overflow: hidden;
+			}
+		/*}*/
 	</style>
-	<a id="featured-image" class="link"><img></a>
-	<div id="details-wrapper">
-		<div id="details">
-			<div id="title-wrapper">
-				<a class="link"><h2 id="title"></h2></a>
-			</div>
-			<div id="details-inner">
-				<blockquote id="excerpt"></blockquote>
-				<a class="link button read-more">Read More</a>
-				<div id="dates">
-					<h3><dy-date id="project-date"></dy-date></h3>
-					<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
+	<div id="inner-wrapper">
+		<div id="title-wrapper">
+			<a class="link"><h2 id="title"></h2></a>
+		</div>
+		<div class="card">
+			<a id="featured-image" class="link"><img></a>
+			<div id="details">
+				<div id="details-inner">
+					<blockquote id="excerpt"></blockquote>
+					<!--<a class="link button read-more">Read More</a>-->
+					<div id="dates">
+						<dy-date id="project-date"></dy-date>
+						<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
+					</div>
+					<div id="terms"></div>
 				</div>
-				<div id="terms"></div>
 			</div>
 		</div>
 	</div>
@@ -24,78 +152,73 @@
 
 <script>
 class DYProject extends DYElement {
-	static get observedAttributes() {
-		return ['data-id']
-	}
-
-	attributeChangedCallback(attr, oldVal, newVal){
+	set data(data){
 		const root = this.root
 		
-		if(attr === 'data-id'){
-			const id = newVal
-			const data = DY.data.posts[id]
-			
+		root.updateWithModel({
+			'#title': data.title.rendered,
+			'#project-date[data-date]': data.meta.projectDate,
+			'#modified-date[data-date]': data.date,
+			'.link[href]': data.link,
+			'#excerpt': data.excerpt.rendered
+		})
+		if(data.featuredImage){
+			//this.css('backgroundImage', `url(${data.featuredImage.source_url})`)
 			root.updateWithModel({
-				'#title': data.title.rendered,
-				'#project-date[data-date]': data.meta.projectDate,
-				'#modified-date[data-date]': data.date,
-				'.link[href]': data.link,
-				'#excerpt': data.excerpt.rendered
+				'img[src]': data.featuredImage.source_url,
+				'img[alt]': data.featuredImage.alt_text
 			})
-			if(data.featuredImage){
-				root.css('backgroundImage', `url(${data.featuredImage.source_url})`)
-				root.updateWithModel({
-					'img[src]': data.featuredImage.source_url,
-					'img[alt]': data.featuredImage.alt_text
-				})
-			}else{
-				root.addClass('no-featured-image')
-			}
-			this.attr({
-				'data-date': data.meta.projectDate,
-				'data-modified-date': data.date,
-			})
-
-			// Add terms
-			const $terms = root.find('#terms')
-			for(let taxonomyName in DY.data.taxonomies){
-				if(taxonomyName === 'page-category') continue
-
-				const terms = data[DY.mapTaxonomyName(taxonomyName)]
-				if(!terms.length) continue
-				for(let termID of terms){
-					const term = DY.data.terms[termID]
-
-					const $term = $$$('a').attr('rel', 'tag').appendTo($terms)
-					$term.innerHTML = term.name
-					this.addClass(`${taxonomyName}-${term.slug}`)
-				}
-			}
-
-			/*root.find('#details').on('mouseleave', function(){
-				this.animateScrollY(0, undefined, new Promise((resolve) => {
-					this.once('mouseenter', resolve);
-				}))
-			})*/
-
-			this.modalize().on('modalize', function(e){
-				const img = root.find('img')[0]
-				Object.assign(e.detail.finalStyle, {
-					width: '100%',
-					maxWidth: (img.naturalWidth * 2.5 || 500) + 'px',
-					//height: '80vh',
-					//maxHeight: 'max-content',
-					height: (img.naturalHeight || 400) + 'px',
-					maxHeight: '80vh',
-				})
-			})
+		}else{
+			this.addClass('no-featured-image')
 		}
+		this.attr({
+			'data-date': data.meta.projectDate,
+			'data-modified-date': data.date,
+		})
+
+		// Add terms
+		const $terms = root.find('#terms')
+		for(let taxonomyName in DY.data.taxonomies){
+			if(taxonomyName === 'page-category') continue
+
+			const terms = data[DY.mapTaxonomyName(taxonomyName)]
+			if(!terms.length) continue
+			for(let termID of terms){
+				const term = DY.data.terms[termID]
+
+				const $term = $$$('a').attr('rel', 'tag').appendTo($terms)
+				$term.innerHTML = term.name
+				this.addClass(`${taxonomyName}-${term.slug}`)
+			}
+		}
+
+		/*root.find('#details').on('mouseleave', function(){
+			this.animateScrollY(0, undefined, new Promise((resolve) => {
+				this.once('mouseenter', resolve);
+			}))
+		})*/
+
+		/*this.modalize().on('modalize', function(e){
+			const img = root.find('img')[0]
+			Object.assign(e.detail.finalStyle, {
+				width: '100%',
+				maxWidth: (img.naturalWidth * 2.5 || 500) + 'px',
+				//height: '80vh',
+				//maxHeight: 'max-content',
+				height: (img.naturalHeight || 400) + 'px',
+				maxHeight: '80vh',
+			})
+		})*/
+
+		this.on({
+			click(){
+				this.$projects.setFocusedProject(this)
+			}
+		})
 	}
 
-	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
-	get root(){
-		this.init()
-		return this
+	get $projects(){
+		return this.closest('dy-projects')
 	}
 }
 customElements.define('dy-project', DYProject)

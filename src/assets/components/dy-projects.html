@@ -1,47 +1,157 @@
 <template id="dy-projects">
 	<style>
-		.dy-projects {
-			--dy-project-margin: 0.25%;
-			--dy-project-columns: 5;
+		dy-projects {
+			--dy-projects-height: calc(100vh - var(--main-menu-height));
+			height: var(--dy-projects-height);
+
 			display: flex;
+			flex-direction: column;
+		}
+
+		.has-focused-project dy-project-filters {
+			opacity: 0.25;
+		}
+
+		.dy-projects {
+			--perspective: 30rem;
+			perspective: var(--perspective);
+			perspective-origin: bottom;
+
+			font-size: 0.75em;
+
+			display: flex;
+			flex-direction: column;
 			flex-wrap: wrap;
-			margin: calc(var(--dy-project-margin) * -1);
-			margin-top: 1em;
-			min-height: 90vh;
+			/*align-content: center;*/
+			flex: 1;
+
+			margin-top: calc(1em - 10rem);
+			padding-top: 10rem;
+
+			margin-left: var(--padding-neg);
+			margin-right: var(--padding-neg);
+			padding-left: calc(var(--padding) - 0.5em);
+			padding-right: calc(var(--padding) - 0.5em);
+			padding-bottom: 5vh;
+			/*max-height: var(--dy-projects-height);*/
+
+			overflow-x: auto;
+    		overflow-y: hidden;
 			transition: height var(--transition-fast);
-			width: 100%;
 		}
-		@media (max-width: 93rem) {
-			.dy-projects {
-				--dy-project-columns: 4;
-			}
+		.has-focused-project .dy-projects {
+			perspective-origin: center;
 		}
-		@media (max-width: 74rem) {
-			.dy-projects {
-				--dy-project-columns: 3;
-			}
+		dy-projects:not(.has-focused-project) .dy-projects {
+			pointer-events: none;
 		}
-		@media (max-width: 55rem) {
-			.dy-projects {
-				--dy-project-columns: 2;
-			}
-		}
-		@media (max-width: 36rem) {
-			.dy-projects {
-				--dy-project-margin: 1%;
-				--dy-project-columns: 1;
-			}
-		}
+
 		dy-project {
-			border-radius: var(--padding-small);
-			flex: 1 250px;
-			margin: var(--dy-project-margin);
-			width: calc(100% / var(--dy-project-columns) - var(--dy-project-margin) * 2);
+			pointer-events: initial;
+			transition: var(--transition-medium);
+		}
+		.has-focused-project dy-project.focused {
+			transform: scale(10) translateZ(calc(var(--perspective) * (1 - 10))) translateY(-25vh) translateY(50%);
+		}
+		.has-focused-project dy-project:not(.focused) {
+			/*opacity: 0.25;*/
+			transform: translateZ(calc(var(--perspective) * (1 - 0.75))) scale(0.75);
+			transform: scale(0.75);
 		}
 	</style>
 	<dy-project-filters></dy-project-filters>
 	<div class="dy-projects"></div>
 </template>
+
+
+<script>
+class DYProjects extends DYElement {
+	set filter(filter){
+		//this.isotope.arrange({ filter })
+		
+		for(const $project of this.find('dy-project')){
+			X($project.matches('*'))
+			$project.toggleClass(!$project.matches(filter || '*'), 'hide')
+		}
+	}
+
+	constructor(){X(9)
+		super()
+
+		const root = this.root
+		
+		const $projectsWrapper = root.find('.dy-projects')[0]//this.find
+
+		Promise.all([
+			windowLoad,
+			DY.getData,
+			customElements.whenDefined('dy-project')
+		]).then(() => {
+			const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
+			const projects = Object.values(DY.data.posts)
+				.filter(post => post['page-category'] && post['page-category'].includes(pageCategory_project_id))
+
+			for(const project of projects){
+				const $project = $$$('dy-project')
+				$project.prependTo($projectsWrapper)
+				$project.data = project
+			}
+
+			/*imagesLoaded($projects, () => {
+				this.isotope = new Isotope( $projects, {
+					//itemSelector: '.dy-projects > *',//'dy-project',
+					getSortData: {
+						date: '[data-date]',
+						modifiedDate: '[data-modified-date]'
+					},
+					sortBy: 'modifiedDate',
+					sortAscending: false,
+					hiddenStyle: {
+						opacity: 0,
+						transform: "perspective(1000px) scale(0.75) rotateY(180deg)"
+					},
+					visibleStyle: {
+						opacity: 1,
+						transform: "none"
+					},
+					layoutMode: 'masonryHorizontal',
+					stagger: 20
+				})
+
+				DYProjectFilters.update()
+			})*/
+		})
+
+		$projectsWrapper.on({
+			click: e => {
+				if(e.target === $projectsWrapper)
+					this.setFocusedProject()
+			}
+		})
+	}
+
+	setFocusedProject($project){
+		const makeProjectFocused = $project !== undefined && !$project.hasClass('focused')
+
+		this.toggleClass(makeProjectFocused, 'has-focused-project')
+		//;(() => this.toggleClass(makeProjectFocused, 'has-focused-project')).delay(100)
+
+		this.find('dy-project.focused').removeClass('focused')
+
+		if($project) $project.toggleClass(makeProjectFocused, 'focused')
+	}
+
+	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
+	get root(){
+		this.init()
+		return this
+	}
+}
+customElements.define('dy-projects', DYProjects)
+</script>
+
+
+
 
 <template id="dy-project-filters">
 	<style>
@@ -83,66 +193,6 @@
 
 
 <script>
-class DYProjects extends DYElement {
-	set filter(filter){
-		this.isotope.arrange({ filter })
-	}
-
-	constructor(){
-		super()
-
-		const root = this.root
-		
-		const $projects = root.find('.dy-projects')[0]//this.find
-
-		Promise.all([
-			windowLoad,
-			DY.getData,
-			customElements.whenDefined('dy-project')
-		]).then(() => {
-			const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
-			for(let postID in DY.data.posts){
-				const post = DY.data.posts[postID]
-				if(!post['page-category'].includes(pageCategory_project_id)) continue
-
-				const $project = $$$('dy-project')
-				$project.prependTo($projects)
-				$project.dataset.id = post.id
-			}
-
-			imagesLoaded($projects, () => {
-				this.isotope = new Isotope( $projects, {
-					//itemSelector: '.dy-projects > *',//'dy-project',
-					getSortData: {
-						date: '[data-date]',
-						modifiedDate: '[data-modified-date]'
-					},
-					sortBy: 'modifiedDate',
-					sortAscending: false,
-					hiddenStyle: {
-						opacity: 0,
-						transform: "perspective(1000px) scale(0.75) rotateY(180deg)"
-					},
-					visibleStyle: {
-						opacity: 1,
-						transform: "none"
-					},
-					stagger: 20
-				})
-
-				DYProjectFilters.update()
-			})
-		})
-	}
-
-	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
-	get root(){
-		this.init()
-		return this
-	}
-}
-customElements.define('dy-projects', DYProjects)
-
 class DYProjectFilters extends DYElement {
 	constructor(){
 		super()
@@ -153,9 +203,11 @@ class DYProjectFilters extends DYElement {
 		
 		DY.getData.then(() => {
 			const $taxonomies = {}
+			const excludeTaxonomies = ['page-category', 'category']
+			const excludeTerms = ['uncategorized']
 
 			for(let taxonomyName in DY.data.taxonomies){
-				if(taxonomyName === 'page-category') continue
+				if(excludeTaxonomies.includes(taxonomyName)) continue
 
 				const taxonomy = DY.data.taxonomies[taxonomyName]
 				const $taxonomy = $$$('div')
@@ -169,8 +221,8 @@ class DYProjectFilters extends DYElement {
 				$taxonomies[taxonomyName] = $taxonomy
 			}
 			for(let term of Object.values(DY.data.termsBySlug).sort((term1, term2) => term1.count - term2.count)){
-				if(term.taxonomy === 'page-category') continue
-				if(term.slug === 'uncategorized') continue
+				if(excludeTaxonomies.includes(term.taxonomy)) continue
+				if(excludeTerms.includes(term.slug)) continue
 
 				const $taxonomy = $taxonomies[term.taxonomy] // root.find(`[data-taxonomy=${term.taxonomy}`)
 				if(!$taxonomy) continue
@@ -198,9 +250,9 @@ class DYProjectFilters extends DYElement {
 			.map($term => $term.dataset.selector)
 			.join('')
 		for(let $term of root.find('a[rel=tag]')){
-			const filteredElements = this.$DYProjects.isotope.getFilteredItemElements()
+			const filteredElements = this.$DYProjects.find(':not(.hide)') //this.$DYProjects.isotope.getFilteredItemElements()
 
-			if(filteredElements.filter($element => $element.matches($term.dataset.selector)).length > 0) // this.$DYProjects.root.find(`${$term.dataset.selector}:not(.isotope-hidden)`).length
+			if([...filteredElements].filter($element => $element.matches($term.dataset.selector)).length > 0) // this.$DYProjects.root.find(`${$term.dataset.selector}:not(.isotope-hidden)`).length
 				$term.removeClass('disabled')
 			else
 				$term.addClass('disabled')
