@@ -1,18 +1,21 @@
 :root {
-	--accent-1-values: 201,67%,64%;
+	--accent-1-hue: 201;
+	--accent-1-saturation: 67%;
+	--accent-1-lightness: 64%;
+	--accent-1-values: var(--accent-1-hue), var(--accent-1-saturation), var(--accent-1-lightness);
 	--accent-1: hsla(var(--accent-1-values),1);
 	--accent-1-half: hsla(var(--accent-1-values),0.5);
 	--accent-1-quarter: hsla(var(--accent-1-values),0.25);
-	--accent-1-light: hsla(201,67%,72%,1);
-	--accent-1-dark: hsla(201,67%,56%,1);
-	--accent-1-rotate: hsla(231,67%,64%,1);
+	--accent-1-light: hsla(var(--accent-1-hue), var(--accent-1-saturation), calc(var(--accent-1-lightness) + 8%), 1);
+	--accent-1-dark: hsla(var(--accent-1-hue), var(--accent-1-saturation), calc(var(--accent-1-lightness) - 8%), 1);
+	--accent-1-rotate: hsla(calc(var(--accent-1-hue) + 30), var(--accent-1-saturation), var(--accent-1-lightness), 1);
 	--accent-2: hsla(176,100%,72%,.96);
 	--accent-3: #67b7e1;
 	--body-font: 'Hallo Sans', Asap, Roboto, sans-serif;
 	--color: rgba(0, 0, 0, 0.66);
-	--heading-font: /*'Fun Font',*/ 'Klinic Slab', 'Slabo 13px', var(--body-font);
+	--heading-font: 'Fun Font', 'Klinic Slab', 'Slabo 13px', var(--body-font);
 	
-	--site-width: 94vw;
+	--site-width: 100%;
 	--site-padding: calc((100vw - var(--site-width)) / 2);
 	/*--padding: 1.75rem;*/
 	--padding: calc(10px + 2vw);
@@ -81,6 +84,9 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, figure, pre, blockquote, hr {
 }
 h1, h2, h3, h4, h5, h6, legend {
 	font-family: var(--heading-font);
+	font-weight: normal;
+	text-transform: uppercase;
+	-webkit-text-stroke: 0.08em;
 }
 
 /*body {
@@ -215,7 +221,7 @@ main :visited {
 
 ::selection,
 main :link:hover, main :visited:hover,
-a:focus, main :link:focus, main :visited:focus {
+/*a:focus, */main :link:focus, main :visited:focus {
 	background-color: var(--accent-1-half);
 	color: #fff;
 	text-shadow: var(--shadow-dark-1);
