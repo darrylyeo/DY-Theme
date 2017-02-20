@@ -85,6 +85,8 @@ function iterateThemeFiles($directory, $fileType, $callback){
 
 
 add_action('wp_enqueue_scripts', function(){
+	global $post, $wp_query;
+
 	$prefix = 'dy-';
 	
 	$firstJSHandle;
@@ -116,10 +118,13 @@ add_action('wp_enqueue_scripts', function(){
 	});
 	
 	wp_localize_script( $prefix.$firstJSHandle, 'WP', [
+		'siteURL' => WP_SITEURL,
 		'themes' => get_theme_root_uri(),
 		'parentTheme' => get_template_directory_uri(),
 		'childTheme' => get_stylesheet_directory_uri(),
-		'nonce' => wp_create_nonce( 'wp_rest' )
+		'nonce' => wp_create_nonce( 'wp_rest' ),
+		'post' => $post,
+		'query' => $wp_query
 	] );
 
 	// Disable jQuery
