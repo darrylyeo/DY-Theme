@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="-32 -32 64 64">
+	<symbol id="code" viewBox="-32 -32 64 64">
+		<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="6">
+			<polyline points="-16,-10 -26,0 -16,10"/>
+			<polyline points="16,-10 26,0 16,10"/>
+			<polyline points="8,-16, -8,16"/>
+		</g>
+	</symbol>
+	<symbol id="art" viewBox="-32 -32 64 64">
+		<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="5">
+			<path d="M 20,-23 C 21,-23 23,-21 23,-20 C 20,-15 2,6 -4,10 C -5,7.5 -7.5,5 -10,4 C -6,-2 15,-20 20,-23"/>
+			<path d="M -15, 9 C -12,8 -8,12 -9,15 C -10,20 -18,20 -24,19 C -17,16, -19,10 -15,9"/>
+		</g>
+	</symbol>
+	<symbol id="music" viewBox="-32 -32 64 64">
+		<path d="M 15 12 C 15 8.686 12.314 6 9 6 C 5.686 6 3 8.686 3 12 C 3 15.314 5.686 18 9 18 C 12.314 18 15 15.314 15 12 L 15 -18 L -9 -18 L -9 12 C -9 15.314 -11.686 18 -15 18 C -18.314 18 -21 15.314 -21 12 C -21 8.686 -18.314 6 -15 6 C -11.686 6 -9 8.686 -9 12" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="6" transform="scale(0.85)"/>
+	</symbol>
+</svg>
