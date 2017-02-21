@@ -22,9 +22,7 @@
 		"sidebar",
 		"footer",
 		"notifications",
-		"modal",
-
-		"dy-project"
+		"modal"
 	],
 	"js": [
 		"libraries/imagesloaded.pkgd.min",
