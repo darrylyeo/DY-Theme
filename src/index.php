@@ -1,6 +1,6 @@
 <?php
 get_header();
-while(have_posts()): the_post();
+/*while(have_posts()):*/ the_post();
 ?>
 <dy-project-header></dy-project-header>
 <article>
@@ -17,6 +17,6 @@ while(have_posts()): the_post();
 	<dy-comments></dy-comments>
 </article>
 <?php
-endwhile;
+//endwhile;
 get_sidebar();
 get_footer();
