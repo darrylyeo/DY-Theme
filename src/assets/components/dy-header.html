@@ -1,0 +1,43 @@
+<template id="dy-header">
+	<header>
+		<slot></slot>
+	</header>
+</template>
+
+<script>
+class DYHeader extends DYElement {
+	static get observedAttributes() {
+		return ['logo', 'single-post', 'immersive']
+	}
+
+	constructor(){
+		super()
+
+		const root = this.root
+
+		window.on('scroll', (e => {
+			this.$header.classList[window.scrollY > $('#secondary-menu').clientBottom ? 'add' : 'remove']('sticky')
+		}).throttle(10))
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal){
+		const root = this.root
+		
+		/*if(attr === 'logo'){
+			root.updateWithModel({
+				'#logo a[src]': newVal
+			})
+		}*/
+		if(attr === 'single-post'){
+			
+		}
+	}
+
+	get $header(){
+		return this.root.find('header')
+	}
+}
+customElements.define('dy-header', DYHeader, {
+	extends: 'header'
+})
+</script>
