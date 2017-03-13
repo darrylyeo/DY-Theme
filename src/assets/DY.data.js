@@ -46,13 +46,22 @@ DY.getData = Promise.race([
 				}
 			}
 		}),
-		getJSON('./wp-json/wp/v2/users/me', {
+		/*getJSON('./wp-json/wp/v2/users/me', {
 			headers: {
 				'X-WP-Nonce': WP.nonce
 			}
 		}).then(data => {
 			X(data)
 			DY.user = data
-		})
+		})*/
+		/*fetch('./wp-json/wp/v2/users/me', {
+			headers: new Headers({
+				'X-WP-Nonce': WP.nonce
+			})
+		}).then(data => {
+			data = JSON.parse(response)
+			X(data)
+			DY.user = data
+		})*/
 	])
 ])
