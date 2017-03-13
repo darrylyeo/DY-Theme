@@ -1,23 +1,26 @@
 <template id="dy-projects">
 	<style>
 		dy-projects {
+			height: 100vh;
+
 			--dy-projects-height: calc(100vh - var(--main-menu-height));
 			height: var(--dy-projects-height);
+
+			--dy-project-max-width: calc(100vw - var(--padding) * 2);
+			--dy-project-max-height: calc(var(--dy-projects-height) - var(--padding) * 2);
+			
+			min-height: 15rem;
+			margin: var(--padding-neg);
+			padding: var(--padding);
 
 			display: flex;
 			flex-direction: column;
 		}
 
-		.has-focused-project dy-project-filters {
-			opacity: 0.25;
-		}
-
 		.dy-projects {
 			--perspective: 30rem;
 			perspective: var(--perspective);
-			perspective-origin: bottom;
-
-			font-size: 0.75em;
+			/*perspective-origin: bottom;*/
 
 			display: flex;
 			flex-direction: column;
@@ -25,14 +28,18 @@
 			/*align-content: center;*/
 			flex: 1;
 
-			margin-top: calc(1em - 10rem);
-			padding-top: 10rem;
+			padding-top: 1em;
+			/*margin-top: calc(1em - 10rem);
+			padding-top: 10rem;*/
 
 			margin-left: var(--padding-neg);
 			margin-right: var(--padding-neg);
 			padding-left: calc(var(--padding) - 0.5em);
 			padding-right: calc(var(--padding) - 0.5em);
+
 			padding-bottom: 5vh;
+			margin-bottom: var(--padding-neg);
+
 			/*max-height: var(--dy-projects-height);*/
 
 			overflow-x: auto;
@@ -41,22 +48,13 @@
 		}
 		.has-focused-project .dy-projects {
 			perspective-origin: center;
+
+			margin-top: calc(var(--dy-projects-height) - 100vh);
+			min-height: var(--dy-projects-height);
+			padding-top: calc(100vh - var(--dy-projects-height) + 1em);
 		}
 		dy-projects:not(.has-focused-project) .dy-projects {
 			pointer-events: none;
-		}
-
-		dy-project {
-			pointer-events: initial;
-			transition: var(--transition-medium);
-		}
-		.has-focused-project dy-project.focused {
-			transform: scale(10) translateZ(calc(var(--perspective) * (1 - 10))) translateY(-25vh) translateY(50%);
-		}
-		.has-focused-project dy-project:not(.focused) {
-			/*opacity: 0.25;*/
-			transform: translateZ(calc(var(--perspective) * (1 - 0.75))) scale(0.75);
-			transform: scale(0.75);
 		}
 	</style>
 	<dy-project-filters></dy-project-filters>
@@ -126,19 +124,41 @@ class DYProjects extends DYElement {
 			click: e => {
 				if(e.target === $projectsWrapper)
 					this.setFocusedProject()
-			}
+			},
+			scroll: this.scrollInView.throttle()
 		})
 	}
 
 	setFocusedProject($project){
+		const root = this.root
+
 		const makeProjectFocused = $project !== undefined && !$project.hasClass('focused')
 
 		this.toggleClass(makeProjectFocused, 'has-focused-project')
 		//;(() => this.toggleClass(makeProjectFocused, 'has-focused-project')).delay(100)
 
-		this.find('dy-project.focused').removeClass('focused')
+		root.find('dy-project.focused').removeClass('focused')
 
 		if($project) $project.toggleClass(makeProjectFocused, 'focused')
+
+		let loadImage
+		document.body.find('#background canvas')[0].draw(function(){
+			if(makeProjectFocused && $project.data.featuredImage){
+				this.loadImage($project.data.featuredImage.source_url).then(img => {
+					this.blur(30)
+					this.drawImage(img, 0, 0, this.width, this.width / img.ratio)
+				})
+			}else{
+				this.clear()
+			}
+			
+		}, true)
+
+		this.scrollInView()
+	}
+
+	scrollInView(){
+		document.body.animateScrollY($('dy-header').stickyScrollY)
 	}
 
 	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
@@ -155,11 +175,19 @@ customElements.define('dy-projects', DYProjects)
 
 <template id="dy-project-filters">
 	<style>
+		:host {
+			transition: opacity: var(--transition-medium);
+		}
+		:host-context(.has-focused-project):host {
+			opacity: 0.25;
+		}
+
 		:host, #terms {
 			display: flex;
 			justify-content: space-between;
 			margin: -0.25em -0.5em;
 		}
+
 		div[data-taxonomy] {
 			justify-content: space-between;
 			align-items: center;
