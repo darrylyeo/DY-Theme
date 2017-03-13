@@ -3,7 +3,7 @@ if(this.top.location.href !== this.location.href) this.top.location = this.locat
 
 const $html = $('html')
 const $body = document.body
-const $header = $('header')
+const $DYHeader = $('dy-header')
 const $toTop = $('#to-top')
 
 documentReady.then(() => {
@@ -16,9 +16,8 @@ windowLoad.then(() => {
 })
 
 window.on('scroll', function(e){
-	$header.classList[this.scrollY > $('#secondary-menu').clientBottom ? 'add' : 'remove']('sticky')
-	$toTop.classList[this.scrollY > window.innerHeight * 0.5 ? 'add' : 'remove']('show')
-}.throttle(10))
+	$toTop.classList[this.scrollY >= window.innerHeight * 0.5 ? 'add' : 'remove']('show')
+}.throttle())
 window.trigger('scroll')
 
 /*document.body.on('scroll', function(e){console.log(this.scrollY, this.scrollTop, e)
@@ -121,17 +120,14 @@ window.on('pageanimate', () => {
 window.on('pageload', () => {
 	let data = WP.current
 
-	$('header').toggleClass(WP.queryType === 'front-page', 'full', 'immersive')
-	$('#secondary-menu').toggleClass(WP.queryType === 'front-page', 'immersive')
-
 	if(WP.queryType === 'front-page'){
-		showNavItems()
+		$DYHeader.showNavItems()
 	}else if(WP.queryType === 'archive'){
 		data = DY.data.objects[WP.siteURL]
 
-		showNavItems(location.href.split('/').pop())
+		$DYHeader.showNavItems(location.href.split('/').pop())
 	}else if(WP.queryType === 'blog'){
-		showNavItems('blog')
+		$DYHeader.showNavItems('blog')
 	}
 	X(data)
 
@@ -147,75 +143,6 @@ $$('#main-menu > ul > li > a').on({
 		
 	}
 })
-
-function showNavItems(){
-	const items = [...arguments]
-
-	if(items.length){
-		$('#logo').animate([
-			{ marginRight: getComputedStyle($('#logo')).marginRight }, 
-			{ marginRight: '-1em' }
-		], { 
-			duration: 500,
-			fill: 'forwards',
-			easing: 'ease-out'
-		})
-	}else{
-		$('#logo').animate([
-			{ marginRight: '-1em' },
-			{ marginRight: getComputedStyle($('#logo')).marginRight }
-		], { 
-			duration: 500,
-			fill: 'forwards',
-			easing: 'ease-out'
-		})
-	}
-
-	for(const $navItem of $$('#main-menu > ul > li')){
-		$navItem.css('display', '')
-
-		const showStyle = {
-			opacity: '1',
-			width: $navItem.computedStyle.width,
-			transform: 'none'
-		}
-		const hideStyle = {
-			opacity: '0',
-			width: '0',
-			transform: 'scale(0.5)'
-		}
-
-		if(!items.length || items.includes($navItem.innerText.toLowerCase().trim())){
-			$navItem.play()
-			/*$navItem.animate([
-				hideStyle,
-				showStyle
-			], { 
-				duration: 500,
-				//fill: 'forwards',
-				easing: 'ease-out'
-			})*/
-		}else{
-			$navItem.animate([
-				showStyle,
-				hideStyle
-			], { 
-				duration: 500,
-				//fill: 'forwards',
-				easing: 'ease-out'
-			})
-			;(() => {
-				$navItem.css('display', 'none')
-			}).delay(500)
-			/*$navItem.once({
-				animationend(){
-					X(this, 'end')
-					this.css('display', 'none')
-				}
-			})*/
-		}
-	}
-}
 
 
 
