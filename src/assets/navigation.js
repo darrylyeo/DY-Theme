@@ -1,20 +1,6 @@
-const prerenderedURLs = []
-$$('a').on('mouseover', function(){
-	if(!this.href || prerenderedURLs.includes(this.href)) return
-	
-	const link = document.createElement('link')
-	link.setAttribute('rel', 'prerender')
-	link.setAttribute('href', this.href)
-	document.head.append(link)
-	
-	prerenderedURLs.push(this.href)
-})
-
-
-const DYNavigation = new class {
-	constructor(){
-		this.navigatingTo = ''
-	}
+const DYNavigation = {
+	navigatingTo: '',
+	prerenderedURLs: [],
 
 	navigateTo(url, host, pushNewState){
 		if(!url || host !== location.host/* || url === location.href*/) return false
@@ -85,8 +71,15 @@ const DYNavigation = new class {
 		})
 
 		return true
-	}
+	},
 
+
+	processLinks($$a){
+		$$a.on({
+			click: this.openLink,
+			mouseover: this.onLinkMouseOver
+		})
+	},
 	// Called with scope of <a> element
 	openLink(e){
 		if(!this.href) return
@@ -96,7 +89,19 @@ const DYNavigation = new class {
 			e.preventDefault()
 		}else if(DYNavigation.navigateTo(this.href, this.host, true))
 			e.preventDefault()
-	}
+	},
+	onLinkMouseOver(){
+		const href = this.href
+		if(!href || this.prerenderedURLs.includes(href)) return
+
+		$$$('link').attr({
+			rel: prerender,
+			href
+		}).appendTo(document.head)
+		
+		this.prerenderedURLs.push(href)
+	},
+
 
 	onPageLoad(){
 		DY.getData.then(() => {
@@ -132,9 +137,11 @@ const DYNavigation = new class {
 				}
 			}
 
+			this.processLinks( $$('a') )
+
 			window.dispatchEvent(new CustomEvent('pageload'))
 		})
-	}
+	},
 	onPageAnimate(){
 		window.dispatchEvent(new CustomEvent('pageanimate'))
 	}
@@ -142,7 +149,10 @@ const DYNavigation = new class {
 
 documentReady.then(() => DYNavigation.onPageLoad())
 
-$$('a').on('click', DYNavigation.openLink)
-window.on('popstate', () => {
+
+window.on('popstate', (e) => {
 	DYNavigation.navigateTo(location.href, location.host)
+	X(e)
+	e.preventDefault()
 })
+//onbeforeunload
