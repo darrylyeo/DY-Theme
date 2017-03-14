@@ -171,11 +171,11 @@ nav ul > li > a:hover + dy-icon {
 }
 nav ul > li > a:not(:hover) + dy-icon {
 	opacity: 0.1;
-	stroke: #000;
+	color: #000;
 }
-#header.immersive nav ul > li > a:not(:hover) + dy-icon {
-	opacity: 0.25;
-	stroke: #fff;
+#header.immersive:not(.sticky) nav ul > li > a:not(:hover) + dy-icon {
+	opacity: 0.2;
+	color: #fff;
 }
 
 

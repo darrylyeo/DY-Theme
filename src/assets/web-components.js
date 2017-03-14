@@ -105,6 +105,7 @@ DYElement.$style = $$$('style', {
 
 //window.addEventListener('WebComponentsReady', e => {
 const webComponents = [
+	'dy-icon',
 	'dy-header',
 	'dy-project',
 	'dy-projects',
