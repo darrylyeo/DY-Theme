@@ -83,7 +83,7 @@ const DYElement = class extends HTMLElement {
 		//X('template content', this.tagName, this.$template.content, document.importNode(this.$template.content, true), root)
 
 		this.addStyle(DYElement.$style)
-		DYNavigation.processLinks( this.find('a') )
+		DYNavigation.processLinks( root.find('a') )
 	}
 
 	addStyle($style){
