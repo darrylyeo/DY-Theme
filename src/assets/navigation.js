@@ -92,14 +92,14 @@ const DYNavigation = {
 	},
 	onLinkMouseOver(){
 		const href = this.href
-		if(!href || this.prerenderedURLs.includes(href)) return
+		if(!href || DYNavigation.prerenderedURLs.includes(href)) return
 
 		$$$('link').attr({
-			rel: prerender,
+			rel: 'prerender',
 			href
 		}).appendTo(document.head)
 		
-		this.prerenderedURLs.push(href)
+		DYNavigation.prerenderedURLs.push(href)
 	},
 
 
