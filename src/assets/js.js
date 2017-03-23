@@ -843,7 +843,7 @@ Object.defineProperties(HTMLImageElement.prototype, {
 	}
 })
 
-HTMLCanvasElement.prototype.resize = function(){
+/*HTMLCanvasElement.prototype.resize = function(){
 	this.width = this.clientWidth
 	this.height = this.clientHeight
 	return this
@@ -859,6 +859,45 @@ HTMLCanvasElement.prototype.draw = function(callback, drawOnResize){
 		}).debounce(100))
 	}
 	return this
+}*/
+HTMLCanvasElement.prototype.resize = function(){
+	this.width = this.clientWidth
+	this.height = this.clientHeight
+	return this
+}
+HTMLCanvasElement.prototype.draw = function(callback){
+	if(callback) this._drawCallback = callback
+
+	if(this._drawCallback){
+		const context = this.getContext('2d')
+		this._drawCallback.call(context, context)
+	}
+	return this
+}
+HTMLCanvasElement.prototype.drawOnResize = function(drawOnResize = true){
+	if(drawOnResize){
+		const context = this.getContext('2d')
+		this._onResize = (() => {
+			this.resize()
+			this.draw()
+		}).debounce(100)
+		window.on('resize', this._onResize)
+	}else{
+		window.off('resize', this._onResize)
+	}
+	return this
+}
+HTMLCanvasElement.prototype.animate = function(callback, interval){
+	if(callback) this._drawCallback = callback
+
+	clearInterval(this._animationInterval)
+
+	if(this._drawCallback){
+		const context = this.getContext('2d')
+		this._animationInterval = (() => {
+			return this._drawCallback.call(context, context)
+		}).interval(interval)
+	}
 }
 
 CanvasRenderingContext2D.prototype.clear = function(){
