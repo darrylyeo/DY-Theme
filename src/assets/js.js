@@ -946,6 +946,7 @@ HTMLCanvasElement.prototype.animate = function(callback, interval){
 			return this._drawCallback.call(context, context)
 		}).interval(interval)
 	}
+	return this
 }
 
 CanvasRenderingContext2D.prototype.clear = function(){
