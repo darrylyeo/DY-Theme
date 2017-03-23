@@ -136,4 +136,14 @@ add_action('wp_enqueue_scripts', function(){
 		'query' => $wp_query
 	] );
 
+	// HTML Imports
+	if(!$ASSETS->settings->asyncHTML){
+		add_action( 'wp_footer', function(){
+			global $ASSETS;
+
+			foreach($ASSETS->html as $handle){
+				echo file_get_contents( get_theme_file_uri('assets/components/'.$handle.'.html') );
+			}
+		}, 1000);
+	}
 });
