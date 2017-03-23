@@ -1,6 +1,8 @@
 <?php
 
-define('DEV', true);
+$ASSETS = json_decode(file_get_contents(
+	get_theme_file_uri('assets/assets.json')
+));
 
 /* PHP includes */
 $framework = array(
@@ -85,28 +87,19 @@ function iterateThemeFiles($directory, $fileType, $callback){
 
 
 add_action('wp_enqueue_scripts', function(){
-	global $post, $wp_query;
+	global $post, $wp_query, $ASSETS;
 
 	$prefix = 'dy-';
 	
 	$firstJSHandle;
 
-	if(DEV){
-		$assets = json_decode(file_get_contents(
-			__DIR__.'/assets/assets.json'
-		));
-		foreach($assets->css as $handle){
+	// CSS
+	if($ASSETS->settings->optimizeCSS){
+		wp_enqueue_style($prefix.'css', get_theme_file_uri('assets/all.min.css'));
+	}else{
+		foreach($ASSETS->css as $handle){
 			wp_enqueue_style($prefix.$handle, get_theme_file_uri('assets/'.$handle.'.css'));
 		}
-		foreach($assets->js as $handle){
-			if(!$firstJSHandle) $firstJSHandle = $handle;
-			wp_enqueue_script($prefix.$handle, get_theme_file_uri('assets/'.$handle.'.js'), null, null, true);
-		}
-	}else{
-		wp_enqueue_style($prefix.'css', get_theme_file_uri('assets/all.min.css'));
-		wp_enqueue_script($prefix.'js', get_theme_file_uri('assets/all.min.js'), null, null, true);
-		
-		if(!$firstJSHandle) $firstJSHandle = 'js';
 	}
 
 	// CSS by Plugin
@@ -116,7 +109,23 @@ add_action('wp_enqueue_scripts', function(){
 			wp_enqueue_style( 'plugin-'.$slug, $path);
 		}
 	});
+
+	// JavaScript
+	if($ASSETS->settings->optimizeJS){
+		wp_enqueue_script($prefix.'js', get_theme_file_uri('assets/all.min.js'), null, null, true);
+	}else{
+		if(!$firstJSHandle) $firstJSHandle = 'js';
+
+		foreach($ASSETS->js as $handle){
+			if(!$firstJSHandle) $firstJSHandle = $handle;
+			wp_enqueue_script($prefix.$handle, get_theme_file_uri('assets/'.$handle.'.js'), null, null, true);
+		}
+	}
+
+	// Disable jQuery
+	wp_dequeue_script( 'jquery' );
 	
+	// Localize WP variables
 	wp_localize_script( $prefix.$firstJSHandle, 'WP', [
 		'siteURL' => WP_SITEURL,
 		'themes' => get_theme_root_uri(),
@@ -127,6 +136,4 @@ add_action('wp_enqueue_scripts', function(){
 		'query' => $wp_query
 	] );
 
-	// Disable jQuery
-	wp_dequeue_script( 'jquery' );
 });

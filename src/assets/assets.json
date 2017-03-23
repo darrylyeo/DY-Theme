@@ -1,4 +1,9 @@
 {
+	"settings": {
+		"asyncHTML": false,
+		"optimizeCSS": false,
+		"optimizeJS": false
+	},
 	"html": [
 		"dy-project",
 		"dy-projects",
