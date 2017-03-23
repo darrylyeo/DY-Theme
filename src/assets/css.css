@@ -56,11 +56,11 @@
 	box-decoration-break: clone;
 	box-sizing: border-box;
 	/*border-radius: 0.5px;*/
-	transition:
+	/*transition:
 		background var(--transition-fast),
 		box-shadow var(--transition-fast),
 		color var(--transition-fast),
-		filter var(--transition-medium);
+		filter var(--transition-medium);*/
 	/*animation: Whee 1s;*/
 }
 /*@keyframes Whee {
