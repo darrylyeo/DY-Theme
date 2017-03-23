@@ -6,7 +6,7 @@ DY.mapTaxonomyName = function(taxonomyName){
 
 DY.getData = Promise.race([
 	new Promise(function(resolve){
-		if(DY.data.posts && DY.data.taxonomies && DY.data.terms && DY.data.termsBySlug)
+		if(DY.data.objects && DY.data.posts && DY.data.taxonomies && DY.data.terms && DY.data.termsBySlug)
 			resolve()
 
 		if(!DY.data.objects) DY.data.objects = {}
