@@ -69,7 +69,7 @@ class DYProjects extends DYElement {
 	set filter(filter){
 		//this.isotope.arrange({ filter })
 		
-		for(const $project of this.find('dy-project')){
+		for(const $project of this.$projects){
 			X($project.matches('*'))
 			$project.toggleClass(!$project.matches(filter || '*'), 'hide')
 		}
@@ -161,6 +161,10 @@ class DYProjects extends DYElement {
 
 	get $projectsWrapper(){
 		return this.root.find('.projects')[0]
+	}
+
+	get $projects(){
+		return this.root.find('dy-project')
 	}
 
 	scrollInView(){
