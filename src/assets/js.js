@@ -125,6 +125,10 @@ Math.random = Number.random = function(a = 1, b = 0){
 	return Math._random().normMap(a, b)
 }
 
+Math.dist = function(a, b){
+	return Math.abs(a - b)
+}
+
 Number.prototype.map = function(a, b, A = 0, B = 1){
 	return A + (this - a) / (b - a) * (B - A)
 }
@@ -545,21 +549,58 @@ Element.prototype.updateWithModel = DocumentFragment.prototype.updateWithModel =
 	}
 	return this
 }
-Element.prototype.animateScrollY = function(y, speedFactor = 0.08, stopPromise){
+
+/*
+stopPromise: Promise - Stop animating when this promise is resolved.
+*/
+if(0) Element.prototype.animateScrollY = function(y, speedFactor = 0.08, stopPromise){
 	let stop = false
-	stopPromise && stopPromise.then(() => stop = true)
+	if(stopPromise)
+		stopPromise.then(() => stop = true)
+
 	/*let isProgrammaticScroll = false
 	this.on('scroll', () => {
 		X(2)
 		if(isProgrammaticScroll) isProgrammaticScroll = false
 		else stop = true,X('stop!')
 	})*/
+
 	;(() => {
 		//isProgrammaticScroll = true
 		this.scrollTop = this.scrollTop * (1 - speedFactor)
 		return this.scrollTop > 0 && !stop
 	}).interval(1)
+
 	return this
+}
+
+const elementToScrollInterval = new WeakMap()
+Element.prototype.animateScrollY = function(y = 0, speedFactor = 0.1, stopPromise){
+	y = Math.ceil(y)
+
+	if(elementToScrollInterval.has(this)){
+		const interval = elementToScrollInterval.get(this)
+		interval.stop()
+	}
+
+	const interval = new Interval(interval => {
+		const dy = Math.max(
+			Math.abs(y - this.scrollTop) * speedFactor,
+			Math.min( Math.dist(this.scrollTop, y), 1.5 )
+		) * Math.sign(y - this.scrollTop)
+		
+		this.scrollTop = this.scrollTop + dy
+		
+		if(Math.dist(this.scrollTop, y) <= dy){
+			this.scrollTop = y
+			interval.stop()
+		}
+	})
+	if(stopPromise) stopPromise.then(() => interval.stop())
+
+	elementToScrollInterval.set(this, interval)
+
+	return interval
 }
 
 /*Element.prototype.click_ = function(f){
@@ -905,6 +946,62 @@ Object.defineProperties(CanvasRenderingContext2D.prototype, {
 		}
 	}
 })
+
+
+
+
+
+
+class Interval {
+	constructor(callback, period = 0, autoStart = true){
+		Object.assign(this, {
+			callback,
+			period,
+			startTime: undefined,
+			isRunning: false,
+			intervalID: undefined
+		})
+		if(autoStart) this.start()
+	}
+
+	get elapsedTime(){
+		return this.isRunning ? Date.now() - this.startTime : 0
+	}
+
+
+	_call(){
+		if(this.callback){
+			const stop = this.callback(this) === false
+			if(stop) this.isRunning = false
+		}
+		this._scheduleNextCall()
+	}
+	_scheduleNextCall(){
+		if(this.isRunning){
+			if(this.period === 0){
+				requestAnimationFrame(this._call.bind(this))
+			}else{
+				this.intervalID = setInterval(this._call.bind(this))
+			}
+		}else{
+			if(this.intervalID){
+				stopInterval(this.intervalID)
+				this.intervalID = undefined
+			}
+		}
+	}
+
+	start(){
+		this.isRunning = true
+		this.startTime = Date.now()
+
+		this._scheduleNextCall()
+	}
+
+	stop(){
+		this.isRunning = false
+	}
+}
 
 
 
