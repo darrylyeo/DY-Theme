@@ -916,10 +916,13 @@ CanvasRenderingContext2D.prototype.scale = function(x, y = x){
 CanvasRenderingContext2D.prototype.loadImage = function(url){
 	return new Promise((resolve, reject) => {
 		const img = new Image()
-		img.on('load', () => {
-			resolve(img)
-		}).on('error', e => {
-			reject(e)
+		img.on({
+			load(){
+				resolve(img)
+			},
+			error(e){
+				reject(e)
+			}
 		})
 		img.src = url
 	})
