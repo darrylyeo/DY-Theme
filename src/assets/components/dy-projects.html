@@ -171,11 +171,11 @@ class DYProjects extends DYElement {
 		document.body.animateScrollY($('dy-header').stickyScrollY)
 	}
 
-	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
+	/*// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
 	get root(){
 		this.init()
 		return this
-	}
+	}*/
 }
 customElements.define('dy-projects', DYProjects)
 </script>
