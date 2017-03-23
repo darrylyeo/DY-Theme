@@ -481,22 +481,33 @@ Element.prototype.text = function(text){
 	return this
 }
 Element.prototype.attr = function(attr, value){
+	let
+		get = this.getAttribute.bind(this),
+		remove = this.removeAttribute.bind(this),
+		set = this.setAttribute.bind(this)
+	if(this instanceof SVGElement){
+		const namespaceSVG = 'http://www.w3.org/2000/svg'
+		get = function(){ return this.getAttributeNS(namespaceSVG, ...arguments) }.bind(this)
+		remove = function(){ return this.removeAttributeNS(namespaceSVG, ...arguments) }.bind(this)
+		set = function(){ return this.setAttributeNS(namespaceSVG, ...arguments) }.bind(this)
+	}
+
 	let attrs = {}
 	if(arguments.length === 2){
 		attrs[attr] = value
 	}else if(typeof arguments[0] === 'object'){
 		attrs = arguments[0]
 	}else if(typeof arguments[0] === 'string'){
-		return this.getAttribute(attr)
+		return get(attr)
 	}
 	for(attr in attrs){
 		const value = attrs[attr]
 		if(value === null || typeof value === 'undefined'){
-			this.removeAttribute(attr)
+			remove(attr)
 		}else if(attr === 'style' && typeof value === 'object'){
 			this.css(value)
 		}else{
-			this.setAttribute(attr, value)
+			set(attr, value)
 		}
 	}
 	return this
@@ -510,7 +521,14 @@ Element.prototype.attr = function(attr, value){
 	}
 }*/
 Element.prototype.css = function(style){
-	if(arguments.length === 2){
+	if(arguments.length === 1 && typeof arguments[0] === 'string'){
+		const prop = arguments[0]
+		if(prop.includes('-')){
+			return this.style.getPropertyValue(prop)
+		}else{
+			return this.style[prop]
+		}
+	}else if(arguments.length === 2){
 		const [prop, value] = arguments
 		style = {
 			[prop]: value
@@ -520,10 +538,10 @@ Element.prototype.css = function(style){
 	for(let prop in style){
 		const value = style[prop]
 		//if(prop in this.style){
-		if(!prop.includes('-')){
-			this.style[prop] = value
-		}else{
+		if(prop.includes('-')){
 			this.style.setProperty(prop, value)
+		}else{
+			this.style[prop] = value
 		}
 	}
 	return this
@@ -928,6 +946,7 @@ HTMLCanvasElement.prototype.animate = function(callback, interval){
 			return this._drawCallback.call(context, context)
 		}).interval(interval)
 	}
+	return this
 }
 
 CanvasRenderingContext2D.prototype.clear = function(){
