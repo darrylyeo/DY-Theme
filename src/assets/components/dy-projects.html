@@ -168,7 +168,9 @@ class DYProjects extends DYElement {
 	}
 
 	scrollInView(){
-		document.body.animateScrollY($('dy-header').stickyScrollY)
+		const computedStyle = this.computedStyle
+		if(parseFloat(computedStyle['height']) > parseFloat(computedStyle['min-height']))
+			document.body.animateScrollY($('dy-header').stickyScrollY)
 	}
 
 	/*// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
