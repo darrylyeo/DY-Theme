@@ -108,44 +108,37 @@ DYElement.$style = $$$('style', {
 		//html: [...document.styleSheets].map(s => s.href ? `@import "${s.href}";` : '').join('\n')
 })
 
-//window.addEventListener('WebComponentsReady', e => {
-const webComponents = [
-	'dy-icon',
-	'dy-header',
-	'dy-project',
-	'dy-projects',
-	'dy-project-header',
-	'dy-blog',
-	'dy-notification',
-	'dy-date',
-	'dy-comments',
-	'khan',
-]
-for(let handle of webComponents){
-	const $link = document.createElement('link')
-	$link.rel = 'import'
-	$link.href = WP.parentTheme + `/assets/components/${handle}.html`
-	$link.id = handle + '-import'
-	$link.on({
-		load(){
-			document.body.append(this.import.find('template'))
-		}
-	})
-	document.head.appendChild($link)
 
-	/*const $link = $$$('link').attr({
-		rel: 'import',
-		href: WP.parentTheme + `/assets/components/${handle}.html`
-	}).appendTo(document.head)*/
+DY.getAssetsList.then(assets => {
+	if(!assets.settings.asyncHTML) return
 
+	const webComponents = assets.html
 
-	//if('import' in document.createElement('link')){
-		
-		//wrap($link).appendTo(wrap(document.head))
-	/*}else{
-		get($link.href).then(data => {
-			document.body.insertAdjacentHTML('beforeend', data)
+	for(let handle of webComponents){
+		const $link = document.createElement('link')
+		$link.rel = 'import'
+		$link.href = WP.parentTheme + `/assets/components/${handle}.html`
+		$link.id = handle + '-import'
+		$link.on({
+			load(){
+				document.body.append(this.import.find('template'))
+			}
 		})
-	}*/
-}
-//})
+		document.head.appendChild($link)
+
+		/*const $link = $$$('link').attr({
+			rel: 'import',
+			href: WP.parentTheme + `/assets/components/${handle}.html`
+		}).appendTo(document.head)*/
+
+
+		//if('import' in document.createElement('link')){
+			
+			//wrap($link).appendTo(wrap(document.head))
+		/*}else{
+			get($link.href).then(data => {
+				document.body.insertAdjacentHTML('beforeend', data)
+			})
+		}*/
+	}
+})

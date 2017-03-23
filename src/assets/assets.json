@@ -5,9 +5,12 @@
 		"optimizeJS": false
 	},
 	"html": [
+		"dy-icon",
+		"dy-header",
 		"dy-project",
 		"dy-projects",
 		"dy-project-header",
+		"dy-blog",
 		"dy-notification",
 		"dy-date",
 		"dy-comments",
