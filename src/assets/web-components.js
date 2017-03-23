@@ -98,6 +98,11 @@ const DYElement = class extends HTMLElement {
 }
 DYElement.$style = $$$('style', {
 	html: Array.from(document.styleSheets, s => s.href ? `@import "${s.href}";` : '').join('\n')
+	html: Array.from(document.styleSheets)
+		.filter(s => s.href && s.href.includes('css.css'))
+		.map(s => `@import '${s.href}';`)
+		.join('\n')
+	//html: Array.from(document.styleSheets, s => s.href ? `@import "${s.href}";` : '').join('\n')
 
 	// Doesn't work in Safari (TypeError: ...document.styleSheets is not a function?!)
 		//html: [...document.styleSheets].map(s => s.href ? `@import "${s.href}";` : '').join('\n')
