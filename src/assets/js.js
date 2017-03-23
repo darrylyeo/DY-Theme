@@ -543,8 +543,9 @@ Element.prototype.updateWithModel = DocumentFragment.prototype.updateWithModel =
 				}
 			}
 		}else{
-			const $el = this.querySelector(handle)
-			if($el) $el.innerHTML = value
+			this.find(handle).html(value)
+			//const $el = this.querySelector(handle)
+			//if($el) $el.innerHTML = value
 		}
 	}
 	return this
