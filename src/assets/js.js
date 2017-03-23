@@ -510,7 +510,14 @@ Element.prototype.attr = function(attr, value){
 	}
 }*/
 Element.prototype.css = function(style){
-	if(arguments.length === 2){
+	if(arguments.length === 1 && typeof arguments[0] === 'string'){
+		const prop = arguments[0]
+		if(prop.includes('-')){
+			return this.style.getPropertyValue(prop)
+		}else{
+			return this.style[prop]
+		}
+	}else if(arguments.length === 2){
 		const [prop, value] = arguments
 		style = {
 			[prop]: value
@@ -520,10 +527,10 @@ Element.prototype.css = function(style){
 	for(let prop in style){
 		const value = style[prop]
 		//if(prop in this.style){
-		if(!prop.includes('-')){
-			this.style[prop] = value
-		}else{
+		if(prop.includes('-')){
 			this.style.setProperty(prop, value)
+		}else{
+			this.style[prop] = value
 		}
 	}
 	return this
