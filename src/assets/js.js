@@ -608,6 +608,35 @@ Element.prototype.animateScrollY = function(y = 0, speedFactor = 0.1, stopPromis
 	this.addEventListener('click', f)
 }*/
 
+Element.prototype.animateStyleChange = function(callback){
+	const beforeStyle = Object.assign({}, window.getComputedStyle(this))
+
+	if(this._styleChangeAnimation) this._styleChangeAnimation.cancel()
+	callback.call(this)
+
+	//requestAnimationFrame(() => {
+		const afterStyle = Object.assign({}, window.getComputedStyle(this))
+
+		const duration = parseInt(afterStyle.transitionDuration)
+		if(duration === 0) return
+
+		const styleDifference = {}
+		for(const property in beforeStyle){
+			if(beforeStyle[property] !== afterStyle[property]){
+				styleDifference[property] = [
+					beforeStyle[property],
+					afterStyle[property]
+				]
+			}
+		}
+
+		this._styleChangeAnimation = this.animate(styleDifference, {
+			duration: duration
+		})
+		//TweenLite(this, styleDifference, duration)
+	//})
+}
+
 // For anything with addEventListener()
 EventTarget.prototype.on = function(eventNames, callback, optionsOrUseCapture){
 	if(typeof eventNames === 'object'){
