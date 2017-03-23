@@ -60,7 +60,7 @@
 		}
 	</style>
 	<dy-project-filters></dy-project-filters>
-	<div class="dy-projects"></div>
+	<div class="projects"></div>
 </template>
 
 
@@ -80,7 +80,7 @@ class DYProjects extends DYElement {
 
 		const root = this.root
 		
-		const $projectsWrapper = root.find('.dy-projects')[0]//this.find
+		const $projectsWrapper = this.$projectsWrapper
 
 		Promise.all([
 			windowLoad,
@@ -99,7 +99,7 @@ class DYProjects extends DYElement {
 
 			/*imagesLoaded($projects, () => {
 				this.isotope = new Isotope( $projects, {
-					//itemSelector: '.dy-projects > *',//'dy-project',
+					//itemSelector: '.projects > *',//'dy-project',
 					getSortData: {
 						date: '[data-date]',
 						modifiedDate: '[data-modified-date]'
@@ -157,6 +157,10 @@ class DYProjects extends DYElement {
 		}, true)
 
 		this.scrollInView()
+	}
+
+	get $projectsWrapper(){
+		return this.root.find('.projects')[0]
 	}
 
 	scrollInView(){
