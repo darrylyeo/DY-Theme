@@ -102,11 +102,10 @@ const DYElement = class extends HTMLElement {
 			$style.import().insertBefore(this.$style)
 		else
 			$style.import().appendTo(root)
-		//document.importNode(DYElement.$style, true).insertBefore(root.find('style')[0])
+		document.importNode(DYElement.$style, true).insertBefore(root.find('style')[0])
 	}
 }
 DYElement.$style = $$$('style', {
-	html: Array.from(document.styleSheets, s => s.href ? `@import "${s.href}";` : '').join('\n')
 	html: Array.from(document.styleSheets)
 		.filter(s => s.href && s.href.includes('css.css'))
 		.map(s => `@import '${s.href}';`)
