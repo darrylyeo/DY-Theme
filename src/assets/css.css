@@ -144,7 +144,7 @@ img {
 main img, :host img {
 	background-color: rgba(0, 0, 0, 0.05);
 	border-radius: 0.5rem;
-	text-indent: -100vmax;
+	text-indent: -200vmax;
 }
 section figure {
 	padding-top: 0.5em;
