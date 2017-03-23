@@ -76,6 +76,11 @@ const DYElement = class extends HTMLElement {
 		if(this._init) return
 		this._init = true
 
+		if('ShadyCSS' in window && !ShadyCSS.nativeShadow){
+			ShadyCSS.prepareTemplate(this.$template, this.tagName)
+			ShadyCSS.styleElement(this)
+		}
+
 		const root = this.root
 		//this.$template.content.import().appendTo(root)
 		root.appendChild(document.importNode(this.$template.content, true))
