@@ -169,6 +169,8 @@ class DYHeader extends DYElement {
 		window.on('pageload', () => {
 			$header.toggleClass(WP.queryType === 'front-page', 'full', 'immersive')
 			$secondaryMenu.toggleClass(WP.queryType === 'front-page', 'immersive')
+			if(WP.queryType === 'front-page'){
+			}else if(WP.queryType === 'archive'){
 		})
 	}
 

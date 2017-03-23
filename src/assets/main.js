@@ -120,14 +120,8 @@ window.on('pageanimate', () => {
 window.on('pageload', () => {
 	let data = WP.current
 
-	if(WP.queryType === 'front-page'){
-		$DYHeader.showNavItems()
-	}else if(WP.queryType === 'archive'){
+	if(WP.queryType === 'archive' && WP.postType === 'project'){
 		data = DY.data.objects[WP.siteURL]
-
-		$DYHeader.showNavItems(location.href.split('/').pop())
-	}else if(WP.queryType === 'blog'){
-		$DYHeader.showNavItems('blog')
 	}
 	X(data)
 
