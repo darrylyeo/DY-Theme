@@ -12,7 +12,7 @@ main {
 	}
 }
 
-main section :link {
+main section :link:not(.style-scope) {
 	box-shadow: 0 0.2px, inset 0 -0.4px;
 }
 

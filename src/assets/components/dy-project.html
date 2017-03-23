@@ -1,21 +1,305 @@
 <template id="dy-project">
 	<style>
+		:host {
+			/*--transition-slow: 0.5s ease-in-out;*/
+
+			--perspective-intensity: 16;
+			--tilt: -10deg;
+			--tilt-neg: calc(var(--tilt) * -1);
+
+			--card-shadow: rgba(0, 0, 0, 0.15) 0 1em 4em;
+
+			display: flex;
+			flex-direction: column;
+
+			flex: 1 10rem;
+			padding: 0.5em;
+			width: 300px;
+			max-width: 30vmax;
+			max-height: 100vh;
+
+			font-size: 0.8em;
+
+			position: relative;
+			justify-content: center;
+
+			transform: translateZ(0);
+			transform-style: preserve-3d;
+			transition: var(--transition-slow);
+
+			backface-visibility: hidden;
+			-webkit-font-smoothing: subpixel-antialiased;
+
+			pointer-events: initial;
+		}
+		:host(.focused) {
+			--transition-slow: 0.5s ease-in-out;
+			transform:
+				scale( var(--perspective-intensity) )
+				translateZ(
+					calc( var(--perspective) * ( 1 - var(--perspective-intensity) ) )
+				);
+			z-index: 1;
+		}
+		:host-context(:not(.has-focused-project)):host(:not(.focused)) {
+			cursor: pointer;
+		}
+		:host-context(.has-focused-project):host(:not(.focused)) {
+			/*transform: translateZ(calc(var(--perspective) * (1 - 0.75))) scale(0.75);*/
+			transform: scale(0.75);
+		}
+		:host(.hide) {
+			/*flex: 0;
+			height: 0;
+			margin: 0;
+			padding: 0;*/
+			/*flex: 0.5 5rem;*/
+			transform: rotateX(var(--tilt)) translateY(50%) rotateX(var(--tilt-neg));
+			transition: var(--transition-slow);
+
+			cursor: initial;
+			pointer-events: none;
+		}
+
+
+		/*:host, :host > *, :host > * > * {
+			transform-style: preserve-3d;
+		}*/
+		:host * {
+			transition: var(--transition-slow);
+		}
+		:host(:not(.focused)) * {
+			pointer-events: none;
+		}
+
+		#positioning-wrapper {
+			justify-content: center;
+			transform-style: preserve-3d;
+			height: 100%;
+		}
+		:host(.focused) #positioning-wrapper {
+			height: 0;
+		}
+
+		#inner-wrapper {
+			pointer-events: initial;
+
+			flex-direction: column;
+
+			position: absolute;
+
+			width: max-content;
+			max-width: 100%;
+
+			transform: scale(1) rotateX(var(--tilt));
+			transform-origin: top;
+			transform-style: preserve-3d;
+
+			transition: var(--transition-slow);
+		}
+		:host(:hover) #inner-wrapper {
+			transform: rotateX(-2.5deg) translateZ(-0.5rem) translateY(-1rem);
+			/*transform: translateZ(0.5rem);*/
+		}
+		:host(.focused) #inner-wrapper {
+			width: 260%;
+			max-width: var(--dy-project-max-width);
+			max-height: var(--dy-project-max-height);
+			transform: translateY(-50%);
+		}
 		
+		:host(.hide) #inner-wrapper > *,
+		:host-context(.has-focused-project):host(:not(.focused)) #inner-wrapper > * {
+			opacity: 0.1;
+		}
+		/* Firefox only */
+		@-moz-document url-prefix() {
+			:host(.hide) #inner-wrapper > *,
+			:host-context(.has-focused-project):host(:not(.focused)) #inner-wrapper > * {
+				opacity: 0.04;
+			}
+		}
+
+		#title-wrapper {
+			justify-content: space-between;
+			align-items: center;
+
+			min-height: min-content;
+
+			transform: rotateX(var(--tilt-neg));
+			transform-origin: bottom;
+		}
+		:host(:hover) #title-wrapper {
+			transform: none;
+		}
+		:host(.focused) #title-wrapper {
+			padding: 0.5em 0;
+		}
+		#title-wrapper h2 {
+			color: rgba(0, 0, 0, 0.85);
+			text-shadow: #fff 0 0 1em, #fff 0 0 1em, #fff 0 0 5em, #fff 0 0 5em/*, #fff 0 0 10em*/;
+
+			font-size: 1.2em;
+			line-height: 1.25;
+		}
+		:host(.focused) #title-wrapper h2 {
+			font-size: 1.4em;
+		}
+
+		#close {
+			content: '✖';
+
+			background-color: rgba(255, 255, 255, 0.25);
+			border-radius: 0.5rem;
+			box-shadow: var(--card-shadow);
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			margin-left: 1em;
+			min-width: 2em;
+			min-height: 2em;
+
+			cursor: pointer;
+			transition: var(--transition-medium);
+		}
+		#close:hover {
+			background-color: rgba(255, 255, 255, 0.5);
+			transform: scale(1.05);
+		}
+		:host(:not(.focused)) #close {
+			opacity: 0;
+		}
+
+		.card {
+			border-radius: 0.5rem;
+			overflow: hidden;
+			z-index: 1;
+
+			flex-direction: row;
+
+			transition: var(--transition-medium);
+		}
+		:host(:not(.focused)) .card {
+			-webkit-mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
+			-moz-mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
+			mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
+		}
+		:host(.focused) .card {
+			box-shadow: var(--card-shadow);
+		}
+
+		#featured-image img {
+			min-height: 0;
+			max-height: 100vh;
+		}
+		:host(.no-featured-image) #featured-image img {
+			min-width: 30vmin;
+			height: 40vmin;
+		}
+		#featured-image img:before {
+			content: attr(alt);
+
+			background-color: #67b7e1;
+			color: rgba(255, 255, 255, 0.5);
+
+			font-size: 1.2em;
+			font-weight: bold;
+			text-align: center;
+			text-indent: 0;
+			text-transform: uppercase;
+
+			display: flex;
+			align-items: center;
+			padding: 1em;
+			height: 100%;
+		}
+		:host(.focused) #featured-image img {
+			width: auto;
+			max-height: calc(var(--dy-project-max-height) - 1.5rem);
+		}
+
+		#details {
+			background-color: rgba(255, 255, 255, 0.25);
+
+			overflow-y: auto;
+			position: relative;
+
+			min-width: 0;
+		}
+		:host(.focused) #details {
+			flex: 1;
+			min-width: 15rem;
+		}
+		:host(:not(.focused)) #details {
+			flex: 0;
+			opacity: 0;
+		}
+
+		#details-inner {
+			width: 100%;
+			min-height: 100%;
+			height: min-content;
+
+			flex-direction: column;
+			justify-content: space-between;
+
+			padding: calc(var(--padding-small) - 0.5em);
+			position: absolute;
+		}
+		#details-inner > * {
+			margin: 0.5em;
+		}
+
+		#dates {
+			justify-content: space-between;
+			flex-wrap: wrap;
+			text-align: center;
+		}
+		#dates > * {
+			flex: 0 auto;
+		}
+
+		#terms {
+			flex-wrap: wrap;
+		}
+
+		@media (max-width: 40rem){
+			:host(.focused) #inner-wrapper {
+				display: block;
+				overflow-y: auto;
+				width: max-content;
+			}
+			.card {
+				display: block;
+			}
+			#details-inner {
+				position: static;
+				width: 0;
+				min-width: 100%;
+			}
+		}
 	</style>
-	<a id="featured-image" class="link"><img></a>
-	<div id="details-wrapper">
-		<div id="details">
+	<div id="positioning-wrapper">
+		<div id="inner-wrapper">
 			<div id="title-wrapper">
 				<a class="link"><h2 id="title"></h2></a>
+				<div id="close">✖</div>
 			</div>
-			<div id="details-inner">
-				<blockquote id="excerpt"></blockquote>
-				<a class="link button read-more">Read More</a>
-				<div id="dates">
-					<h3><dy-date id="project-date"></dy-date></h3>
-					<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
+			<div class="card">
+				<a id="featured-image" class="link"><img></a>
+				<div id="details">
+					<div id="details-inner">
+						<blockquote id="excerpt"></blockquote>
+						<!--<a class="link button read-more">Read More</a>-->
+						<div id="dates">
+							<dy-date id="project-date"></dy-date>
+							<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
+						</div>
+						<div id="terms"></div>
+					</div>
 				</div>
-				<div id="terms"></div>
 			</div>
 		</div>
 	</div>
@@ -24,78 +308,71 @@
 
 <script>
 class DYProject extends DYElement {
-	static get observedAttributes() {
-		return ['data-id']
-	}
-
-	attributeChangedCallback(attr, oldVal, newVal){
+	set data(data){
 		const root = this.root
+
+		this._data = data
 		
-		if(attr === 'data-id'){
-			const id = newVal
-			const data = DY.data.posts[id]
-			
+		root.updateWithModel({
+			'#title': data.title.rendered,
+			'#project-date[data-date]': data.meta.projectDate,
+			'#modified-date[data-date]': data.date,
+			'.link[href]': data.link,
+			'#excerpt': data.excerpt.rendered
+		})
+		if(data.featuredImage){
+			//this.css('backgroundImage', `url(${data.featuredImage.source_url})`)
 			root.updateWithModel({
-				'#title': data.title.rendered,
-				'#project-date[data-date]': data.meta.projectDate,
-				'#modified-date[data-date]': data.date,
-				'.link[href]': data.link,
-				'#excerpt': data.excerpt.rendered
+				'img[src]': data.featuredImage.source_url,
+				'img[alt]': data.featuredImage.alt_text
 			})
-			if(data.featuredImage){
-				root.css('backgroundImage', `url(${data.featuredImage.source_url})`)
-				root.updateWithModel({
-					'img[src]': data.featuredImage.source_url,
-					'img[alt]': data.featuredImage.alt_text
-				})
-			}else{
-				root.addClass('no-featured-image')
-			}
-			this.attr({
-				'data-date': data.meta.projectDate,
-				'data-modified-date': data.date,
-			})
-
-			// Add terms
-			const $terms = root.find('#terms')
-			for(let taxonomyName in DY.data.taxonomies){
-				if(taxonomyName === 'page-category') continue
-
-				const terms = data[DY.mapTaxonomyName(taxonomyName)]
-				if(!terms.length) continue
-				for(let termID of terms){
-					const term = DY.data.terms[termID]
-
-					const $term = $$$('a').attr('rel', 'tag').appendTo($terms)
-					$term.innerHTML = term.name
-					this.addClass(`${taxonomyName}-${term.slug}`)
-				}
-			}
-
-			/*root.find('#details').on('mouseleave', function(){
-				this.animateScrollY(0, undefined, new Promise((resolve) => {
-					this.once('mouseenter', resolve);
-				}))
-			})*/
-
-			this.modalize().on('modalize', function(e){
-				const img = root.find('img')[0]
-				Object.assign(e.detail.finalStyle, {
-					width: '100%',
-					maxWidth: (img.naturalWidth * 2.5 || 500) + 'px',
-					//height: '80vh',
-					//maxHeight: 'max-content',
-					height: (img.naturalHeight || 400) + 'px',
-					maxHeight: '80vh',
-				})
+		}else{
+			this.addClass('no-featured-image')
+			root.updateWithModel({
+				'img[alt]': data.title.rendered
 			})
 		}
+		this.attr({
+			'data-date': data.meta.projectDate,
+			'data-modified-date': data.date,
+		})
+
+		// Add terms
+		const $terms = root.find('#terms')
+		for(let taxonomyName in DY.data.taxonomies){
+			if(taxonomyName === 'page-category') continue
+
+			const terms = data[DY.mapTaxonomyName(taxonomyName)]
+			if(!terms.length) continue
+			for(let termID of terms){
+				const term = DY.data.terms[termID]
+
+				const $term = $$$('a').attr('rel', 'tag').appendTo($terms)
+				$term.innerHTML = term.name
+				this.addClass(`${taxonomyName}-${term.slug}`)
+			}
+		}
+
+		this.on({
+			click(e){
+				if(!this.hasClass('focused'))
+					this.$projects.setFocusedProject(this)
+			}
+		})
+		root.find('#close').on({
+			click: e => {
+				this.$projects.setFocusedProject()
+				e.stopPropagation()
+			}
+		})
 	}
 
-	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
-	get root(){
-		this.init()
-		return this
+	get data(){
+		return this._data
+	}
+
+	get $projects(){
+		return this.closest('dy-projects') || this.getRootNode().host
 	}
 }
 customElements.define('dy-project', DYProject)

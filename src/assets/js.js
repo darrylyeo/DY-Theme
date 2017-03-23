@@ -100,22 +100,33 @@ String.prototype.replaceAll = function(replace, replaceWith) {
 
 
 Array.prototype.remove = function(obj){
-	const i = array.indexOf(obj)
+	const i = this.indexOf(obj)
 	if(i > -1) this.splice(i, 1)
 	return this
+}
+Array.prototype.clear = function(obj){
+	this.length = 0
+	return this
+}
+Array.prototype.last = function(){
+	return this[this.length - 1]
 }
 
 
 
 
 //const π = Math.PI
-//const τ = Math.TAU = Math.PI * 2
-Math.stdNorm = x => Math.E**(x*x/-2)/* / Math.sqrt(Math.TAU)*/
+/*const τ =*/ Math.TAU = Math.PI * 2
+Math.stdNorm = x => Math.pow(Math.E, (x*x/-2))/* / Math.sqrt(Math.TAU)*/
 Math.stdNormSlope = x => Math.stdNorm(x) * -x
 
 Math._random = Math.random
 Math.random = Number.random = function(a = 1, b = 0){
 	return Math._random().normMap(a, b)
+}
+
+Math.dist = function(a, b){
+	return Math.abs(a - b)
 }
 
 Number.prototype.map = function(a, b, A = 0, B = 1){
@@ -128,6 +139,9 @@ Number.prototype.normMap = function(A, B){
 
 Number.prototype.constrainMap = function(a, b, A = 0, B = 1){
 	return this.map(a, b, A, B).constrain(A, B)
+}
+Number.prototype.normConstrainMap = function(A, B){
+	return this.map(0, 1, A, B).constrain(A, B)
 }
 
 Number.prototype.constrain = function(a = 0, b = 1){
@@ -147,31 +161,33 @@ Number.prototype.sign = function(){
 	return Math.sign(this)
 }
 
+Number.prototype.abs = function(){
+	return Math.abs(this)
+}
+
 
 
 // Execute this function after a delay. A time of 0 uses RAF, otherwise setTimeout. A combination of the two can be used by passing true as the second argument.
-Function.prototype.delay = function(time, useRAF = false){
-	const func = this
+Function.prototype.delay = function(time = 0, useRAF = false){
 	if(time > 0){
-		setTimeout(function(){
+		return setTimeout(() => {
 			if(useRAF){
-				requestAnimationFrame(func)
+				requestAnimationFrame(this)
 			}else{
-				func()
+				this()
 			}
 		}, time)
 	}else{
-		requestAnimationFrame(func)
+		requestAnimationFrame(this)
 	}
 }
 
 // Execute this function repeatedly over a given time interval. A time of 0 uses RAF, otherwise setTimeout. A combination of the two can be used by passing true as the second argument.
-Function.prototype.interval = function(time, useRAF = false){
-	const func = this
+Function.prototype.interval = function(time = 0, useRAF = false){
 	if(time > 0){
-		const i = setInterval(function(){
-			const call = function(){
-				if(func() == false){
+		const i = setInterval(() => {
+			const call = () => {
+				if(this() == false){
 					clearInterval(i)
 				}
 			}
@@ -181,9 +197,10 @@ Function.prototype.interval = function(time, useRAF = false){
 				call()
 			}
 		}, time)
+		return i
 	}else{
-		const call = function(){
-			if(func() !== false){
+		const call = () => {
+			if(this() !== false){
 				requestAnimationFrame(call)
 			}
 		}
@@ -220,14 +237,14 @@ Function.prototype.debounce = function(time, immediate) {
 	let timeout
 	const func = this
 	return function() {
-		const later = () => {
-			timeout = null
-			if (!immediate) func.apply(this, arguments)
-		}
-		const callNow = immediate && !timeout
+		if(immediate && !timeout) func.apply(this, arguments)
+
 		clearTimeout(timeout)
-		timeout = setTimeout(later, time)
-		if (callNow) func.apply(this, arguments)
+
+		timeout = setTimeout(() => {
+			timeout = undefined
+			if(!immediate) func.apply(this, arguments)
+		}, time)
 	}
 }
 
@@ -411,6 +428,11 @@ Object.defineProperties(Element.prototype, {
 			return this.offsetLeft + this.height/2
 		}
 	}*/
+	computedStyle: {
+		get(){
+			return window.getComputedStyle(this)
+		}
+	}
 })
 for(let Prototype of [Document, Element, DocumentFragment]){
 	Prototype.prototype.find = Prototype.prototype.querySelectorAll
@@ -521,44 +543,105 @@ Element.prototype.updateWithModel = DocumentFragment.prototype.updateWithModel =
 				}
 			}
 		}else{
-			const $el = this.querySelector(handle)
-			if($el) $el.innerHTML = value
+			this.find(handle).html(value)
+			//const $el = this.querySelector(handle)
+			//if($el) $el.innerHTML = value
 		}
 	}
 	return this
 }
-Element.prototype.animateScrollY = function(y, speedFactor = 0.08, stopPromise){
+
+/*
+stopPromise: Promise - Stop animating when this promise is resolved.
+*/
+if(0) Element.prototype.animateScrollY = function(y, speedFactor = 0.08, stopPromise){
 	let stop = false
-	stopPromise && stopPromise.then(() => stop = true)
+	if(stopPromise)
+		stopPromise.then(() => stop = true)
+
 	/*let isProgrammaticScroll = false
 	this.on('scroll', () => {
 		X(2)
 		if(isProgrammaticScroll) isProgrammaticScroll = false
 		else stop = true,X('stop!')
 	})*/
+
 	;(() => {
 		//isProgrammaticScroll = true
 		this.scrollTop = this.scrollTop * (1 - speedFactor)
 		return this.scrollTop > 0 && !stop
 	}).interval(1)
+
 	return this
+}
+
+const elementToScrollInterval = new WeakMap()
+Element.prototype.animateScrollY = function(y = 0, speedFactor = 0.1, stopPromise){
+	y = Math.ceil(y)
+
+	if(elementToScrollInterval.has(this)){
+		const interval = elementToScrollInterval.get(this)
+		interval.stop()
+	}
+
+	const interval = new Interval(interval => {
+		const dy = Math.max(
+			Math.abs(y - this.scrollTop) * speedFactor,
+			Math.min( Math.dist(this.scrollTop, y), 1.5 )
+		) * Math.sign(y - this.scrollTop)
+		
+		this.scrollTop = this.scrollTop + dy
+		
+		if(Math.dist(this.scrollTop, y) <= dy){
+			this.scrollTop = y
+			interval.stop()
+		}
+	})
+	if(stopPromise) stopPromise.then(() => interval.stop())
+
+	elementToScrollInterval.set(this, interval)
+
+	return interval
 }
 
 /*Element.prototype.click_ = function(f){
 	this.addEventListener('click', f)
 }*/
 
+Element.prototype.animateStyleChange = function(callback){
+	const beforeStyle = Object.assign({}, window.getComputedStyle(this))
+
+	if(this._styleChangeAnimation) this._styleChangeAnimation.cancel()
+	callback.call(this)
+
+	//requestAnimationFrame(() => {
+		const afterStyle = Object.assign({}, window.getComputedStyle(this))
+
+		const duration = parseInt(afterStyle.transitionDuration)
+		if(duration === 0) return
+
+		const styleDifference = {}
+		for(const property in beforeStyle){
+			if(beforeStyle[property] !== afterStyle[property]){
+				styleDifference[property] = [
+					beforeStyle[property],
+					afterStyle[property]
+				]
+			}
+		}
+
+		this._styleChangeAnimation = this.animate(styleDifference, {
+			duration: duration
+		})
+		//TweenLite(this, styleDifference, duration)
+	//})
+}
+
 // For anything with addEventListener()
 EventTarget.prototype.on = function(eventNames, callback, optionsOrUseCapture){
 	if(typeof eventNames === 'object'){
 		for(let eventName in eventNames){
-			const callback = eventNames[eventName]
-			if(eventName === 'scroll' && this === document.body){
-				window.addEventListener(eventName, callback, optionsOrUseCapture)
-				continue
-			}
-			if(typeof callback === 'function')
-				this.addEventListener(eventName, callback, optionsOrUseCapture)
+			this.on(eventName, eventNames[eventName], optionsOrUseCapture)
 		}
 	}else{
 		//for(let eventName of [...eventNames])){
@@ -569,6 +652,29 @@ EventTarget.prototype.on = function(eventNames, callback, optionsOrUseCapture){
 			}
 			if(typeof callback === 'function')
 				this.addEventListener(eventName, callback, optionsOrUseCapture)
+		}
+	}
+	return this
+}
+EventTarget.prototype.off = function(eventName, callback){
+	if(typeof eventNames === 'object'){
+		for(let eventName in eventNames){
+			const callback = eventNames[eventName]
+			if(eventName === 'scroll' && this === document.body){
+				window.removeEventListener(eventName, callback)
+				continue
+			}
+			if(typeof callback === 'function')
+				this.removeEventListener(eventName, callback)
+		}
+	}else{
+		for(let eventName of resolveArgumentAsArray(eventNames)){
+			if(eventName === 'scroll' && this === document.body){
+				window.removeEventListener(eventName, callback)
+				continue
+			}
+			if(typeof callback === 'function')
+				this.removeEventListener(eventName, callback)
 		}
 	}
 	return this
@@ -599,12 +705,15 @@ EventTarget.prototype.hover = function(on, off){
 	if(on) this.on('mouseover', on)
 	if(off) this.on('mouseout', off)
 }
+EventTarget.prototype.trigger = function(eventName){
+	this.dispatchEvent(new Event(eventName))
+}
 
 const eventNames = Object.getOwnPropertyNames(Document.prototype).filter(p => p.startsWith('on')).map(name => name.slice(2))
 for(let eventName of eventNames){
 	EventTarget.prototype[eventName] = function(callback){
 		if(arguments.length === 0){
-			this.dispatchEvent(eventName)
+			this.dispatchEvent(new Event(eventName))
 		}else if(arguments.length === 1){
 			this.on(eventName, callback)
 		}
@@ -650,12 +759,12 @@ Storage.prototype.set = function(key, obj) {
 }
 Storage.prototype.get = function(key) {
 	const data = window.LZString ? LZString.decompress(this.getItem(key)) : this.getItem(key)
-	if(!data) return {}
+	if(!data) return null
 	try{
 		return JSON.parse(data)
 	}catch(e){
 		console.error(e, data)
-		return {}
+		return null
 	}
 }
 
@@ -679,24 +788,26 @@ History.prototype.pushState = function(state) {
 
 
 
-function get(url, postHeaders, mimeType){
+function get(url, options = {}){
 	return new Promise((resolve, reject) => {
 		const xhr = new XMLHttpRequest()
-		xhr.open(postHeaders ? 'POST' : 'GET', url)
+		xhr.open(options.type || 'GET', url)
 
-		if(mimeType){
-			xhr.overrideMimeType(mimeType)
+		if(options.mimeType){
+			xhr.overrideMimeType(options.mimeType)
 		}
+
+		if(options.responseType) xhr.responseType = options.responseType
 		
-		for(let header in postHeaders){
-			xhr.setRequestHeader(header, headers[header])
+		for(let header in options.headers){
+			xhr.setRequestHeader(header, options.headers[header])
 		}
 		
 		xhr.on({
 			load(){
 				if (this.status >= 200 && this.status < 300) {
 					//onload && onload(JSON.parse(this.responseText))
-					resolve(this.responseText)
+					resolve(this.response/*, this*/)
 				} else {
 					reject({
 						status: this.status,
@@ -718,9 +829,9 @@ function get(url, postHeaders, mimeType){
 		xhr.send()
 	})
 }
-function getJSON(url, headers){
+function getJSON(url, options){
 	return new Promise((resolve, reject) => {
-		get(url, headers)
+		get(url, options)
 			.then(response => resolve(JSON.parse(response)))
 			.catch(response => reject(response))
 	})
@@ -762,7 +873,7 @@ Object.defineProperties(HTMLImageElement.prototype, {
 	}
 })
 
-HTMLCanvasElement.prototype.resize = function(){
+/*HTMLCanvasElement.prototype.resize = function(){
 	this.width = this.clientWidth
 	this.height = this.clientHeight
 	return this
@@ -778,6 +889,45 @@ HTMLCanvasElement.prototype.draw = function(callback, drawOnResize){
 		}).debounce(100))
 	}
 	return this
+}*/
+HTMLCanvasElement.prototype.resize = function(){
+	this.width = this.clientWidth
+	this.height = this.clientHeight
+	return this
+}
+HTMLCanvasElement.prototype.draw = function(callback){
+	if(callback) this._drawCallback = callback
+
+	if(this._drawCallback){
+		const context = this.getContext('2d')
+		this._drawCallback.call(context, context)
+	}
+	return this
+}
+HTMLCanvasElement.prototype.drawOnResize = function(drawOnResize = true){
+	if(drawOnResize){
+		const context = this.getContext('2d')
+		this._onResize = (() => {
+			this.resize()
+			this.draw()
+		}).debounce(100)
+		window.on('resize', this._onResize)
+	}else{
+		window.off('resize', this._onResize)
+	}
+	return this
+}
+HTMLCanvasElement.prototype.animate = function(callback, interval){
+	if(callback) this._drawCallback = callback
+
+	clearInterval(this._animationInterval)
+
+	if(this._drawCallback){
+		const context = this.getContext('2d')
+		this._animationInterval = (() => {
+			return this._drawCallback.call(context, context)
+		}).interval(interval)
+	}
 }
 
 CanvasRenderingContext2D.prototype.clear = function(){
@@ -789,13 +939,59 @@ CanvasRenderingContext2D.prototype.background = function(color){
 	this.fillRect(0, 0, this.width, this.height)
 	this.fillStyle = fillStyle
 }
+CanvasRenderingContext2D.prototype.circle = function(x = 0, y = 0, radius = 1){
+	this.beginPath()
+	this.arc(x, y, radius, startAngle = 0, endAngle = Math.TAU)
+	this.closePath()
+	return this
+}
+/*CanvasRenderingContext2D.prototype._ellipse = CanvasRenderingContext2D.prototype.ellipse
+CanvasRenderingContext2D.prototype.ellipse = function(x = 0, y = 0, radiusX = 1, radiusY = radiusX, rotation = 0, startAngle = 0, endAngle = Math.TAU, anticlockwise){
+	this._ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise)
+	return this
+}*/
+CanvasRenderingContext2D.prototype.line = function(x1, y1, x2, y2){
+	if(arguments.length === 2){
+		x1 = arguments[0].x
+		y1 = arguments[0].y
+		x2 = arguments[1].x
+		y2 = arguments[1].y
+	}
+	this.beginPath()
+	this.moveTo(x1, y1)
+	this.lineTo(x2, y2)
+	this.stroke()
+	return this
+}
+CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r = 0) {
+	if (w < 2 * r) r = w / 2
+	if (h < 2 * r) r = h / 2
+	r = r.abs()
+	this.beginPath()
+	this.moveTo(x + r, y)
+	this.arcTo(x + w, y, x + w, y + h, r)
+	this.arcTo(x + w, y + h, x, y + h, r)
+	this.arcTo(x, y + h, x, y, r)
+	this.arcTo(x, y, x + w, y, r)
+	this.closePath()
+	return this
+}
+
+CanvasRenderingContext2D.prototype._scale = CanvasRenderingContext2D.prototype.scale
+CanvasRenderingContext2D.prototype.scale = function(x, y = x){
+	this._scale(x, y)
+} 
+
 CanvasRenderingContext2D.prototype.loadImage = function(url){
 	return new Promise((resolve, reject) => {
 		const img = new Image()
-		img.on('load', () => {
-			resolve(img)
-		}).on('error', e => {
-			reject(e)
+		img.on({
+			load(){
+				resolve(img)
+			},
+			error(e){
+				reject(e)
+			}
 		})
 		img.src = url
 	})
@@ -822,6 +1018,62 @@ Object.defineProperties(CanvasRenderingContext2D.prototype, {
 		}
 	}
 })
+
+
+
+
+
+
+class Interval {
+	constructor(callback, period = 0, autoStart = true){
+		Object.assign(this, {
+			callback,
+			period,
+			startTime: undefined,
+			isRunning: false,
+			intervalID: undefined
+		})
+		if(autoStart) this.start()
+	}
+
+	get elapsedTime(){
+		return this.isRunning ? Date.now() - this.startTime : 0
+	}
+
+
+	_call(){
+		if(this.callback){
+			const stop = this.callback(this) === false
+			if(stop) this.isRunning = false
+		}
+		this._scheduleNextCall()
+	}
+	_scheduleNextCall(){
+		if(this.isRunning){
+			if(this.period === 0){
+				requestAnimationFrame(this._call.bind(this))
+			}else{
+				this.intervalID = setInterval(this._call.bind(this))
+			}
+		}else{
+			if(this.intervalID){
+				stopInterval(this.intervalID)
+				this.intervalID = undefined
+			}
+		}
+	}
+
+	start(){
+		this.isRunning = true
+		this.startTime = Date.now()
+
+		this._scheduleNextCall()
+	}
+
+	stop(){
+		this.isRunning = false
+	}
+}
 
 
 

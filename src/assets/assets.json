@@ -1,8 +1,16 @@
 {
+	"settings": {
+		"asyncHTML": false,
+		"optimizeCSS": false,
+		"optimizeJS": false
+	},
 	"html": [
+		"dy-icon",
+		"dy-header",
 		"dy-project",
 		"dy-projects",
 		"dy-project-header",
+		"dy-blog",
 		"dy-notification",
 		"dy-date",
 		"dy-comments",
@@ -22,9 +30,7 @@
 		"sidebar",
 		"footer",
 		"notifications",
-		"modal",
-
-		"dy-project"
+		"modal"
 	],
 	"js": [
 		"libraries/imagesloaded.pkgd.min",
@@ -34,6 +40,9 @@
 		"libraries/isotope.pkgd",
 		"libraries/moment.min",
 		"libraries/prism",
+
+		"libraries/custom-elements/custom-elements.min",
+		"libraries/html-imports/html-imports.min",
 		
 		"fit-text",
 		"js",
@@ -44,13 +53,24 @@
 		"experiments/experiments",
 		"navigation",
 
-		"libraries/custom-elements",
-		"libraries/html-imports.min",
-		"libraries/shadydom.min",
-		"libraries/shadycss.min",
+		"libraries/shady-dom/shadydom.min",
+		"libraries/shady-css/scoping-shim.min",
+		"libraries/shady-css/apply-shim.min",
+		"libraries/shady-css/custom-style-interface.min",
+
 		"web-components",
 
 		"main",
 		"canvas"
+	],
+	"js-unused": [
+		"libraries/custom-elements",
+		"libraries/html-imports.min",
+		"libraries/shadycss.min",
+		"libraries/shadydom.min",
+
+		"libraries/shadydom.min",
+
+		"libraries/web-components-3-14-17/webcomponents-hi-sd-ce"
 	]
 }

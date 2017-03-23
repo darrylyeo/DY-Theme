@@ -1,55 +1,212 @@
 <template id="dy-projects">
 	<style>
-		.dy-projects {
-			--dy-project-margin: 0.25%;
-			--dy-project-columns: 5;
+		dy-projects, :host {
+			height: 100vh;
+
+			--dy-projects-height: calc(100vh - var(--main-menu-sticky-height));
+			height: var(--dy-projects-height);
+
+			--dy-project-max-width: calc(100vw - var(--padding) * 2);
+			--dy-project-max-height: calc(var(--dy-projects-height) - var(--padding) * 2);
+			
+			min-height: 20rem;
+			margin: var(--padding-neg);
+			padding: var(--padding);
+
 			display: flex;
+			flex-direction: column;
+		}
+
+		:host(:not(.has-focused-project)) dy-project-filters {
+			z-index: 1;
+		}
+
+		.projects {
+			--perspective: 30rem;
+			perspective: var(--perspective);
+
+			display: flex;
+			flex-direction: column;
 			flex-wrap: wrap;
-			margin: calc(var(--dy-project-margin) * -1);
-			margin-top: 1em;
-			min-height: 90vh;
+			/*align-content: center;*/
+			flex: 1;
+
+			padding-top: 1em;
+			/*margin-top: calc(1em - 10rem);
+			padding-top: 10rem;*/
+
+			margin-left: var(--padding-neg);
+			margin-right: var(--padding-neg);
+			padding-left: calc(var(--padding) - 0.5em);
+			padding-right: calc(var(--padding) - 0.5em);
+
+			padding-bottom: 5vh;
+			margin-bottom: var(--padding-neg);
+
+			/*max-height: var(--dy-projects-height);*/
+
+			overflow-x: auto;
+    		overflow-y: hidden;
 			transition: height var(--transition-fast);
-			width: 100%;
 		}
-		@media (max-width: 93rem) {
-			.dy-projects {
-				--dy-project-columns: 4;
-			}
+		:host/*(.has-focused-project)*/ .projects {
+			margin-top: calc(var(--dy-projects-height) - 100vh);
+			/*min-height: var(--dy-projects-height);*/
+			padding-top: calc(100vh - var(--dy-projects-height) + 1em);
 		}
-		@media (max-width: 74rem) {
-			.dy-projects {
-				--dy-project-columns: 3;
-			}
-		}
-		@media (max-width: 55rem) {
-			.dy-projects {
-				--dy-project-columns: 2;
-			}
-		}
-		@media (max-width: 36rem) {
-			.dy-projects {
-				--dy-project-margin: 1%;
-				--dy-project-columns: 1;
-			}
-		}
-		dy-project {
-			border-radius: var(--padding-small);
-			flex: 1 250px;
-			margin: var(--dy-project-margin);
-			width: calc(100% / var(--dy-project-columns) - var(--dy-project-margin) * 2);
+		dy-projects:not(.has-focused-project) .projects,
+		:host:not(.has-focused-project) .projects {
+			pointer-events: none;
 		}
 	</style>
 	<dy-project-filters></dy-project-filters>
-	<div class="dy-projects"></div>
+	<div class="projects"></div>
 </template>
+
+
+<script>
+class DYProjects extends DYElement {
+	set filter(filter){
+		//this.isotope.arrange({ filter })
+		
+		for(const $project of this.$projects){
+			X($project.matches('*'))
+			$project.toggleClass(!$project.matches(filter || '*'), 'hide')
+		}
+	}
+
+	constructor(){
+		super()
+
+		const root = this.root
+		
+		const $projectsWrapper = this.$projectsWrapper
+
+		Promise.all([
+			windowLoad,
+			DY.getData,
+			customElements.whenDefined('dy-project')
+		]).then(() => {
+			const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
+			const projects = Object.values(DY.data.posts)
+				.filter(post => post['page-category'] && post['page-category'].includes(pageCategory_project_id))
+
+			for(const project of projects){
+				const $project = $$$('dy-project')
+				$project.prependTo($projectsWrapper)
+				$project.data = project
+			}
+
+			/*imagesLoaded($projects, () => {
+				this.isotope = new Isotope( $projects, {
+					//itemSelector: '.projects > *',//'dy-project',
+					getSortData: {
+						date: '[data-date]',
+						modifiedDate: '[data-modified-date]'
+					},
+					sortBy: 'modifiedDate',
+					sortAscending: false,
+					hiddenStyle: {
+						opacity: 0,
+						transform: "perspective(1000px) scale(0.75) rotateY(180deg)"
+					},
+					visibleStyle: {
+						opacity: 1,
+						transform: "none"
+					},
+					layoutMode: 'masonryHorizontal',
+					stagger: 20
+				})
+
+				DYProjectFilters.update()
+			})*/
+		})
+
+		$projectsWrapper.on({
+			click: e => {
+				if(e.target === $projectsWrapper)
+					this.setFocusedProject()
+			},
+			scroll: this.scrollInView.throttle().bind(this)
+		})
+	}
+
+	setFocusedProject($project){
+		const root = this.root
+
+		const makeProjectFocused = $project !== undefined && !$project.hasClass('focused')
+
+		this.toggleClass(makeProjectFocused, 'has-focused-project')
+		//;(() => this.toggleClass(makeProjectFocused, 'has-focused-project')).delay(100)
+
+		root.find('dy-project.focused').removeClass('focused')
+
+		if($project) $project.toggleClass(makeProjectFocused, 'focused')
+
+
+		let t = 0
+		document.body.find('#background canvas')[0]
+			.draw(function(){
+				this.globalAlpha = 0.1
+				this.blur(30)
+			})
+			.animate(function(){
+				if(makeProjectFocused && $project.data.featuredImage){
+					this.loadImage($project.data.featuredImage.source_url).then(img => {
+						this.drawImage(img, 0, 0, this.width, this.width / img.ratio)
+					})
+				}else{
+					//this.clear()
+				}
+				if(t++ > 20){
+					return false
+				}
+			}, 10)
+
+		this.scrollInView()
+	}
+
+	get $projectsWrapper(){
+		return this.root.find('.projects')[0]
+	}
+
+	get $projects(){
+		return this.root.find('dy-project')
+	}
+
+	scrollInView(){
+		const computedStyle = this.computedStyle
+		if(parseFloat(computedStyle['height']) > parseFloat(computedStyle['min-height']))
+			document.body.animateScrollY($('dy-header').stickyScrollY)
+	}
+
+	/*// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
+	get root(){
+		this.init()
+		return this
+	}*/
+}
+customElements.define('dy-projects', DYProjects)
+</script>
+
+
+
 
 <template id="dy-project-filters">
 	<style>
+		:host {
+			transition: opacity: var(--transition-medium);
+		}
+		:host-context(.has-focused-project):host {
+			opacity: 0.25;
+		}
+
 		:host, #terms {
 			display: flex;
 			justify-content: space-between;
 			margin: -0.25em -0.5em;
 		}
+
 		div[data-taxonomy] {
 			justify-content: space-between;
 			align-items: center;
@@ -83,66 +240,6 @@
 
 
 <script>
-class DYProjects extends DYElement {
-	set filter(filter){
-		this.isotope.arrange({ filter })
-	}
-
-	constructor(){
-		super()
-
-		const root = this.root
-		
-		const $projects = root.find('.dy-projects')[0]//this.find
-
-		Promise.all([
-			windowLoad,
-			DY.getData,
-			customElements.whenDefined('dy-project')
-		]).then(() => {
-			const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
-			for(let postID in DY.data.posts){
-				const post = DY.data.posts[postID]
-				if(!post['page-category'].includes(pageCategory_project_id)) continue
-
-				const $project = $$$('dy-project')
-				$project.prependTo($projects)
-				$project.dataset.id = post.id
-			}
-
-			imagesLoaded($projects, () => {
-				this.isotope = new Isotope( $projects, {
-					//itemSelector: '.dy-projects > *',//'dy-project',
-					getSortData: {
-						date: '[data-date]',
-						modifiedDate: '[data-modified-date]'
-					},
-					sortBy: 'modifiedDate',
-					sortAscending: false,
-					hiddenStyle: {
-						opacity: 0,
-						transform: "perspective(1000px) scale(0.75) rotateY(180deg)"
-					},
-					visibleStyle: {
-						opacity: 1,
-						transform: "none"
-					},
-					stagger: 20
-				})
-
-				DYProjectFilters.update()
-			})
-		})
-	}
-
-	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
-	get root(){
-		this.init()
-		return this
-	}
-}
-customElements.define('dy-projects', DYProjects)
-
 class DYProjectFilters extends DYElement {
 	constructor(){
 		super()
@@ -153,9 +250,11 @@ class DYProjectFilters extends DYElement {
 		
 		DY.getData.then(() => {
 			const $taxonomies = {}
+			const excludeTaxonomies = ['page-category', 'category']
+			const excludeTerms = ['uncategorized']
 
 			for(let taxonomyName in DY.data.taxonomies){
-				if(taxonomyName === 'page-category') continue
+				if(excludeTaxonomies.includes(taxonomyName)) continue
 
 				const taxonomy = DY.data.taxonomies[taxonomyName]
 				const $taxonomy = $$$('div')
@@ -169,8 +268,8 @@ class DYProjectFilters extends DYElement {
 				$taxonomies[taxonomyName] = $taxonomy
 			}
 			for(let term of Object.values(DY.data.termsBySlug).sort((term1, term2) => term1.count - term2.count)){
-				if(term.taxonomy === 'page-category') continue
-				if(term.slug === 'uncategorized') continue
+				if(excludeTaxonomies.includes(term.taxonomy)) continue
+				if(excludeTerms.includes(term.slug)) continue
 
 				const $taxonomy = $taxonomies[term.taxonomy] // root.find(`[data-taxonomy=${term.taxonomy}`)
 				if(!$taxonomy) continue
@@ -194,16 +293,18 @@ class DYProjectFilters extends DYElement {
 	update(){
 		const root = this.root
 
+		const $projects = this.$DYProjects.$projects
+
 		this.$DYProjects.filter = Array.from(root.find('a[rel=tag].active'))
 			.map($term => $term.dataset.selector)
 			.join('')
 		for(let $term of root.find('a[rel=tag]')){
-			const filteredElements = this.$DYProjects.isotope.getFilteredItemElements()
+			const filteredElements = $projects.find(':not(.hide)') //this.$DYProjects.isotope.getFilteredItemElements()
 
-			if(filteredElements.filter($element => $element.matches($term.dataset.selector)).length > 0) // this.$DYProjects.root.find(`${$term.dataset.selector}:not(.isotope-hidden)`).length
-				$term.removeClass('disabled')
-			else
-				$term.addClass('disabled')
+			$term.toggleClass(
+				[...filteredElements].filter($element => $element.matches($term.dataset.selector)).length > 0, // this.$DYProjects.root.find(`${$term.dataset.selector}:not(.isotope-hidden)`).length
+				'disabled'
+			)
 		}
 	}
 

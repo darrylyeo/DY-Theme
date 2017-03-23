@@ -23,11 +23,19 @@ class DYDate extends DYElement {
 	attributeChangedCallback(attr, oldVal, newVal){
 		const root = this.root
 
-		if(attr === 'data-date'){
-			const dateString = newVal
-			if(!dateString) return
-			root.find('date').html(moment(dateString).format('MMMM Do, YYYY'))
+		const date = this.attr('data-date')
+		if(!date) return
+
+		let formattedDate
+		switch(this.attr('format')){
+			case 'short':
+				formattedDate = moment(date).format('M/D/YY')
+				break
+			case 'full': default:
+				formattedDate = moment(date).format('MMMM Do, YYYY')
+				break
 		}
+		root.find('date').html(formattedDate)
 	}
 }
 customElements.define('dy-date', DYDate)
