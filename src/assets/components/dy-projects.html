@@ -127,7 +127,7 @@ class DYProjects extends DYElement {
 				if(e.target === $projectsWrapper)
 					this.setFocusedProject()
 			},
-			scroll: this.scrollInView.throttle()
+			scroll: this.scrollInView.throttle().bind(this)
 		})
 	}
 
