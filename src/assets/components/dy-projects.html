@@ -293,11 +293,13 @@ class DYProjectFilters extends DYElement {
 	update(){
 		const root = this.root
 
+		const $projects = this.$DYProjects.$projects
+
 		this.$DYProjects.filter = Array.from(root.find('a[rel=tag].active'))
 			.map($term => $term.dataset.selector)
 			.join('')
 		for(let $term of root.find('a[rel=tag]')){
-			const filteredElements = this.$DYProjects.find(':not(.hide)') //this.$DYProjects.isotope.getFilteredItemElements()
+			const filteredElements = $projects.find(':not(.hide)') //this.$DYProjects.isotope.getFilteredItemElements()
 
 			if([...filteredElements].filter($element => $element.matches($term.dataset.selector)).length > 0) // this.$DYProjects.root.find(`${$term.dataset.selector}:not(.isotope-hidden)`).length
 				$term.removeClass('disabled')
