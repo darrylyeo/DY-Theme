@@ -65,3 +65,5 @@ DY.getData = Promise.race([
 		})*/
 	])
 ])
+
+DY.getAssetsList = getJSON(WP.parentTheme + '/assets/assets.json')
