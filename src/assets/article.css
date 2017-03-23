@@ -89,6 +89,6 @@ article aside {
 }
 
 
-article section div {
+article section > div {
 	display: block;
 }
