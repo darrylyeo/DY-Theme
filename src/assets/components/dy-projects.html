@@ -143,18 +143,25 @@ class DYProjects extends DYElement {
 
 		if($project) $project.toggleClass(makeProjectFocused, 'focused')
 
-		let loadImage
-		document.body.find('#background canvas')[0].draw(function(){
-			if(makeProjectFocused && $project.data.featuredImage){
-				this.loadImage($project.data.featuredImage.source_url).then(img => {
-					this.blur(30)
-					this.drawImage(img, 0, 0, this.width, this.width / img.ratio)
-				})
-			}else{
-				this.clear()
-			}
-			
-		}, true)
+
+		let t = 0
+		document.body.find('#background canvas')[0]
+			.draw(function(){
+				this.globalAlpha = 0.1
+				this.blur(30)
+			})
+			.animate(function(){
+				if(makeProjectFocused && $project.data.featuredImage){
+					this.loadImage($project.data.featuredImage.source_url).then(img => {
+						this.drawImage(img, 0, 0, this.width, this.width / img.ratio)
+					})
+				}else{
+					//this.clear()
+				}
+				if(t++ > 20){
+					return false
+				}
+			}, 10)
 
 		this.scrollInView()
 	}
