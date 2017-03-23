@@ -83,7 +83,11 @@ const DYElement = class extends HTMLElement {
 
 		const root = this.root
 		//this.$template.content.import().appendTo(root)
-		root.appendChild(document.importNode(this.$template.content, true))
+		if(this.$template){
+			root.appendChild(document.importNode(this.$template.content, true))
+		}else{
+			X('template doesn\'t exist:', this.tagName)
+		}
 		//root.append(unwrap(document.importNode(this.$template.content, true)))
 		//X('template content', this.tagName, this.$template.content, document.importNode(this.$template.content, true), root)
 
