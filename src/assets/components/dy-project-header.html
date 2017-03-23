@@ -117,7 +117,7 @@ class DYProjectHeader extends DYElement {
 		const root = this.root
 
 		window.on('pageload', () => {
-			if(WP.queryType !== 'project'){
+			if(WP.postType !== 'project'){
 				this.style.display = 'none'
 				return
 			}
