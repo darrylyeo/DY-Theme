@@ -1,15 +1,15 @@
 <template id="dy-projects">
 	<style>
-		dy-projects {
+		dy-projects, :host {
 			height: 100vh;
 
-			--dy-projects-height: calc(100vh - var(--main-menu-height));
+			--dy-projects-height: calc(100vh - var(--main-menu-sticky-height));
 			height: var(--dy-projects-height);
 
 			--dy-project-max-width: calc(100vw - var(--padding) * 2);
 			--dy-project-max-height: calc(var(--dy-projects-height) - var(--padding) * 2);
 			
-			min-height: 15rem;
+			min-height: 20rem;
 			margin: var(--padding-neg);
 			padding: var(--padding);
 
@@ -17,10 +17,13 @@
 			flex-direction: column;
 		}
 
-		.dy-projects {
+		:host(:not(.has-focused-project)) dy-project-filters {
+			z-index: 1;
+		}
+
+		.projects {
 			--perspective: 30rem;
 			perspective: var(--perspective);
-			/*perspective-origin: bottom;*/
 
 			display: flex;
 			flex-direction: column;
@@ -46,14 +49,13 @@
     		overflow-y: hidden;
 			transition: height var(--transition-fast);
 		}
-		.has-focused-project .dy-projects {
-			perspective-origin: center;
-
+		:host/*(.has-focused-project)*/ .projects {
 			margin-top: calc(var(--dy-projects-height) - 100vh);
-			min-height: var(--dy-projects-height);
+			/*min-height: var(--dy-projects-height);*/
 			padding-top: calc(100vh - var(--dy-projects-height) + 1em);
 		}
-		dy-projects:not(.has-focused-project) .dy-projects {
+		dy-projects:not(.has-focused-project) .projects,
+		:host:not(.has-focused-project) .projects {
 			pointer-events: none;
 		}
 	</style>

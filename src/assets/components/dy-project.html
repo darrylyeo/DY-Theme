@@ -9,10 +9,13 @@
 
 			--card-shadow: rgba(0, 0, 0, 0.15) 0 1em 4em;
 
+			display: flex;
+			flex-direction: column;
+
 			flex: 1 10rem;
 			padding: 0.5em;
-			width: 30vmax;
-			max-width: 300px;
+			width: 300px;
+			max-width: 30vmax;
 			max-height: 100vh;
 
 			font-size: 0.8em;
@@ -21,6 +24,7 @@
 			justify-content: center;
 
 			transform: translateZ(0);
+			transform-style: preserve-3d;
 			transition: var(--transition-slow);
 
 			backface-visibility: hidden;
@@ -58,10 +62,10 @@
 		}
 
 
-		:host, :host > *, :host > * > * {
+		/*:host, :host > *, :host > * > * {
 			transform-style: preserve-3d;
-		}
-		:host, :host * {
+		}*/
+		:host * {
 			transition: var(--transition-slow);
 		}
 		:host(:not(.focused)) * {
@@ -70,10 +74,11 @@
 
 		#positioning-wrapper {
 			justify-content: center;
+			transform-style: preserve-3d;
+			height: 100%;
 		}
 		:host(.focused) #positioning-wrapper {
-			height: 100%;
-			transform: translateY(50%);
+			height: 0;
 		}
 
 		#inner-wrapper {
@@ -83,10 +88,12 @@
 
 			position: absolute;
 
-			width: 100%;
+			width: max-content;
+			max-width: 100%;
 
 			transform: scale(1) rotateX(var(--tilt));
 			transform-origin: top;
+			transform-style: preserve-3d;
 
 			transition: var(--transition-slow);
 		}
@@ -104,6 +111,13 @@
 		:host(.hide) #inner-wrapper > *,
 		:host-context(.has-focused-project):host(:not(.focused)) #inner-wrapper > * {
 			opacity: 0.1;
+		}
+		/* Firefox only */
+		@-moz-document url-prefix() {
+			:host(.hide) #inner-wrapper > *,
+			:host-context(.has-focused-project):host(:not(.focused)) #inner-wrapper > * {
+				opacity: 0.04;
+			}
 		}
 
 		#title-wrapper {
@@ -203,7 +217,7 @@
 		}
 		:host(.focused) #featured-image img {
 			width: auto;
-			max-height: calc(var(--dy-project-max-height) - 3rem);
+			max-height: calc(var(--dy-project-max-height) - 1.5rem);
 		}
 
 		#details {
@@ -224,18 +238,27 @@
 		}
 
 		#details-inner {
+			width: 100%;
 			min-height: 100%;
 			height: min-content;
 
 			flex-direction: column;
 			justify-content: space-between;
 
-			padding: var(--padding-small);
+			padding: calc(var(--padding-small) - 0.5em);
 			position: absolute;
+		}
+		#details-inner > * {
+			margin: 0.5em;
 		}
 
 		#dates {
 			justify-content: space-between;
+			flex-wrap: wrap;
+			text-align: center;
+		}
+		#dates > * {
+			flex: 0 auto;
 		}
 
 		#terms {
