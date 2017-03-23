@@ -481,22 +481,33 @@ Element.prototype.text = function(text){
 	return this
 }
 Element.prototype.attr = function(attr, value){
+	let
+		get = this.getAttribute.bind(this),
+		remove = this.removeAttribute.bind(this),
+		set = this.setAttribute.bind(this)
+	if(this instanceof SVGElement){
+		const namespaceSVG = 'http://www.w3.org/2000/svg'
+		get = function(){ return this.getAttributeNS(namespaceSVG, ...arguments) }.bind(this)
+		remove = function(){ return this.removeAttributeNS(namespaceSVG, ...arguments) }.bind(this)
+		set = function(){ return this.setAttributeNS(namespaceSVG, ...arguments) }.bind(this)
+	}
+
 	let attrs = {}
 	if(arguments.length === 2){
 		attrs[attr] = value
 	}else if(typeof arguments[0] === 'object'){
 		attrs = arguments[0]
 	}else if(typeof arguments[0] === 'string'){
-		return this.getAttribute(attr)
+		return get(attr)
 	}
 	for(attr in attrs){
 		const value = attrs[attr]
 		if(value === null || typeof value === 'undefined'){
-			this.removeAttribute(attr)
+			remove(attr)
 		}else if(attr === 'style' && typeof value === 'object'){
 			this.css(value)
 		}else{
-			this.setAttribute(attr, value)
+			set(attr, value)
 		}
 	}
 	return this
