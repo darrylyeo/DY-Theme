@@ -1,0 +1,86 @@
+<template id="dy-blog">
+	<style>
+	dy-post + dy-post {
+		margin-top: 1em;
+	}
+	</style>
+</template>
+
+<template id="dy-post">
+	<style>
+		:host {
+			display: flex;
+			justify-content: space-between;
+			align-items: stretch;
+		}
+		div {
+			flex-direction: column;
+		}
+		#featured-image-wrapper {
+			max-width: 50%;
+		}
+		#inner-wrapper {
+			margin-left: 1em;
+		}
+	</style>
+	<a class="link" id="featured-image-wrapper"><img id="featured-image"></a>
+	<div id="inner-wrapper">
+		<dy-date id="modified-date"></dy-date>
+		<a class="link"><h2 id="title"></h2></a>
+		<blockquote id="excerpt"></blockquote>
+		<p><a class="link button">Read More</a></p>
+	</div>
+</template>
+
+
+<script>
+class DYBlog extends DYElement {
+	constructor(){
+		super()
+
+		const root = this.root
+		
+		Promise.all([
+			windowLoad,
+			DY.getData,
+			customElements.whenDefined('dy-project')
+		]).then(() => {
+			X(Object.values(DY.data.posts).filter(post => post.type === 'post'))
+			for(const post of Object.values(DY.data.posts).filter(post => post.type === 'post')){
+				const $post = $$$('dy-post')
+				$post.appendTo(root)
+				$post.data = post
+			}
+		})
+	}
+
+	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
+	get root(){
+		this.init()
+		return this
+	}
+}
+customElements.define('dy-blog', DYBlog)
+
+class DYPost extends DYElement {
+	set data(data){
+		const root = this.root
+		root.updateWithModel({
+			'#title': data.title.rendered,
+			'#modified-date[data-date]': data.date,
+			'.link[href]': data.link,
+			'#excerpt': data.excerpt.rendered
+		})
+		if(data.featuredImage){
+			//root.css('backgroundImage', `url(${data.featuredImage.source_url})`)
+			root.updateWithModel({
+				'img[src]': data.featuredImage.source_url,
+				'img[alt]': data.featuredImage.alt_text
+			})
+		}else{
+			//root.addClass('no-featured-image')
+		}
+	}
+}
+customElements.define('dy-post', DYPost)
+</script>

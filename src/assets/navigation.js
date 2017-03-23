@@ -1,25 +1,16 @@
-const prerenderedURLs = []
-$$('a').on('mouseover', function(){
-	if(!this.href || prerenderedURLs.includes(this.href)) return
-	
-	const link = document.createElement('link')
-	link.setAttribute('rel', 'prerender')
-	link.setAttribute('href', this.href)
-	document.head.append(link)
-	
-	prerenderedURLs.push(this.href)
-})
-
-
-const DYNavigation = new class {
-	constructor(){
-		this.navigatingTo = ''
-	}
+const DYNavigation = {
+	navigatingTo: '',
+	prerenderedURLs: [],
 
 	navigateTo(url, host, pushNewState){
 		if(!url || host !== location.host/* || url === location.href*/) return false
 
 		this.navigatingTo = url
+
+		history.pushState({
+			whee: 9
+		}, 'bloink', url)
+		this.onPageLoad()
 
 		get(url).then(data => {
 			if(this.navigatingTo !== url) return
@@ -39,10 +30,10 @@ const DYNavigation = new class {
 				if($meta) $meta.replaceWith($$meta)
 			}
 
-			this.onPageLoad()
-
 			const $main = $('main')
-			const $$main = $$document.find('main')[0]
+			let $$main = $$document.find('main')[0]
+
+			this.onPageLoad()
 
 			const initialStyle = $main.attr('style')
 
@@ -54,7 +45,8 @@ const DYNavigation = new class {
 			$main.css(style)
 			$$main.css(style)
 			$main.once('transitionend', () => {
-				$main.replaceWith($$main)
+				//$main.replaceWith($$main)
+				$$main = $main
 
 				const finalHeight = $$main.clientHeight
 
@@ -79,8 +71,15 @@ const DYNavigation = new class {
 		})
 
 		return true
-	}
+	},
 
+
+	processLinks($$a){
+		$$a.on({
+			click: this.openLink,
+			mouseover: this.onLinkMouseOver
+		})
+	},
 	// Called with scope of <a> element
 	openLink(e){
 		if(!this.href) return
@@ -90,11 +89,65 @@ const DYNavigation = new class {
 			e.preventDefault()
 		}else if(DYNavigation.navigateTo(this.href, this.host, true))
 			e.preventDefault()
-	}
+	},
+	onLinkMouseOver(){
+		const href = this.href
+		if(!href || DYNavigation.prerenderedURLs.includes(href)) return
+
+		$$$('link').attr({
+			rel: 'prerender',
+			href
+		}).appendTo(document.head)
+		
+		DYNavigation.prerenderedURLs.push(href)
+	},
+
 
 	onPageLoad(){
-		window.dispatchEvent(new CustomEvent('pageload'))
-	}
+		DY.getData.then(() => {
+			/*const id = $('main').dataset.id
+			const type = $('main').dataset.type
+
+			switch(type){
+				case '404':
+
+			}*/
+
+			WP.current = DY.data.objects[window.location]
+
+			if(window.location.href === WP.siteURL){
+				WP.queryType = 'front-page'
+			}
+
+			// Temporary
+			else if(window.location.href.includes('category')){
+				WP.queryType = 'archive'
+			}
+
+			// Also temporary
+			else if(WP.current.slug === 'blog'){
+				WP.queryType = 'archive'
+				WP.postType = 'post'
+			}
+
+			else if(WP.current === undefined){
+				WP.queryType = '404'
+			}else if(WP.current.type === 'page' || WP.current.type === 'post'){
+				const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
+				if(WP.current.categories.includes(pageCategory_project_id)){
+					WP.queryType = 'single'
+					WP.postType = 'project'
+				}else{
+					WP.queryType = 'single'
+					WP.postType = 'project'
+				}
+			}
+
+			this.processLinks( $$('a') )
+
+			window.dispatchEvent(new CustomEvent('pageload'))
+		})
+	},
 	onPageAnimate(){
 		window.dispatchEvent(new CustomEvent('pageanimate'))
 	}
@@ -102,7 +155,10 @@ const DYNavigation = new class {
 
 documentReady.then(() => DYNavigation.onPageLoad())
 
-$$('a').on('click', DYNavigation.openLink)
-window.on('popstate', () => {
+
+window.on('popstate', (e) => {
 	DYNavigation.navigateTo(location.href, location.host)
+	X(e)
+	e.preventDefault()
 })
+//onbeforeunload

@@ -76,13 +76,23 @@ const DYElement = class extends HTMLElement {
 		if(this._init) return
 		this._init = true
 
+		if('ShadyCSS' in window && !ShadyCSS.nativeShadow){
+			ShadyCSS.prepareTemplate(this.$template, this.tagName)
+			ShadyCSS.styleElement(this)
+		}
+
 		const root = this.root
 		//this.$template.content.import().appendTo(root)
-		root.appendChild(document.importNode(this.$template.content, true))
+		if(this.$template){
+			root.appendChild(document.importNode(this.$template.content, true))
+		}else{
+			X('template doesn\'t exist:', this.tagName)
+		}
 		//root.append(unwrap(document.importNode(this.$template.content, true)))
 		//X('template content', this.tagName, this.$template.content, document.importNode(this.$template.content, true), root)
 
 		this.addStyle(DYElement.$style)
+		DYNavigation.processLinks( root.find('a') )
 	}
 
 	addStyle($style){
@@ -92,51 +102,51 @@ const DYElement = class extends HTMLElement {
 			$style.import().insertBefore(this.$style)
 		else
 			$style.import().appendTo(root)
-		//document.importNode(DYElement.$style, true).insertBefore(root.find('style')[0])
+		document.importNode(DYElement.$style, true).insertBefore(root.find('style')[0])
 	}
 }
 DYElement.$style = $$$('style', {
-	html: Array.from(document.styleSheets, s => s.href ? `@import "${s.href}";` : '').join('\n')
+	html: Array.from(document.styleSheets)
+		.filter(s => s.href && s.href.includes('css.css'))
+		.map(s => `@import '${s.href}';`)
+		.join('\n')
+	//html: Array.from(document.styleSheets, s => s.href ? `@import "${s.href}";` : '').join('\n')
 
 	// Doesn't work in Safari (TypeError: ...document.styleSheets is not a function?!)
 		//html: [...document.styleSheets].map(s => s.href ? `@import "${s.href}";` : '').join('\n')
 })
 
-//window.addEventListener('WebComponentsReady', e => {
-const webComponents = [
-	'dy-project',
-	'dy-projects',
-	'dy-project-header',
-	'dy-notification',
-	'dy-date',
-	'dy-comments',
-	'khan',
-]
-for(let handle of webComponents){
-	const $link = document.createElement('link')
-	$link.rel = 'import'
-	$link.href = WP.parentTheme + `/assets/components/${handle}.html`
-	$link.id = handle + '-import'
-	$link.on({
-		load(){
-			document.body.append(this.import.find('template'))
-		}
-	})
-	document.head.appendChild($link)
 
-	/*const $link = $$$('link').attr({
-		rel: 'import',
-		href: WP.parentTheme + `/assets/components/${handle}.html`
-	}).appendTo(document.head)*/
+DY.getAssetsList.then(assets => {
+	if(!assets.settings.asyncHTML) return
 
+	const webComponents = assets.html
 
-	//if('import' in document.createElement('link')){
-		
-		//wrap($link).appendTo(wrap(document.head))
-	/*}else{
-		get($link.href).then(data => {
-			document.body.insertAdjacentHTML('beforeend', data)
+	for(let handle of webComponents){
+		const $link = document.createElement('link')
+		$link.rel = 'import'
+		$link.href = WP.parentTheme + `/assets/components/${handle}.html`
+		$link.id = handle + '-import'
+		$link.on({
+			load(){
+				document.body.append(this.import.find('template'))
+			}
 		})
-	}*/
-}
-//})
+		document.head.appendChild($link)
+
+		/*const $link = $$$('link').attr({
+			rel: 'import',
+			href: WP.parentTheme + `/assets/components/${handle}.html`
+		}).appendTo(document.head)*/
+
+
+		//if('import' in document.createElement('link')){
+			
+			//wrap($link).appendTo(wrap(document.head))
+		/*}else{
+			get($link.href).then(data => {
+				document.body.insertAdjacentHTML('beforeend', data)
+			})
+		}*/
+	}
+})

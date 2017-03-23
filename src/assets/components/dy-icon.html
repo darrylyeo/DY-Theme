@@ -1,0 +1,55 @@
+<template id="dy-icon">
+	<style>
+	:host {
+		color: #fff;
+		transition: var(--transition-fast);
+	}
+	:host([icon=code]) {
+		color: rgba(0, 180, 255, 1);
+	}
+	:host([icon=art]) {
+		color: rgba(50, 245, 50, 1);
+	}
+	:host([icon=music]) {
+		color: rgba(255, 191, 0, 1);
+	}
+	svg {
+		stroke: currentColor;
+		width: 100%;
+		height: 100%;
+	}
+	</style>
+	<svg class="icon">
+		<use />
+	</svg>
+</template>
+
+<script>
+class DYIcon extends DYElement {
+	static get observedAttributes() {
+		return ['icon']
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal){
+		documentReady.then(() => {
+		const root = this.root
+
+		if(attr === 'icon'){
+			const iconName = newVal
+			//this.$icon.addClass(iconName)
+
+			root.updateWithModel({
+				//'.icon[class]': iconName,
+				'.icon': `<use href="${WP.parentTheme}/assets/icons.svg#${iconName}"/>`
+				//'.icon use[href]': `${WP.parentTheme}/assets/icons.svg#${iconName}`
+			})
+		}
+		})
+	}
+	get $icon(){
+		return this.root.find('.icon')[0]
+	}
+}
+
+customElements.define('dy-icon', DYIcon)
+</script>
