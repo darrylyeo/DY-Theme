@@ -1,5 +1,17 @@
-#header {
+:root {
+	/*--main-menu-height: 5rem;*/
+	--main-menu-height: calc(50px + 3.5vw);
 	--main-menu-sticky-height: 4.25rem;
+
+	--secondary-menu-height: 2.625rem;
+}
+@media (max-height: 28.33333rem){
+	:root {
+		--main-menu-sticky-height: 15vh;
+	}
+}
+
+#header {
 	/* used to get computed pixel value in JavaScript: */ flex-basis: var(--main-menu-sticky-height);
 
 	height: var(--main-menu-height);
@@ -11,11 +23,6 @@
 
 	/*position: sticky;
 	top: 0;*/
-}
-@media (max-height: 28.33333rem){
-	#header {
-		--main-menu-sticky-height: 15vh;
-	}
 }
 #header.sticky {
 	--main-menu-height: var(--main-menu-sticky-height);

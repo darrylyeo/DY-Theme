@@ -23,10 +23,6 @@
 	--padding-small: calc(var(--padding) * 0.75);
 	--padding-small-neg: calc(var(--padding-small) * -1);
 	--padding-smaller: calc(var(--padding) * 0.5);
-
-	--main-menu-height: 5rem;
-	--main-menu-height: calc(50px + 3.5vw);
-	--secondary-menu-height: 2.625rem;
 	
 	--shadow-dark-0: rgba(0, 0, 0, 0.1) 0 1px 1px;
 	--shadow-dark-1: rgba(0, 0, 0, 0.2) 0 1px 2px;
