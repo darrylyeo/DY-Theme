@@ -124,6 +124,12 @@ const DYNavigation = {
 				WP.queryType = 'archive'
 			}
 
+			// Also temporary
+			else if(WP.current.slug === 'blog'){
+				WP.queryType = 'archive'
+				WP.postType = 'post'
+			}
+
 			else if(WP.current === undefined){
 				WP.queryType = '404'
 			}else if(WP.current.type === 'page' || WP.current.type === 'post'){
