@@ -45,11 +45,46 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: 'Fun Font';
+	src:
+		url(../fonts/FunFont-250Thin.otf) format('opentype');
+	font-weight: 250;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Fun Font';
+	src:
+		url(../fonts/FunFont-300Light.otf) format('opentype');
+	font-weight: 300;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Fun Font';
+	src:
+		url(../fonts/FunFont-400Regular.otf) format('opentype');
+	font-weight: 400;
+	font-style: normal;
+}
 /*@font-face {
 	font-family: 'Fun Font';
 	src:
-		url(../fonts/FunFont.otf) format('opentype');
-	font-weight: normal;
+		url(../fonts/FunFont-600Demibold.otf) format('opentype');
+	font-weight: 600;
+	font-style: normal;
+}*/
+@font-face {
+	font-family: 'Fun Font';
+	src:
+		url(../fonts/FunFont-700Bold.otf) format('opentype');
+	font-weight: 700;
+	font-style: normal;
+}
+/*@font-face {
+	font-family: 'Fun Font';
+	src:
+		url(../fonts/FunFont-900Black.otf) format('opentype');
+	font-weight: 900;
 	font-style: normal;
 }*/
 

@@ -133,7 +133,6 @@ nav ul > li > a {
 
 	font-family: 'Fun Font';
 	font-size: 1.2em;
-	letter-spacing: 0.05em;
 	text-transform: uppercase;
 
 	padding: 0 0.8em;
@@ -146,7 +145,6 @@ nav ul > li > a {
 }
 #main-menu ul > li > a:hover {
 	/*color: var(--accent-1);*/
-	letter-spacing: 0.05em;
 	opacity: 1;
 	text-shadow: rgba(0, 0, 0, 0.1) 0 0 0.1em;
 	transform: scale(1.15);

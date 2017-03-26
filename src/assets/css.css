@@ -80,9 +80,9 @@ body, p, h1, h2, h3, h4, h5, h6, ul, ol, figure, pre, blockquote, hr {
 }
 h1, h2, h3, h4, h5, h6, legend {
 	font-family: var(--heading-font);
-	font-weight: normal;
+	font-weight: bold;
 	text-transform: uppercase;
-	-webkit-text-stroke: 0.08em;
+	/*-webkit-text-stroke: 0.08em;*/
 }
 
 /*body {
