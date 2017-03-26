@@ -132,6 +132,7 @@ class DYProjectHeader extends DYElement {
 				'#modified-date[data-date]': data.date,
 				'.link[href]': data.link,
 				'#excerpt': data.excerpt.rendered,
+				'#terms': ''
 			})
 			root.find('#title').fitText('7.5em')
 
@@ -175,6 +176,13 @@ class DYProjectHeader extends DYElement {
 						height: img.naturalHeight + 'px',
 						maxHeight: '80vh',
 					})
+				})
+			}else{
+				root.updateWithModel({
+					'img[src]': '',
+					'img[alt]': '',
+					'figcaption': '',
+					'#background[style]': ''
 				})
 			}
 
