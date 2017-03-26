@@ -17,6 +17,7 @@ $framework = array(
 	
 	// WP Rest API
 	'rest-api-terms',
+	// 'rest-api-terms-field',
 	'rest-api-featured-images',
 
 	// Feature Disabling
