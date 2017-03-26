@@ -15,7 +15,7 @@ add_action('rest_api_init', function () {
 				'names',
 				'and'
 			);
-			foreach ($taxonomies as $key => $taxonomy) {
+			foreach ($taxonomies as $taxonomy) {
 				$data[$taxonomy] = get_terms([
 					'taxonomy' => $taxonomy,
 					'hide_empty' => false
