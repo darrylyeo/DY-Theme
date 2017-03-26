@@ -41,9 +41,7 @@ add_action('init', function(){
 		'show_ui' => true,
 		'show_admin_column' => true,
 		'rewrite' => array( 'with_front' => 'false' ),
-		'show_in_rest' => true,
-		//'rest_base' => 'page-category',
-		//'rest_controller_class' => 'WP_REST_Terms_Controller',
+		'show_in_rest' => true
 	) );
 
 	//Topic
@@ -72,7 +70,8 @@ add_action('init', function(){
 		'rewrite' => array(
 			'with_front' => false
 		),
-		'show_admin_column' => true
+		'show_admin_column' => true,
+		'show_in_rest' => true
 	) );
 	
 	
@@ -86,7 +85,8 @@ add_action('init', function(){
 		'rewrite' => array(
 			'with_front' => false
 		),
-		'show_admin_column' => true
+		'show_admin_column' => true,
+		'show_in_rest' => true
 	) );
 	
 	/*// Music Software Used
@@ -112,7 +112,8 @@ add_action('init', function(){
 		'rewrite' => array(
 			'with_front' => false
 		),
-		'show_admin_column' => true
+		'show_admin_column' => true,
+		'show_in_rest' => true
 	) );
 	
 	
