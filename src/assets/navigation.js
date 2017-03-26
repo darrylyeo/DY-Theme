@@ -113,7 +113,7 @@ const DYNavigation = {
 
 			}*/
 
-			WP.current = DY.data.objects[window.location]
+			WP.current = DY.data.objects[window.location.origin + window.location.pathname]
 			WP.queryType = ''
 			WP.postType = ''
 
