@@ -114,6 +114,8 @@ const DYNavigation = {
 			}*/
 
 			WP.current = DY.data.objects[window.location]
+			WP.queryType = ''
+			WP.postType = ''
 
 			if(window.location.href === WP.siteURL){
 				WP.queryType = 'front-page'
