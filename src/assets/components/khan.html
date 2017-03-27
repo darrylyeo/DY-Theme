@@ -1,3 +1,176 @@
+<template id="dy-khan">
+	<style>
+		:host {
+			background-color: rgba(255, 255, 255, 0.6);
+			border-radius: var(--padding-small);
+			display: block;
+			padding: var(--padding-small);
+			margin-left: auto;
+			margin-right: auto;
+			max-width: 100%;
+			width: max-content;
+			text-align: center;
+		}
+		:host > * + * {
+			margin-top: 0.5em;
+		}
+		
+		#project {
+			background-color: rgba(0, 0, 0, 0.02);
+			border-radius: 5px;
+			overflow: hidden;
+			/*width: var(--width, 300);
+			height: var(--height, 300);*/
+			max-width: 100%;
+			margin-top: 0.5em;
+			position: relative;
+			will-change: transform;
+		}
+		/* Can't combine :host with class selector, doesn't work. */
+		:host:not(.load) #project {
+			width: 400px;
+			height: 400px;
+		}
+		#project * {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
+		iframe {
+			position: absolute;
+			width: 100%;
+			transform-origin: left top;
+		}
+		#project.play iframe ~ * {
+			pointer-events: none;
+		}
+		#project img {
+			background-color: #000;
+			background: radial-gradient(rgba(0, 0, 0, 0.6), #000);
+			position: relative;
+			transition: 0.3s;
+		}
+		#project img:not([src]) {
+			width: 400px;
+			padding-top: 100%;
+		}
+		#project:hover img {
+			transform: scale(1.05);
+		}
+		#project.play img {
+			opacity: 0;
+			pointer-events: none;
+			transform: scale(1.2);
+		}
+		#project span {
+			background-image: radial-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5));
+			color: #fff;
+			cursor: pointer;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 3em;
+			opacity: 0;
+			text-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
+			transition: 0.3s;
+			width: 100%;
+		}
+		#project:hover span {
+			opacity: 1;
+			transform: scale(1.2);
+		}
+		#project.play span {
+			opacity: 0;
+			transform: scale(2);
+		}
+		#buttons {
+			overflow: hidden;
+			max-height: 0;
+			text-align: left;
+			transition: 0.3s;
+		}
+		#project.play #buttons {
+			margin-top: 5px;
+			max-height: 42px;
+		}
+		#buttons > * + * {
+			float: right;
+		}
+	</style>
+	<a class="link"><h3 id="title"></h3></a>
+	<dy-khan-stats id="stats">
+		<span slot="votes"></span>
+		<span slot="spin-offs"></span>
+		<span slot="lines"></span>
+	</dy-khan-stats>
+	<div id="project">
+		<iframe></iframe>
+		<img id="thumbnail">
+		<span>►Play</span>
+	</div>
+	<div class="buttons">
+		<button class="play-restart">Play</button>
+		<button class="stop">Stop</button>
+	</div>
+	<dy-khan-badge id="fork"></dy-khan-badge>
+</template>
+
+<template id="dy-khan-badge">
+	<a class="link">
+		<img id="thumbnail">
+	</a>
+	<div>
+		<p><a class="link"><span id="title-prefix"></span> <span id="title"></span></a></p>
+		<dy-khan-stats id="stats">
+			<span slot="votes"></span>
+			<span slot="spin-offs"></span>
+			<span slot="lines"></span>
+		</dy-khan-stats>
+	</div>
+	<style>
+		:host {
+			display: flex;
+			align-items: stretch;
+			text-align: left;
+		}
+		img {
+			border-radius: 5px;
+			height: 4em;
+		}
+		div {
+			flex-direction: column;
+			margin-left: 1em;
+		}
+	</style>
+</template>
+
+<template id="dy-khan-stats">
+	<style>
+		:host {
+		}
+		span + span {
+			margin-left: 0.5em;
+		}
+		.votes {
+			color: #7cb342;
+		}
+		.spin-offs {
+			color: #7986cb;
+		}
+		.lines {
+			color: #ec407a;
+		}
+	</style>
+	<!--<span class="votes"><content select=".votes"></content> Votes</span>
+	<span class="spin-offs"><content select=".spin-offs"></content> Spin-offs</span>
+	<span class="lines"><content select=".lines"></content> Lines</span>-->
+	<span class="votes"><slot name="votes"></slot> Votes</span>
+	<span class="spin-offs"><slot name="spin-offs"></slot> Spin-offs</span>
+	<span class="lines"><slot name="lines"></slot> Lines</span>
+</template>
+
+
+
 <script>
 const KhanProject = function(id){
 	return {
