@@ -1,6 +1,10 @@
 <template id="dy-project-header">
 	<style>
 		dy-project-header, :host {
+			display: flex;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			align-items: stretch;
 			flex-direction: column;
 			flex: 100%;
 			margin: 0;
@@ -33,22 +37,21 @@
 			text-shadow: 0 0 5rem #fff;
 
 			margin-bottom: var(--padding-small);
-			width: 100%;
+			max-width: 100%;
 		}
 		#title-wrapper h1 {
 			font-size: 3.5em;
 			line-height: 1.2;
 			text-align: center;
-			width: 100%;
 		}
 		#inner-wrapper {
-			margin: calc(var(--padding-small-neg) / 2);
+			margin: calc(var(--padding-neg) / 2);
 		}
 		#inner-wrapper > * {
-			margin: calc(var(--padding-small) / 2);
+			margin: calc(var(--padding) / 2);
 		}
 		#featured-image {
-			flex: 1 100%;
+			flex: 1 auto;
 			max-width: max-content;
 		}
 		#details {
@@ -68,9 +71,15 @@
 		}
 		#dates {
 			justify-content: space-between;
+			margin-bottom: var(--padding-small);
 		}
 
-		@media (max-width: 35rem) {
+		@media (min-width: 40rem) {
+			#title-wrapper {
+				width: 90%;
+			}
+		}
+		@media (max-width: 40rem) {
 			#inner-wrapper {
 				flex-direction: column;
 				align-items: center;
@@ -86,6 +95,10 @@
 	<div id="title-wrapper">
 		<h1 id="title"></h1>
 	</div>
+	<div id="dates" style="justify-content: center">
+		<h3><dy-date id="project-date"></dy-date></h3>
+		<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
+	</div>
 	<div id="inner-wrapper">
 		<figure id="featured-image">
 			<img>
@@ -93,11 +106,11 @@
 		</figure>
 		<div id="details">
 			<blockquote id="excerpt"></blockquote>
-			<div id="dates">
+			<!--<div id="dates">
 				<h3><dy-date id="project-date"></dy-date></h3>
 				<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
-			</div>
-			<div id="terms"></div>
+			</div>-->
+			<dl id="terms"></dl>
 		</div>
 	</div>
 </template>
@@ -201,15 +214,24 @@ class DYProjectHeader extends DYElement {
 					.addClass('taxonomy')
 					.attr('data-taxonomy', taxonomyName)
 					.append(
-						$$$('h3').html(taxonomy.name)
+						$$$('dt').html(taxonomy.name)
 					)
 					.appendTo($terms)
 
 				for(let termID of terms){
 					const term = DY.data.terms[termID]
 
-					const $term = $$$('a').attr('rel', 'tag').appendTo($taxonomy)
-					$term.innerHTML = term.name
+					/*const $term = $$$('a').attr('rel', 'tag').appendTo($taxonomy)
+					$term.innerHTML = term.name*/
+					
+					const $term = $$$('dd')
+						.addClass('term')
+						.html(term.name)
+						/*.append(
+							$$$('a').attr('rel', 'tag').html(term.name)
+						)*/
+						.appendTo($taxonomy)
+
 					this.addClass(`${taxonomyName}-${term.slug}`)
 				}
 			}

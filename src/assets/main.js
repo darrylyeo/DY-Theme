@@ -117,7 +117,7 @@ window.on('pagerender', () => {
 
 
 // Page Content
-window.on('pageload', () => {
+window.on('pagerender', () => {
 	let data = WP.current
 
 	if(WP.queryType === 'archive' && WP.postType === 'project'){
