@@ -10,7 +10,6 @@ const DYNavigation = {
 		history.pushState({
 			whee: 9
 		}, 'bloink', url)
-		this.onPageLoad()
 
 		get(url).then(data => {
 			if(this.navigatingTo !== url) return
