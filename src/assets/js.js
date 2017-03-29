@@ -749,9 +749,16 @@ for(let eventName of eventNames){
 		element.on(...arguments)
 	}
 }*/
-/*NodeList.prototype.filter = function(){
-	return [...this].filter.apply(this, arguments)
-}*/
+NodeList.prototype.filter = function(){
+	if(typeof arguments[0] === 'function'){
+		const callback = arguments[0]
+		return [...this].filter(callback)
+	}else if(typeof arguments[0] === 'string'){
+		const selector = arguments[0]
+		return [...this].filter($element => $element.matches(selector))
+	}
+	
+}
 /*NodeList.prototype.find = function(){
 	return [...this].find.apply(this, arguments)
 }*/
