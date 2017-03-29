@@ -101,8 +101,7 @@ $toTop.on('click', () => {
 
 
 window.on('pageload', () => {
-	//document.body.animateScrollY(0)
-
+	document.body.animateScrollY(0)
 	$$('#modal').click()
 })
 window.on('pagerender', () => {
