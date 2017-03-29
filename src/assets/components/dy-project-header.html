@@ -116,7 +116,7 @@ class DYProjectHeader extends DYElement {
 	connectedCallback(){
 		const root = this.root
 
-		window.on('pageload', () => {
+		window.on('pagerender', () => {
 			if(WP.queryType !== 'single' || WP.postType !== 'project'){
 				this.style.display = 'none'
 				return

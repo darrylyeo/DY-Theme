@@ -104,12 +104,12 @@ window.on('pageload', () => {
 	//document.body.animateScrollY(0)
 
 	$$('#modal').click()
+})
+window.on('pagerender', () => {
 
 	if('Prism' in window){
 		Prism.highlightAll()
 	}
-})
-window.on('pageanimate', () => {
 	DYProjectFilters.update()
 })
 

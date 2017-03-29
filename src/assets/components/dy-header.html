@@ -169,7 +169,7 @@ class DYHeader extends DYElement {
 		}).throttle())
 
 
-		window.on('pageload', () => {
+		window.on('pagerender', () => {
 			$header.toggleClass(WP.queryType === 'front-page', 'full', 'immersive')
 			$secondaryMenu.toggleClass(WP.queryType === 'front-page', 'immersive')
 
