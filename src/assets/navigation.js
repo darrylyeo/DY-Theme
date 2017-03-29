@@ -154,7 +154,7 @@ documentReady.then(() => {
 })
 
 
-window.on('popstate', (e) => {
+window.on('popstate', e => {
 	DYNavigation.navigateTo(location.href, location.host)
 	X(e)
 	e.preventDefault()
