@@ -1,3 +1,6 @@
+const USING_SHADY_CSS = 'ShadyCSS' in window && !ShadyCSS.nativeShadow
+const USING_SHADY_DOM ='ShadyDOM' in window
+
 const DYElement = class extends HTMLElement {
 	constructor(){
 		super()
@@ -54,7 +57,7 @@ const DYElement = class extends HTMLElement {
 			root = this.attachShadow({mode: 'open'})
 			this.init()
 		}
-		if('ShadyDOM' in window){
+		if(USING_SHADY_DOM){
 			root.find = this.find.bind(this)
 			root.querySelector = this.querySelector.bind(this)
 			root.querySelectorAll = this.querySelectorAll.bind(this)
@@ -76,8 +79,8 @@ const DYElement = class extends HTMLElement {
 		if(this._init) return
 		this._init = true
 
-		if('ShadyCSS' in window && !ShadyCSS.nativeShadow){
 			ShadyCSS.prepareTemplate(this.$template, this.tagName)
+		if(USING_SHADY_CSS){
 			ShadyCSS.styleElement(this)
 		}
 
