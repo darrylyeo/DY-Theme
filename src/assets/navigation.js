@@ -104,13 +104,7 @@ const DYNavigation = {
 
 	onPageLoad(){
 		DY.getData.then(() => {
-			/*const id = $('main').dataset.id
-			const type = $('main').dataset.type
 
-			switch(type){
-				case '404':
-
-			}*/
 
 			WP.current = DY.data.objects[window.location.origin + window.location.pathname]
 			WP.queryType = ''
