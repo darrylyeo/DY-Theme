@@ -104,18 +104,18 @@ const DYNavigation = {
 
 	onPageLoad(){
 		DY.getData.then(() => {
+			const currentURL = window.location.origin + window.location.pathname
 
-
-			WP.current = DY.data.objects[window.location.origin + window.location.pathname]
+			WP.current = DY.data.objects[currentURL]
 			WP.queryType = ''
 			WP.postType = ''
 
-			if(window.location.href === WP.siteURL){
+			if(currentURL.replace(/\/$/, '') === WP.siteURL.replace(/\/$/, '')){
 				WP.queryType = 'front-page'
 			}
 
 			// Temporary
-			else if(window.location.href.includes('category')){
+			else if(currentURL.includes('category')){
 				WP.queryType = 'archive'
 			}
 
