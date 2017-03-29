@@ -553,11 +553,11 @@ Element.prototype.updateWithModel = DocumentFragment.prototype.updateWithModel =
 			const parts = handle.match(/(.+?)\[(.+?)]/)
 			const selector = parts[1]
 			const attrName = parts[2]
-			for(let element of this.find(selector)){
+			for(let $element of this.find(selector)){
 				if(attrName === 'style' && typeof value === 'object'){
-					element.css(value)
+					$element.css(value)
 				}else{
-					element.attr(attrName, value)
+					$element.attr(attrName, value)
 				}
 			}
 		}else{
@@ -740,12 +740,12 @@ for(let eventName of eventNames){
 }
 
 /*NodeList.prototype.addEventListener = function(eventName, callback){
-	for(let element of this){
+	for(let $element of this){
 		element.addEventListener(eventName, callback)
 	})
 }*/
 /*NodeList.prototype.on = function(){
-	for(let element of this){
+	for(let $element of this){
 		element.on(...arguments)
 	}
 }*/
@@ -759,8 +759,8 @@ for(let method in Element.prototype){
 	if(!NodeList.prototype[method]){
 		NodeList.prototype[method] = function(){
 			let returnValue
-			for(let element of this){
-				const value = typeof element[method] === 'function' ? element[method](...arguments) : element[method]
+			for(let $element of this){
+				const value = typeof $element[method] === 'function' ? $element[method](...arguments) : $element[method]
 				returnValue = returnValue || value
 			}
 			return returnValue
