@@ -1,6 +1,6 @@
 main > aside {
-	flex: 0 auto;
-	width: 200px;
+	flex: 0 12rem;
+	flex-direction: column;
 	/*margin-left: var(--padding-neg);*/
     box-sizing: content-box;
     padding: var(--padding);
