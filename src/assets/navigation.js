@@ -66,7 +66,7 @@ const DYNavigation = {
 				}).delay(1)
 
 				$$main.find('a').on('click', this.openLink)
-				this.onPageAnimate()
+				this.onPageRender()
 			}, true)
 		})
 
@@ -150,12 +150,15 @@ const DYNavigation = {
 			window.dispatchEvent(new CustomEvent('pageload'))
 		})
 	},
-	onPageAnimate(){
-		window.dispatchEvent(new CustomEvent('pageanimate'))
+	onPageRender(){
+		window.dispatchEvent(new CustomEvent('pagerender'))
 	}
 }
 
-documentReady.then(() => DYNavigation.onPageLoad())
+documentReady.then(() => {
+	DYNavigation.onPageLoad()
+	window.once('pageload', () => DYNavigation.onPageRender())
+})
 
 
 window.on('popstate', (e) => {
