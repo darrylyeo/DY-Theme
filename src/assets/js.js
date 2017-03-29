@@ -756,7 +756,7 @@ for(let eventName of eventNames){
 	return [...this].find.apply(this, arguments)
 }*/
 for(let method in Element.prototype){
-	if(!NodeList.prototype[method]){
+	if(!(method in NodeList.prototype)){
 		NodeList.prototype[method] = function(){
 			let returnValue
 			for(let $element of this){
