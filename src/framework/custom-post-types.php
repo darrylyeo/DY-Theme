@@ -73,8 +73,21 @@ add_action('init', function(){
 		'show_admin_column' => true,
 		'show_in_rest' => true
 	) );
+	// Programming Language (to merge with Tools)
+	register_taxonomy( 'language', $post_types, array(
+		'hierarchical' => true,
+		'labels' => array(
+			'name' => _x( 'Languages', 'taxonomy general name' ),
+			'singular_name'	=> _x( 'Language', 'taxonomy singular name' ),
+		),
+		'rewrite' => array(
+			'with_front' => false
+		),
+		'show_admin_column' => true,
+		'show_in_rest' => true
+	) );
 	
-	
+
 	// Typeface
 	register_taxonomy( 'typeface', $post_types, array(
 		'hierarchical' => true,
