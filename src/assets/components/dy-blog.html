@@ -53,12 +53,6 @@ class DYBlog extends DYElement {
 			}
 		})
 	}
-
-	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
-	get root(){
-		this.init()
-		return this
-	}
 }
 customElements.define('dy-blog', DYBlog)
 
