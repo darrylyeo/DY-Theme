@@ -32,16 +32,30 @@ const DYElement = class extends HTMLElement {
 
 	}
 
-	/* Need a way to get this.tagName but from Constructor
 	static get $template(){
-		return $('#' + this.tagName.toLowerCase())
+		const tagName = customElements.getName(this)
+
+		let $template
+		const id = '#' + tagName
+		if(document.currentScript){
+			// Called from within HTML Import, when the <template> may not yet have been added to the main document
+			$template = document.currentScript.ownerDocument.find(`template${id}`)[0]
+		}else{
+			$template = $(id)
+		}
+
+		if(USING_SHADY_CSS){
+			ShadyCSS.prepareTemplate($template, tagName)
+		}
+
+		return $template
 	}
 
 	static get $style(){
 		return this.$template.find('style')[0]
-	}*/
+	}
 	
-	get $template(){
+	/*get $template(){
 		const id = '#' + this.tagName.toLowerCase()
 		if(document.currentScript){
 			// Called from within HTML Import, when the <template> may not yet have been added to the main document
@@ -49,13 +63,14 @@ const DYElement = class extends HTMLElement {
 		}else{
 			return $(id)
 		}
-	}
+	}*/
 
-	get $style(){
+	/*get $style(){
 		//console.log('$style', this.tagName, this.root, this.root.find('style')[0], this.root.querySelector('style'))
 		//console.trace()
 		return this.root.querySelector('style')
-	}
+	}*/
+
 
 	/*get root(){
 		let root = this.shadowRoot || this._shadowRoot
@@ -68,7 +83,6 @@ const DYElement = class extends HTMLElement {
 		return root
 	}*/
 	get root(){
-		//X('this.shadowRoot', this.tagName, this.shadowRoot)
 		let root = this.shadowRoot
 		if(!root){
 			root = this.attachShadow({mode: 'open'})
@@ -94,25 +108,31 @@ const DYElement = class extends HTMLElement {
 
 	init(){
 		if(this._init) return
-		this._init = true
 
-			ShadyCSS.prepareTemplate(this.$template, this.tagName)
 		if(USING_SHADY_CSS){
 			ShadyCSS.styleElement(this)
 		}
 
 		const root = this.root
-		//this.$template.content.import().appendTo(root)
-		if(this.$template){
-			root.appendChild(document.importNode(this.$template.content, true))
-		}else{
-			X('template doesn\'t exist:', this.tagName)
-		}
-		//root.append(unwrap(document.importNode(this.$template.content, true)))
-		//X('template content', this.tagName, this.$template.content, document.importNode(this.$template.content, true), root)
 
 		this.addStyle(DYElement.$style)
+
+		for(let Prototype = this.constructor; Prototype !== DYElement; Prototype = Object.getPrototypeOf(Prototype)){
+			const $template = Prototype.$template
+
+			//this.$template.content.import().appendTo(root)
+			if($template){
+				root.appendChild(document.importNode($template.content, true))
+			}else{
+				X('template doesn\'t exist:', this.tagName)
+			}
+			//root.append(unwrap(document.importNode(this.$template.content, true)))
+			//X('template content', this.tagName, this.$template.content, document.importNode(this.$template.content, true), root)
+		}
+
 		DYNavigation.processLinks( root.find('a') )
+
+		this._init = true
 	}
 
 	addStyle($style){
