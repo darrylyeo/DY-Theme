@@ -220,8 +220,19 @@ main :link:focus, main :visited:focus {
 
 
 
+
+
+
+:root:not(.load) {
+	background: url(http://localhost:8888/darrylyeo/wp-content/themes/DY/logo/DY-Logo-Animated.svg) center/25vmin no-repeat fixed;
 }
+#background, #wrapper {
+	transition: 0.25s ease-out;
 }
+:root:not(.load) #background,
+:root:not(.load) #wrapper {
+	opacity: 0;
+	transform: perspective(100rem) scale(0.9) rotateX(10deg) translateY(10em);
 }
 
 /*:root.load * {
