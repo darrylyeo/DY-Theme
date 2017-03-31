@@ -192,7 +192,7 @@ customElements.define('dy-projects', DYProjects)
 
 
 
-<template id="dy-project-filters">
+<template id="dy-terms">
 	<style>
 		:host {
 			transition: opacity: var(--transition-medium);
@@ -236,58 +236,108 @@ customElements.define('dy-projects', DYProjects)
 			}
 		}
 	</style>
+	<dl id="terms"></dl>
 </template>
 
 
 <script>
-class DYProjectFilters extends DYElement {
+class DYTerms extends DYElement {
+	initialize(termIDs = [], excludeTerms = ['uncategorized'], excludeTaxonomies = ['page-category', 'category']){
+		const root = this.root
+		const $termsWrapper = this.$termsWrapper
+		
+		DY.getData.then(() => {
+			const terms = Object.values(DY.data.terms)
+				.filter(term =>
+					(termIDs.length === 0 || termIDs.includes(term.term_id)) &&
+					!excludeTerms.includes(term.slug) &&
+					!excludeTaxonomies.includes(term.taxonomy)
+				)
+				.sort((term1, term2) => term1.count - term2.count)
+
+			const taxonomies = Object.values(DY.data.taxonomies)
+				.filter(taxonomy =>
+					!excludeTaxonomies.includes(taxonomy.slug) &&
+					terms.some(term => term.taxonomy === taxonomy.slug)
+				)
+
+			for(let taxonomy of taxonomies){
+				const $taxonomy = $$$('div')
+					.attr({
+						'data-taxonomy': taxonomy.slug
+					})
+					.append(
+						$$$('dt').html(taxonomy.name)
+					)
+					.appendTo($termsWrapper)
+				
+				for(const term of terms.filter(term => term.taxonomy === taxonomy.slug)){
+					const _this = this
+
+					const $term = $$$('a')
+						.attr('tabindex', '0') // Focusable
+						.attr('rel', 'tag')
+						.attr('data-term', term.slug)
+						.attr('data-selector', `.${term.taxonomy}-${term.slug}`)
+						.html(term.name)
+						.appendTo($taxonomy)
+				}
+			}
+		})
+	}
+
+	get $termsWrapper(){
+		return this.root.find('#terms')
+	}
+
+	get $terms(){
+		return this.root.find('a[rel=tag]')
+	}
+}
+customElements.define('dy-terms', DYTerms)
+</script>
+
+
+
+
+<template id="dy-project-filters">
+	<style>
+		:host {
+			transition: var(--transition-medium);
+		}
+		:host-context(.has-focused-project):host {
+			opacity: 0.25;
+		}
+
+		@media (max-width: 36rem) {
+			:host {
+				flex-wrap: wrap;
+			}
+			div[data-taxonomy] {
+				width: 100%;
+			}
+		}
+	</style>
+</template>
+
+
+<script>
+class DYProjectFilters extends DYTerms {
 	constructor(){
 		super()
 
-		const root = this.root
+		;(() => {
+			const _this = DYProjectFilters.instance = this
 
-		DYProjectFilters.instance = this
-		
-		DY.getData.then(() => {
-			const $taxonomies = {}
-			const excludeTaxonomies = ['page-category', 'category']
-			const excludeTerms = ['uncategorized']
+			this.$terms.on('click', function(){
+				this.toggleClass('active')
+				_this.update()
+			})
+		}).delay()
 
-			for(let taxonomyName in DY.data.taxonomies){
-				if(excludeTaxonomies.includes(taxonomyName)) continue
+		this.initialize()
 
-				const taxonomy = DY.data.taxonomies[taxonomyName]
-				const $taxonomy = $$$('div')
-					.attr({
-						'data-taxonomy': taxonomyName
-					})
-					.append(
-						$$$('h3').html(taxonomy.name)
-					)
-					.appendTo(root)
-				$taxonomies[taxonomyName] = $taxonomy
-			}
-			for(let term of Object.values(DY.data.termsBySlug).sort((term1, term2) => term1.count - term2.count)){
-				if(excludeTaxonomies.includes(term.taxonomy)) continue
-				if(excludeTerms.includes(term.slug)) continue
-
-				const $taxonomy = $taxonomies[term.taxonomy] // root.find(`[data-taxonomy=${term.taxonomy}`)
-				if(!$taxonomy) continue
-
-				const _this = this
-
-				const $term = $$$('a')
-					.attr('rel', 'tag')
-					.attr('data-term', term.slug)
-					.attr('data-selector', `.${term.taxonomy}-${term.slug}`)
-					.html(term.name)
-					.on('click', function(){
-						this.toggleClass('active')
-						_this.update()
-					})
-					.appendTo($taxonomy)
-			}
-		})
+		//window.on('pagerender', () => this.update())
 	}
 
 	update(){
@@ -298,11 +348,11 @@ class DYProjectFilters extends DYElement {
 		this.$DYProjects.filter = Array.from(root.find('a[rel=tag].active'))
 			.map($term => $term.dataset.selector)
 			.join('')
-		for(let $term of root.find('a[rel=tag]')){
-			const filteredElements = $projects.find(':not(.hide)') //this.$DYProjects.isotope.getFilteredItemElements()
+		for(let $term of this.$terms){
+			const filteredElements = $projects.filter(':not(.hide)') //this.$DYProjects.isotope.getFilteredItemElements()
 
 			$term.toggleClass(
-				[...filteredElements].filter($element => $element.matches($term.dataset.selector)).length > 0, // this.$DYProjects.root.find(`${$term.dataset.selector}:not(.isotope-hidden)`).length
+				[...filteredElements].every($element => !$element.matches($term.dataset.selector)), // this.$DYProjects.root.find(`${$term.dataset.selector}:not(.isotope-hidden)`).length
 				'disabled'
 			)
 		}
