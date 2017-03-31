@@ -24,8 +24,16 @@
 	/*position: sticky;
 	top: 0;*/
 }
+#header.full {
+	height: calc(100vh - var(--secondary-menu-height));
+	/*box-shadow: rgba(0, 0, 0, 0.5) 0 0 0 100vmax, rgba(0, 0, 0, 0.5) 0 0 0 100vmax inset;*/
+}
 #header.sticky {
 	--main-menu-height: var(--main-menu-sticky-height);
+}
+#header.immersive:not(.sticky) {
+	/*mix-blend-mode: overlay;*/ /* Very, VERY laggy! */
+	z-index: 1;
 }
 
 #main-menu {
@@ -44,23 +52,40 @@
 
 	/*position: sticky;
 	top: 0;*/
+}
+#header.full #main-menu {
 	position: absolute;
 	bottom: 0;
 	min-height: max-content;
+	transition: background var(--transition-slow);
+}
+#header.full:not(.sticky) #main-menu {
+	background:
+		radial-gradient(
+			at center 30%,
+			hsla(var(--accent-1-values), 0.5),
+			rgba(0, 0, 0, 0.3)
+		),
+		repeating-linear-gradient(
+			10deg,
+			rgba(0, 0, 0, 0.03),
+			rgba(0, 0, 0, 0.03) 0.5rem,
+			transparent 0.5rem,
+			transparent 1rem
+		);
+	padding: var(--padding);
+
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 #header.sticky #main-menu {
 	/*box-shadow: var(--shadow-dark-0);*/
 	position: fixed;
 	top: 0;
 }
-#header.sticky #main-menu > ul {
-	flex-wrap: nowrap;
-}
-
-
-#header.immersive:not(.sticky) {
-	/*mix-blend-mode: overlay;*/ /* Very, VERY laggy! */
-	z-index: 1;
+#header.immersive #main-menu {
+	background: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.7));
 }
 /*#header.immersive #main-menu {
 	background-color: transparent;
@@ -70,15 +95,26 @@
 #header.immersive #main-menu > ul > li > a {
 	color: #fff;
 }*/
-#header.immersive #main-menu {
-	background: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.7));
-}
+
+/*#header.full:not(.sticky) #main-menu > * {
+	filter: drop-shadow(#fff 0 0 4rem);
+}*/
 
 #logo {
 	margin-right: auto;
 	padding: 0 var(--padding);
 	height: 100%;
 	transition: height var(--transition-slow);
+	will-change: transform;
+}
+#header.full:not(.sticky) #logo {
+	margin-right: 0;
+	margin-bottom: 1rem;
+	max-width: 100%;
+	width: 100%;
+}
+#header.full #logo {
+	max-height: 7rem;
 }
 #logo svg {
 	margin: auto;
@@ -114,6 +150,13 @@ nav ul {
 #secondary-menu > ul {
 	width: 100%;
 }
+#header.sticky #main-menu > ul {
+	flex-wrap: nowrap;
+}
+#header.full:not(.sticky) #main-menu > ul {
+	justify-content: center;
+}
+
 nav > ul > li {
 	position: relative;
 }
@@ -124,6 +167,7 @@ nav > ul > li {
 	content: "●";
 	transform: scale(0.5);
 }
+
 nav ul > li > a {
 	color: inherit;
 	width: 100%;
@@ -140,14 +184,19 @@ nav ul > li > a {
 	align-items: center;
 	transition: var(--transition-fast), font-size var(--transition-slow), transform var(--transition-medium) 0.05s var(--ease-in-out-back);
 }
-#header.sticky #main-menu > ul > li > a {
-	font-size: 0.9em;
-}
 #main-menu ul > li > a:hover {
 	/*color: var(--accent-1);*/
 	opacity: 1;
 	text-shadow: rgba(0, 0, 0, 0.1) 0 0 0.1em;
 	transform: scale(1.15);
+}
+#header.sticky #main-menu > ul > li > a {
+	font-size: 0.9em;
+}
+#header.full:not(.sticky) #main-menu > ul > li > a {
+	color: rgba(255, 255, 255, 0.95);
+	font-size: 2.5rem;
+	line-height: 3;
 }
 #secondary-menu > ul > li > a {
 	padding: 0 1.25ch;
@@ -209,6 +258,7 @@ nav > ul > li:not(:hover):not(:focus) > ul {
 nav > ul > li ul > li {
 	display: flex;
 }
+
 nav > ul > li ul > li > a {
 	background: rgba(255, 255, 255, 0.925);
 	line-height: 2.5;
@@ -267,56 +317,6 @@ nav > ul > li ul > li > a {
 	}
 }*/
 
-
-
-
-#header.full {
-	height: calc(100vh - var(--secondary-menu-height));
-	/*box-shadow: rgba(0, 0, 0, 0.5) 0 0 0 100vmax, rgba(0, 0, 0, 0.5) 0 0 0 100vmax inset;*/
-}
-#header.full #main-menu {
-	transition: background var(--transition-slow);
-}
-#header.full:not(.sticky) #main-menu {
-	background:
-		radial-gradient(
-			at center 30%,
-			hsla(var(--accent-1-values), 0.5),
-			rgba(0, 0, 0, 0.3)
-		),
-		repeating-linear-gradient(
-			10deg,
-			rgba(0, 0, 0, 0.03),
-			rgba(0, 0, 0, 0.03) 0.5rem,
-			transparent 0.5rem,
-			transparent 1rem
-		);
-	padding: var(--padding);
-
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-#header.full:not(.sticky) #logo {
-	margin-right: 0;
-	margin-bottom: 1rem;
-	max-width: 100%;
-	width: 100%;
-}
-#header.full #logo {
-	max-height: 7rem;
-}
-/*#header.full:not(.sticky) #main-menu > * {
-	filter: drop-shadow(#fff 0 0 4rem);
-}*/
-#header.full:not(.sticky) #main-menu > ul {
-	justify-content: center;
-}
-#header.full:not(.sticky) #main-menu > ul > li > a {
-	color: rgba(255, 255, 255, 0.95);
-	font-size: 2.5rem;
-	line-height: 3;
-}
 
 
 
