@@ -17,13 +17,13 @@ add_action('rest_api_init', function () {
 				$taxonomies = get_taxonomies(
 					[
 						'public' => true,
-						'_builtin' => false
+						//'_builtin' => false
 					],
 					'names',
 					'and'
 				);
 
-				$terms = wp_get_post_terms(
+				$terms = wp_get_object_terms(
 					$object[ 'id' ],
 					$taxonomies
 				);
