@@ -1,6 +1,23 @@
 const USING_SHADY_CSS = 'ShadyCSS' in window && !ShadyCSS.nativeShadow
 const USING_SHADY_DOM ='ShadyDOM' in window
 
+// Get Custom Element name from JS constructor
+// Related: https://github.com/w3c/webcomponents/issues/566
+{
+	const elementConstructors = new WeakMap()
+
+	// Can't we use CustomElementRegistry.prototype instead?
+	customElements._define = customElements.define
+	customElements.define = function(name, constructor, options){
+		elementConstructors.set(constructor, name)
+		return this._define(...arguments)
+	}
+
+	customElements.getName = function(constructor){
+		return elementConstructors.get(constructor)
+	}
+}
+
 const DYElement = class extends HTMLElement {
 	constructor(){
 		super()
