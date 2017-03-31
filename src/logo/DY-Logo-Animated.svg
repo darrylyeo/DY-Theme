@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="400pt" height="400pt" viewBox="0 0 400 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<line id="D-stem" x1="0" y1="0" x2="0" y2="0"/>
+	</defs>
+	<g fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(200 200)">
+		<g id="DY" transform="scale(1)">
+			<g id="Y" stroke="#ffb635">
+				<line id="Y-stem-left" xlink:href="#Y-stem"/>
+				<line id="Y-stem-right" xlink:href="#Y-stem"/>
+				<line id="Y-stem-down" xlink:href="#Y-stem"/>
+			</g>
+			<g id="D" stroke="#00adff">
+				<!--<path id="D-arc" d="M 0, 130 a 130,130 0 1 0 -0.01, 0"/>-->
+				<path id="D-arc" d="M -130, 0 a 130 130 1 1 1 0 0.01" stroke-dasharray="0 202 0 100000" stroke-linecap="butt"/>
+				<use id="D-stem-up" xlink:href="#D-stem"/>
+				<use id="D-stem-down" xlink:href="#D-stem" opacity="0"/>
+			</g>
+		</g>
+	</g>
+
+
+
+
+
+<!-- MAIN LOOP -->
+<animate id="loop" begin="0;loop.end" dur="4.2s" attributeName="visibility" from="hide" to="hide"/>
+
+
+
+<!-- INITIALIZATION -->
+<set
+	xlink:href="#D"
+	attributeName="stroke-width"
+	begin="loop.begin"
+	to="0"
+	fill="freeze"/>
+<set
+	xlink:href="#Y"
+	attributeName="stroke-width"
+	begin="loop.begin"
+	to="0"
+	fill="freeze"/>
+<animateTransform
+	xlink:href="#D"
+	attributeName="transform"
+	type="translate"
+	begin="loop.begin"
+	from="0"
+	to="0"
+	dur="0"/>
+<animateTransform
+	xlink:href="#Y"
+	attributeName="transform"
+	type="translate"
+	begin="loop.begin"
+	from="0"
+	to="0"
+	dur="0"/>
+<set
+	xlink:href="#D-stem"
+	attributeName="y2"
+	begin="loop.begin"
+	to="0"
+	fill="freeze"/>
+<set
+	xlink:href="#Y-stem-down"
+	attributeName="y2"
+	begin="loop.begin"
+	to="0"
+	fill="freeze"/>
+<set 
+	xlink:href="#D-arc"
+	attributeName="stroke-dasharray"
+	begin="loop.begin"
+	to="0 202 0 100000"
+	fill="freeze"/>
+<set
+	xlink:href="#D-stem-down"
+	attributeName="opacity"
+	begin="loop.begin"
+	to="0"
+	fill="freeze"/>
+<animateTransform 
+	xlink:href="#D-stem-down"
+	attributeName="transform"
+	type="rotate"
+	begin="loop.begin"
+	dur="0s"
+	to="0"
+	fill="freeze"/>
+<set 
+	xlink:href="#Y-stem-left"
+	attributeName="x2"
+	begin="loop.begin"
+	to="0"
+	fill="freeze"/>
+<set 
+	xlink:href="#Y-stem-left"
+	attributeName="y2"
+	begin="loop.begin"
+	to="0"
+	fill="freeze"/>
+<set 
+	xlink:href="#Y-stem-right"
+	attributeName="x2"
+	begin="loop.begin"
+	to="0"
+	fill="freeze"/>
+<set 
+	xlink:href="#Y-stem-right"
+	attributeName="y2"
+	begin="loop.begin"
+	to="0"
+	fill="freeze"/>
+
+<animateTransform
+	xlink:href="#DY"
+	attributeName="transform"
+	type="scale"
+	begin="loop.begin"
+	from="1"
+	to="1"
+	dur="0"/>
+
+
+
+
+
+
+
+
+
+
+
+<!-- scale up .75, .25 translate .75, stem grow 0.5, arc 1
+scale up .7, .2 translate .7, stem grow 0.45, arc 0.95 -->
+
+<!--
+<animate
+	id="D-scale-up"
+	xlink:href="#D"
+	attributeName="stroke-width"
+	begin="0.2s; loop.end + 0.2s"
+	dur="0.5s"
+	calcMode="spline"
+	keyTimes=""
+	values="0; 45"
+	keySplines=".2 0 .4 1.5"
+	fill="freeze"/>
+<animate
+	id="Y-scale-up"
+	xlink:href="#Y"
+	attributeName="stroke-width"
+	begin="0s; loop.end"
+	dur="0.7s"
+	calcMode="spline"
+	keyTimes=""
+	values="0; 60"
+	keySplines=".2 0 .4 1.5"
+	fill="freeze"/>
+
+<animate
+	id="D-scale-down"
+	xlink:href="#D"
+	attributeName="stroke-width"
+	begin="D-scale-up.end + 0.2s"
+	dur="0.7s"
+	calcMode="spline"
+	keyTimes=""
+	values="45; 10"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animate
+	id="Y-scale-down"
+	xlink:href="#Y"
+	attributeName="stroke-width"
+	begin="D-scale-up.end + 0.2s"
+	dur="0.7s"
+	calcMode="spline"
+	keyTimes=""
+	values="60; 37"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animateTransform 
+	id="D-translate"
+	xlink:href="#D"
+	attributeName="transform"
+	type="translate"
+	begin="D-scale-up.end + 0.2s"
+	dur="0.7s"
+	calcMode="spline"
+	keyTimes=""
+	values="0; -142"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animateTransform 
+	id="Y-translate"
+	xlink:href="#Y"
+	attributeName="transform"
+	type="translate"
+	begin="Y-scale-up.end + 0.2s"
+	dur="0.7s"
+	calcMode="spline"
+	keyTimes=""
+	values="0; 66"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+
+<animate 
+	id="D-stem-grow"
+	xlink:href="#D-stem"
+	attributeName="y2"
+	begin="D-translate.end + 0"
+	dur="0.45s"
+	calcMode="spline"
+	keyTimes=""
+	values="0; -130"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animate 
+	id="#Y-stem-down-grow"
+	xlink:href="#Y-stem-down"
+	attributeName="y2"
+	begin="Y-translate.end + 0"
+	dur="0.45s"
+	calcMode="spline"
+	keyTimes=""
+	values="0; 104.4"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animateTransform
+	id="Y-stem-up-translate"
+	xlink:href="#Y"
+	attributeName="transform"
+	type="translate"
+	begin="Y-translate.end + 0"
+	dur="0.45s"
+	calcMode="spline"
+	keyTimes=""
+	values="66; 66 14"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+
+<animate 
+	xlink:href="#D-arc"
+	attributeName="stroke-dasharray"
+	begin="D-stem-grow.end + 0"
+	dur="0.95s"
+	calcMode="spline"
+	keyTimes=""
+	values="0 202 0 100000; 0 202 410 100000"
+	keySplines=".2 -.6 .4 1.275"
+	fill="freeze"/>
+<set
+	xlink:href="#D-stem-down"
+	attributeName="opacity"
+	begin="D-stem-grow.end + 0"
+	to="1"
+	fill="freeze"/>
+<animateTransform 
+	id="D-stem-down-rotate"
+	xlink:href="#D-stem-down"
+	attributeName="transform"
+	type="rotate"
+	begin="D-stem-grow.end + 0"
+	dur="0.95s"
+	calcMode="spline"
+	keyTimes=""
+	values="0; 180"
+	keySplines=".2 -.6 .4 1.275"
+	fill="freeze"/>
+<animate 
+	xlink:href="#Y-stem-left"
+	attributeName="x2"
+	begin="Y-stem-up-translate.end + 0"
+	dur="0.95s"
+	calcMode="spline"
+	keyTimes=""
+	values="0; -74.5"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animate 
+	xlink:href="#Y-stem-left"
+	attributeName="y2"
+	begin="Y-stem-up-translate.end + 0"
+	dur="0.95s"
+	calcMode="spline"
+	keyTimes=""
+	values="0; -131"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animate 
+	xlink:href="#Y-stem-right"
+	attributeName="x2"
+	begin="Y-stem-up-translate.end + 0"
+	dur="0.95s"
+	calcMode="spline"
+	keyTimes=""
+	values="0; 74.5"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animate 
+	xlink:href="#Y-stem-right"
+	attributeName="y2"
+	begin="Y-stem-up-translate.end + 0"
+	dur="0.95s"
+	calcMode="spline"
+	keyTimes=""
+	values="0; -131"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!---->
+<animate
+	id="D-scale-up"
+	xlink:href="#D"
+	attributeName="stroke-width"
+	begin="loop.begin + 0.2s"
+	dur="0.5s"
+	calcMode="spline"
+	values="0; 120"
+	keySplines=".2 0 .4 1.5"
+	fill="freeze"/>
+<animate
+	id="Y-scale-up"
+	xlink:href="#Y"
+	attributeName="stroke-width"
+	begin="loop.begin + 0s"
+	dur="0.7s"
+	calcMode="spline"
+	values="0; 180"
+	keySplines=".2 0 .4 1.5"
+	fill="freeze"/>
+
+<animate
+	id="D-scale-down"
+	xlink:href="#D"
+	attributeName="stroke-width"
+	begin="D-scale-up.end + 0.2s"
+	dur="0.7s"
+	calcMode="spline"
+	values="120; 10"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animate
+	id="Y-scale-down"
+	xlink:href="#Y"
+	attributeName="stroke-width"
+	begin="D-scale-up.end + 0.2s"
+	dur="0.7s"
+	calcMode="spline"
+	values="180; 37"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animateTransform 
+	id="D-translate"
+	xlink:href="#D"
+	attributeName="transform"
+	type="translate"
+	begin="D-scale-up.end + 0.2s"
+	dur="0.7s"
+	calcMode="spline"
+	values="0; -142"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animateTransform 
+	id="Y-translate"
+	xlink:href="#Y"
+	attributeName="transform"
+	type="translate"
+	begin="Y-scale-up.end + 0.2s"
+	dur="0.7s"
+	calcMode="spline"
+	values="0; 66"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+
+<animate 
+	id="D-stem-grow"
+	xlink:href="#D-stem"
+	attributeName="y2"
+	begin="D-translate.end + 0"
+	dur="0.45s"
+	calcMode="spline"
+	values="0; -130"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animate 
+	id="#Y-stem-down-grow"
+	xlink:href="#Y-stem-down"
+	attributeName="y2"
+	begin="Y-translate.end + 0"
+	dur="0.45s"
+	calcMode="spline"
+	values="0; 104.4"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animateTransform
+	id="Y-stem-up-translate"
+	xlink:href="#Y"
+	attributeName="transform"
+	type="translate"
+	begin="Y-translate.end + 0"
+	dur="0.45s"
+	calcMode="spline"
+	values="66; 66 14"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+
+<animate 
+	xlink:href="#D-arc"
+	attributeName="stroke-dasharray"
+	begin="D-stem-grow.end + 0"
+	dur="1s"
+	calcMode="spline"
+	values="0 202 0 100000; 0 202 410 100000"
+	keySplines=".2 -.6 .4 1.275"
+	fill="freeze"/>
+<set
+	xlink:href="#D-stem-down"
+	attributeName="opacity"
+	begin="D-stem-grow.end + 0"
+	to="1"
+	fill="freeze"/>
+<animateTransform 
+	id="D-stem-down-rotate"
+	xlink:href="#D-stem-down"
+	attributeName="transform"
+	type="rotate"
+	begin="D-stem-grow.end + 0"
+	dur="1s"
+	calcMode="spline"
+	values="0; 180"
+	keySplines=".2 -.6 .4 1.275"
+	fill="freeze"/>
+<animate 
+	xlink:href="#Y-stem-left"
+	attributeName="x2"
+	begin="Y-stem-up-translate.end + 0"
+	dur="1s"
+	calcMode="spline"
+	values="0; -74.5"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animate 
+	xlink:href="#Y-stem-left"
+	attributeName="y2"
+	begin="Y-stem-up-translate.end + 0"
+	dur="1s"
+	calcMode="spline"
+	values="0; -131"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animate 
+	xlink:href="#Y-stem-right"
+	attributeName="x2"
+	begin="Y-stem-up-translate.end + 0"
+	dur="1s"
+	calcMode="spline"
+	values="0; 74.5"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animate 
+	id="Y-stem-right-y2-extend"
+	xlink:href="#Y-stem-right"
+	attributeName="y2"
+	begin="Y-stem-up-translate.end + 0"
+	dur="1s"
+	calcMode="spline"
+	values="0; -131"
+	keySplines=".2 0 .4 1.275"
+	fill="freeze"/>
+<animateTransform 
+	xlink:href="#DY"
+	attributeName="transform"
+	type="scale"
+	begin="Y-stem-right-y2-extend.end + 0.5s"
+	dur="0.4s"
+	calcMode="spline"
+	values="1; 0"
+	keySplines=".4 -.6 .4 1"
+	fill="freeze"/>
+-->
+</svg>
