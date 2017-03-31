@@ -231,10 +231,14 @@ class DYHeader extends DYElement {
 		const root = this.root
 		const $logo = this.$logo
 
+
+		const logoStyleWithMargin = { marginRight: getComputedStyle($logo).marginRight }
+		const logoStyleWithoutMargin = { marginRight: '-1em' }
+
 		if(items.length){
 			$logo.animate([
-				{ marginRight: getComputedStyle($logo).marginRight }, 
-				{ marginRight: '-1em' }
+				logoStyleWithMargin,
+				logoStyleWithoutMargin
 			], { 
 				duration: 500,
 				fill: 'forwards',
@@ -242,8 +246,8 @@ class DYHeader extends DYElement {
 			})
 		}else{
 			$logo.animate([
-				{ marginRight: '-1em' },
-				{ marginRight: getComputedStyle($logo).marginRight }
+				logoStyleWithoutMargin,
+				logoStyleWithMargin
 			], { 
 				duration: 500,
 				fill: 'forwards',
