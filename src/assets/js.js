@@ -662,6 +662,36 @@ Element.prototype.animateStyleChange = function(callback){
 		callback.then(then)
 	}
 }
+Element.prototype.animatePositionChange = function(callback, duration = 500){
+	const beforeLeft = this.left
+	const beforeTop = this.top
+
+	if(this._positionChangeAnimation) this._positionChangeAnimation.cancel()
+
+	const then = () => {	
+		const afterLeft = this.left
+		const afterTop = this.top
+
+		const computedStyle = window.getComputedStyle(this)
+
+		this._positionChangeAnimation = this.animate({
+			transform: [
+				`translate(${beforeLeft - afterLeft}px, ${beforeTop - afterTop}px)`,
+				'none'
+			]
+		}, {
+			duration: duration || parseInt(computedStyle.transitionDuration),
+			easing: computedStyle.transitionTimingFunction
+		})
+	}
+
+	if(typeof callback === 'function'){
+		callback.call(this)
+		then()
+	}else if(callback instanceof Promise){
+		callback.then(then)
+	}
+}
 
 // For anything with addEventListener()
 EventTarget.prototype.on = function(eventNames, callback, optionsOrUseCapture){
