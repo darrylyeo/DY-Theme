@@ -594,7 +594,7 @@ if(0) Element.prototype.animateScrollY = function(y, speedFactor = 0.08, stopPro
 }
 
 const elementToScrollInterval = new WeakMap()
-Element.prototype.animateScrollY = function(y = 0, speedFactor = 0.1, stopPromise){
+Element.prototype.animateScrollY = function(y = 0, speedFactor = 0.2, stopPromise){
 	y = Math.ceil(y)
 
 	if(elementToScrollInterval.has(this)){
