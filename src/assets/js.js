@@ -630,8 +630,8 @@ Element.prototype.animateStyleChange = function(callback){
 	const beforeStyle = Object.assign({}, window.getComputedStyle(this))
 
 	if(this._styleChangeAnimation) this._styleChangeAnimation.cancel()
-	callback.call(this)
 
+	const then = () => {	
 	//requestAnimationFrame(() => {
 		const afterStyle = Object.assign({}, window.getComputedStyle(this))
 
@@ -649,10 +649,18 @@ Element.prototype.animateStyleChange = function(callback){
 		}
 
 		this._styleChangeAnimation = this.animate(styleDifference, {
-			duration: duration
+			duration
 		})
 		//TweenLite(this, styleDifference, duration)
 	//})
+	}
+
+	if(typeof callback === 'function'){
+		callback.call(this)
+		then()
+	}else if(callback instanceof Promise){
+		callback.then(then)
+	}
 }
 
 // For anything with addEventListener()
