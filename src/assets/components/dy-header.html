@@ -231,6 +231,8 @@ class DYHeader extends DYElement {
 		const root = this.root
 		const $logo = this.$logo
 
+		const duration = 500
+
 
 		const logoStyleWithMargin = { marginRight: getComputedStyle($logo).marginRight }
 		const logoStyleWithoutMargin = { marginRight: '-1em' }
@@ -240,7 +242,7 @@ class DYHeader extends DYElement {
 				logoStyleWithMargin,
 				logoStyleWithoutMargin
 			], { 
-				duration: 500,
+				duration,
 				fill: 'forwards',
 				easing: 'ease-out'
 			})
@@ -249,7 +251,7 @@ class DYHeader extends DYElement {
 				logoStyleWithoutMargin,
 				logoStyleWithMargin
 			], { 
-				duration: 500,
+				duration,
 				fill: 'forwards',
 				easing: 'ease-out'
 			})
@@ -284,13 +286,13 @@ class DYHeader extends DYElement {
 					showStyle,
 					hideStyle
 				], { 
-					duration: 500,
+					duration,
 					//fill: 'forwards',
 					easing: 'ease-out'
 				})
 				;(() => {
 					$navItem.css('display', 'none')
-				}).delay(500)
+				}).delay(duration)
 				/*$navItem.once({
 					animationend(){
 						X(this, 'end')
