@@ -245,6 +245,8 @@ class DYTerms extends DYElement {
 	initialize(termIDs = [], excludeTerms = ['uncategorized'], excludeTaxonomies = ['page-category', 'category']){
 		const root = this.root
 		const $termsWrapper = this.$termsWrapper
+
+		$termsWrapper.empty()
 		
 		DY.getData.then(() => {
 			const terms = Object.values(DY.data.terms)
