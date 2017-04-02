@@ -9,23 +9,27 @@
 
 			--card-shadow: rgba(0, 0, 0, 0.15) 0 1em 4em;
 
+			--transition-duration: 0.5s;
+			--transition-timing-function: ease-in-out;
+			--transition: var(--transition-duration) var(--transition-timing-function);
+
 			display: flex;
 			flex-direction: column;
 
 			flex: 1 10rem;
-			padding: 0.5em;
 			width: 300px;
 			max-width: 30vmax;
+			height: 30vmax;
 			max-height: 100vh;
+			margin: auto;
 
 			font-size: 0.8em;
 
 			position: relative;
 			justify-content: center;
 
-			transform: translateZ(0);
 			transform-style: preserve-3d;
-			transition: var(--transition-slow);
+			transition: transform var(--transition);
 
 			backface-visibility: hidden;
 			-webkit-font-smoothing: subpixel-antialiased;
@@ -33,7 +37,8 @@
 			pointer-events: initial;
 		}
 		:host(.focused) {
-			--transition-slow: 0.5s ease-in-out;
+			--transition-duration: 0.4s;
+
 			transform:
 				scale( var(--perspective-intensity) )
 				translateZ(
@@ -60,11 +65,9 @@
 		}
 
 
-		/*:host, :host > *, :host > * > * {
-			transform-style: preserve-3d;
-		}*/
+
 		:host * {
-			transition: var(--transition-slow);
+			/*--transition: var(--transition-duration) var(--transition-timing-function);*/
 		}
 		:host(:not(.focused)) * {
 			pointer-events: none;
@@ -74,17 +77,31 @@
 			justify-content: center;
 			transform-style: preserve-3d;
 			height: 100%;
+
+			transition: height var(--transition), transform var(--transition);
 		}
+		/*:host(.hide) #positioning-wrapper {
+			transform: translateZ(calc(var(--perspective) * -10));
+
+			--perspective-intensity: 2;
+			transform:
+				scale( var(--perspective-intensity) )
+				scale(1)
+				translateZ(
+					calc( var(--perspective) * ( 1 - var(--perspective-intensity) ) )
+				);
+			transform: translateZ(calc(var(--perspective) * 0.1));
+		}*/
 		:host(.focused) #positioning-wrapper {
 			height: 0;
+			/*transform: rotateY(180deg) rotateX(180deg) rotate(180deg);*/
 		}
 
 		#inner-wrapper {
-			pointer-events: initial;
-
 			flex-direction: column;
 
 			position: absolute;
+			padding: 0.5em;
 
 			width: max-content;
 			max-width: 100%;
@@ -93,63 +110,71 @@
 			transform-origin: top;
 			transform-style: preserve-3d;
 
-			transition: var(--transition-slow);
+			transition: transform var(--transition), max-width var(--transition);
 		}
 		:host(:hover) #inner-wrapper {
 			transform: rotateX(-2.5deg) translateZ(-0.5rem) translateY(-1rem);
 			/*transform: translateZ(0.5rem);*/
 		}
 		:host(.focused) #inner-wrapper {
-			width: 260%;
-			max-width: var(--dy-project-max-width);
+			width: var(--dy-project-max-width);
+			max-width: 260%;
 			max-height: var(--dy-project-max-height);
 			transform: translateY(-50%);
 		}
 		
 		:host(.hide) #inner-wrapper > *,
 		:host-context(.has-focused-project):host(:not(.focused)) #inner-wrapper > * {
+			opacity: 0;
+		}
+		/*:host(.hide) #inner-wrapper > *,
+		:host-context(.has-focused-project):host(:not(.focused)) #inner-wrapper > * {
 			opacity: 0.1;
 		}
 		/* Firefox only */
-		@-moz-document url-prefix() {
+		/*@-moz-document url-prefix() {
 			:host(.hide) #inner-wrapper > *,
 			:host-context(.has-focused-project):host(:not(.focused)) #inner-wrapper > * {
 				opacity: 0.04;
 			}
-		}
+		}*/
 
 		#title-wrapper {
 			justify-content: space-between;
 			align-items: center;
 
 			min-height: min-content;
+			padding-bottom: 0.5em;
+
+			font-size: 0.8em;
+			text-align: left;
 
 			transform: rotateX(var(--tilt-neg));
 			transform-origin: bottom;
+
+			transition: transform var(--transition), opacity var(--transition);
 		}
 		:host(:hover) #title-wrapper {
 			transform: none;
 		}
 		:host(.focused) #title-wrapper {
-			padding: 0.5em 0;
+			font-size: 0.9em;
 		}
 		#title-wrapper h2 {
 			color: rgba(0, 0, 0, 0.85);
 			text-shadow: #fff 0 0 0.5em, #fff 0 0 1em;
 
-			font-size: 1.2em;
 			line-height: 1.25;
-		}
-		:host(.focused) #title-wrapper h2 {
-			font-size: 1.4em;
+
+			transition: font-size var(--transition);
 		}
 
 		#close {
-			content: '✖';
-
 			background-color: rgba(255, 255, 255, 0.25);
-			border-radius: 0.5rem;
+			border-radius: 0.5em;
 			box-shadow: var(--card-shadow);
+
+			font-size: 1em;
 
 			display: flex;
 			justify-content: center;
@@ -160,6 +185,7 @@
 			min-height: 2em;
 
 			cursor: pointer;
+
 			transition: var(--transition-medium);
 		}
 		#close:hover {
@@ -167,6 +193,7 @@
 			transform: scale(1.05);
 		}
 		:host(:not(.focused)) #close {
+			font-size: 0;
 			opacity: 0;
 		}
 
@@ -177,24 +204,33 @@
 
 			flex-direction: row;
 
-			transition: var(--transition-medium);
+			transition: box-shadow var(--transition), opacity var(--transition);
 		}
-		:host(:not(.focused)) .card {
-			-webkit-mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
-			-moz-mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
-			mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
+		:host(:hover) .card {
+			box-shadow: var(--card-shadow);
 		}
 		:host(.focused) .card {
 			box-shadow: var(--card-shadow);
 		}
 
+		:host(:not(.focused)) #featured-image {
+			-webkit-mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
+			-moz-mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
+			mask-image: linear-gradient(#fff, #fff 7.5rem, rgba(255, 255, 255, 0.25) 15rem, transparent);
+		}
 		#featured-image img {
 			min-height: 0;
 			max-height: 100vh;
+
+			transition: max-height var(--transition);
 		}
 		:host(.no-featured-image) #featured-image img {
 			min-width: 30vmin;
 			height: 40vmin;
+		}
+		:host(.focused) #featured-image img {
+			width: auto;
+			max-height: calc(var(--dy-project-max-height) - 1.5rem);
 		}
 		#featured-image img:before {
 			content: attr(alt);
@@ -213,21 +249,19 @@
 			padding: 1em;
 			height: 100%;
 		}
-		:host(.focused) #featured-image img {
-			width: auto;
-			max-height: calc(var(--dy-project-max-height) - 1.5rem);
-		}
 
 		#details {
-			background-color: rgba(255, 255, 255, 0.25);
+			background-color: rgba(255, 255, 255, 0.5);
 
 			overflow-y: auto;
 			position: relative;
 
 			min-width: 0;
+
+			transition: flex var(--transition), min-width var(--transition), opacity var(--transition);
 		}
 		:host(.focused) #details {
-			flex: 1;
+			flex: 2;
 			min-width: 15rem;
 		}
 		:host(:not(.focused)) #details {
@@ -265,12 +299,12 @@
 
 		@media (max-width: 40rem){
 			:host(.focused) #inner-wrapper {
-				display: block;
-				overflow-y: auto;
 				width: max-content;
+				max-width: var(--dy-project-max-width);
 			}
 			.card {
 				display: block;
+				overflow-y: auto;
 			}
 			#details-inner {
 				position: static;
