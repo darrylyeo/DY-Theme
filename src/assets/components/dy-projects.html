@@ -277,6 +277,7 @@ class DYTerms extends DYElement {
 					const $term = $$$('a')
 						.attr('tabindex', '0') // Focusable
 						.attr('rel', 'tag')
+						.attr('title', term.description)
 						.attr('data-term', term.slug)
 						.attr('data-selector', `.${term.taxonomy}-${term.slug}`)
 						.html(term.name)

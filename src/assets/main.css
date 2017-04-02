@@ -6,11 +6,11 @@ main {
 	transition: var(--transition-medium), filter var(--transition-slow), height var(--transition-slow);
 }
 
-@media (max-width: 36rem) {
+/*@media (max-width: 36rem) {
 	main {
 		flex-direction: column;
 	}
-}
+}*/
 
 main section :link:not(.style-scope) {
 	box-shadow: 0 0.2px, inset 0 -0.4px;
