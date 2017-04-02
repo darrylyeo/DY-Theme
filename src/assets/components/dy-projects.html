@@ -253,7 +253,7 @@ class DYTerms extends DYElement {
 					!excludeTerms.includes(term.slug) &&
 					!excludeTaxonomies.includes(term.taxonomy)
 				)
-				.sort((term1, term2) => term1.count - term2.count)
+				.sort((term1, term2) => term2.count - term1.count)
 
 			const taxonomies = Object.values(DY.data.taxonomies)
 				.filter(taxonomy =>
