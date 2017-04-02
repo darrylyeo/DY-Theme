@@ -110,6 +110,8 @@ window.on('pagerender', () => {
 	if('Prism' in window){
 		Prism.highlightAll()
 	}
+	
+	$('aside').css('display', WP.queryType === 'single' ? '' : 'none')
 })
 
 
