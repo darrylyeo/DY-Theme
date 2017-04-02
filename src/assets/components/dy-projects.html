@@ -107,7 +107,6 @@ class DYProjects extends DYElement {
 		this.$projects.animatePositionChange(new Promise(resolve => animate = resolve))
 
 		for(const $project of this.$projects){
-			X($project.matches('*'))
 			$project.toggleClass(!$project.matches(filter || '*'), 'hide')
 		}
 		animate()
