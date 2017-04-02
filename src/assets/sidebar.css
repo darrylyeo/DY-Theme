@@ -1,9 +1,16 @@
 main > aside {
 	flex: 0 12rem;
 	flex-direction: column;
-	/*margin-left: var(--padding-neg);*/
-    box-sizing: content-box;
-    padding: var(--padding);
+
+	box-sizing: content-box;
+	margin: 0 auto;
+	padding: var(--padding);
+
+	position: sticky;
+	top: var(--main-menu-sticky-height);
+	height: min-content;
+	max-height: 100vh;
+	overflow-y: auto;
 }
 
 @media (max-width: 36rem) {
