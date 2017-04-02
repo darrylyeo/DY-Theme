@@ -67,12 +67,14 @@
 <script>
 class DYProjects extends DYElement {
 	set filter(filter){
-		//this.isotope.arrange({ filter })
-		
+		let animate
+		this.$projects.animatePositionChange(new Promise(resolve => animate = resolve))
+
 		for(const $project of this.$projects){
 			X($project.matches('*'))
 			$project.toggleClass(!$project.matches(filter || '*'), 'hide')
 		}
+		animate()
 	}
 
 	constructor(){
