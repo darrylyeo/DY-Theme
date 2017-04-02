@@ -232,16 +232,10 @@ customElements.define('dy-projects', DYProjects)
 
 <template id="dy-terms">
 	<style>
-		:host {
-			transition: opacity: var(--transition-medium);
-		}
-		:host-context(.has-focused-project):host {
-			opacity: 0.25;
-		}
-
-		:host, #terms {
+		#terms {
 			display: flex;
-			justify-content: space-between;
+			justify-content: center;
+			flex-wrap: wrap;
 			margin: -0.25em -0.5em;
 		}
 
@@ -253,16 +247,18 @@ customElements.define('dy-projects', DYProjects)
 			align-content: flex-start;
 			align-content: stretch;
 			margin: -2px;
-			padding: 0.25em 0.5em;
+			padding: 0.5em 0.5em;
 		}
-		h3 {
-			line-height: 0.5;
-			margin: 2px;
-			padding-right: 0.5ch;
-			margin-right: auto;
+		#terms dt {
+			display: flex;
+			align-items: center;
 			align-self: center;
+			line-height: 1.15;
+			margin: 2px;
+			margin-right: auto;
+			padding-right: 0.5ch;
 		}
-		[rel=tag] {
+		.term, [rel=tag] {
 			margin: 2px;
 		}
 		@media (max-width: 36rem) {
