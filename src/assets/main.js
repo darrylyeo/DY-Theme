@@ -107,11 +107,9 @@ window.once('pageload', () => {
 	})
 })
 window.on('pagerender', () => {
-
 	if('Prism' in window){
 		Prism.highlightAll()
 	}
-	DYProjectFilters.update()
 })
 
 
