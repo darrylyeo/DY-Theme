@@ -297,6 +297,7 @@
 							<dy-date id="project-date"></dy-date>
 							<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
 						</div>
+						<dy-terms></dy-terms>
 						<div id="terms"></div>
 					</div>
 				</div>
@@ -338,7 +339,7 @@ class DYProject extends DYElement {
 		})
 
 		// Add terms
-		const $terms = root.find('#terms')
+		/*const $terms = root.find('#terms')
 		for(let taxonomyName in DY.data.taxonomies){
 			if(taxonomyName === 'page-category') continue
 
@@ -351,7 +352,13 @@ class DYProject extends DYElement {
 				$term.innerHTML = term.name
 				this.addClass(`${taxonomyName}-${term.slug}`)
 			}
+		}*/
+
+		for(const termID of data.terms){
+			const term = DY.data.terms[termID]
+			this.addClass(`${DY.mapTaxonomyName(term.taxonomy)}-${term.slug}`)
 		}
+		root.find('dy-terms')[0].initialize(data.terms)
 
 		this.on({
 			click(e){
