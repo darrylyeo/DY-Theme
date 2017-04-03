@@ -212,39 +212,31 @@ const MAX_COMMENT_LENGTH = 1000
 
 class DYComments extends DYElement {
 	connectedCallback(){
-		const postID = this.closest('main').dataset.postId
-		if(postID) this.dataset.id = postID
-	}
-
-	static get observedAttributes() {
-		return ['data-id']
-	}
-
-	attributeChangedCallback(attr, oldVal, newVal){
 		const root = this.root
-		
-		if(attr === 'data-id'){
-			const id = newVal
-			//windowLoad.then(() => {
-				getJSON(`./wp-json/wp/v2/comments?post=${id}&per_page=100`).then(comments => {
-					root.updateWithModel({
-						'.comment-count': comments.length,
-						'.reactions': comments.length === 1 ? 'Reaction' : 'Reactions'
-					})
-
-					const $comments = []
-					for(let comment of comments){
-						const $comment = $$$('dy-comment').appendTo(root)
-						$comment.data = comment
-						$comments[comment.id] = $comment
-					}
-					for(let comment of comments){
-						if(comment.parent)
-							$comments[comment.parent].$replies.append($comments[comment.id])
-					}
+		//window.on('pageload', () => {
+			X('loading comments')
+			console.trace()
+			const id = WP.current.id
+			getJSON(`./wp-json/wp/v2/comments?post=${id}&per_page=100`).then(comments => {
+				root.updateWithModel({
+					'.comment-count': comments.length,
+					'.reactions': comments.length === 1 ? 'Reaction' : 'Reactions'
 				})
-			//})
-		}
+
+				const $comments = []
+				for(let comment of comments){
+					const $comment = $$$('dy-comment').appendTo(root.find('#reaction'))
+					X(this, root, $comment)
+					$comment.data = comment
+					$comments[comment.id] = $comment
+					root.append($comment)
+				}
+				for(let comment of comments){
+					if(comment.parent)
+						$comments[comment.parent].$replies.append($comments[comment.id])
+				}
+			})
+		//})
 	}
 }
 customElements.define('dy-comments', DYComments)
@@ -264,10 +256,6 @@ class DYComment extends DYElement {
 			'#author[href]': data.author_url,
 			'#avatar[src]': data.author_avatar_urls[96]
 		})
-
-		/*if(){
-
-		}*/
 
 		root.find('#reply-button')[0].on('click', () => {
 			this.$replies.prependChild(DYCommentReply.$reply)
