@@ -359,9 +359,7 @@ customElements.define('dy-terms', DYTerms)
 
 <script>
 class DYProjectFilters extends DYTerms {
-	constructor(){
-		super()
-
+	connectedCallback(){
 		;(() => {
 			const _this = DYProjectFilters.instance = this
 
