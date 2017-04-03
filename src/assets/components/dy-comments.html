@@ -271,9 +271,10 @@ customElements.define('dy-comment', DYComment)
 
 
 class DYCommentReply extends DYComment {
+	static get _DY_INHERIT_TEMPLATE(){ return false }
+
 	connectedCallback(){
 		const root = this.root
-		this.addStyle($('#dy-comment').content.find('style')[0])
 		
 		const $parent = this.getRootNode().host
 
