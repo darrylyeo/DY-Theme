@@ -112,6 +112,7 @@
 			</div>-->
 			<dl id="terms"></dl>
 		</div>
+		<dy-terms></dy-terms>
 	</div>
 </template>
 
@@ -199,42 +200,8 @@ class DYProjectHeader extends DYElement {
 				})
 			}
 
-
-			// Add terms
-			const $terms = root.find('#terms')
-			for(let taxonomyName in DY.data.taxonomies){
-				if(taxonomyName === 'page-category') continue
-				
-				const terms = data[DY.mapTaxonomyName(taxonomyName)]
-				if(!terms.length) continue
-				
-				const taxonomy = DY.data.taxonomies[taxonomyName]
-				
-				const $taxonomy = $$$('div')
-					.addClass('taxonomy')
-					.attr('data-taxonomy', taxonomyName)
-					.append(
-						$$$('dt').html(taxonomy.name)
-					)
-					.appendTo($terms)
-
-				for(let termID of terms){
-					const term = DY.data.terms[termID]
-
-					/*const $term = $$$('a').attr('rel', 'tag').appendTo($taxonomy)
-					$term.innerHTML = term.name*/
-					
-					const $term = $$$('dd')
-						.addClass('term')
-						.html(term.name)
-						/*.append(
-							$$$('a').attr('rel', 'tag').html(term.name)
-						)*/
-						.appendTo($taxonomy)
-
-					this.addClass(`${taxonomyName}-${term.slug}`)
-				}
-			}
+			// Initialize terms
+			root.find('dy-terms')[0].initialize(data.terms)
 		})
 	}
 }
