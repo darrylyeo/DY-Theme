@@ -120,22 +120,33 @@ const DYElement = class extends HTMLElement {
 
 		this.addStyle(DYElement.$style)
 
-		for(let Prototype = this.constructor; Prototype !== DYElement; Prototype = Object.getPrototypeOf(Prototype)){
-			const $template = Prototype.$template
+		const inheritTemplate = this.constructor._DY_INHERIT_TEMPLATE !== false
 
-			//this.$template.content.import().appendTo(root)
-			if($template){
-				root.appendChild(document.importNode($template.content, true))
+		for(let Prototype = this.constructor; Prototype !== DYElement; Prototype = Object.getPrototypeOf(Prototype)){
+			if(inheritTemplate || Prototype === this.constructor){
+				// Inherit entire template
+
+				this.addTemplate(Prototype.$template)
 			}else{
-				X('template doesn\'t exist:', this.tagName)
+				// Inherit styles only
+				this.addStyle(Prototype.$style)
 			}
-			//root.append(unwrap(document.importNode(this.$template.content, true)))
-			//X('template content', this.tagName, this.$template.content, document.importNode(this.$template.content, true), root)
 		}
 
 		DYNavigation.processLinks( root.find('a') )
 
 		this._init = true
+	}
+
+	addTemplate($template){
+		const root = this.root
+
+		$template.content.import().appendTo(root)
+		
+		//root.appendChild(document.importNode($template.content, true))
+
+		//root.append(unwrap(document.importNode($template.content, true)))
+		//X('template content', this.tagName, $template.content, document.importNode(this.$template.content, true), root)
 	}
 
 	addStyle($style){
@@ -145,6 +156,7 @@ const DYElement = class extends HTMLElement {
 			$style.import().insertBefore(this.$style)
 		else
 			$style.import().appendTo(root)
+
 		document.importNode(DYElement.$style, true).insertBefore(root.find('style')[0])
 	}
 }
