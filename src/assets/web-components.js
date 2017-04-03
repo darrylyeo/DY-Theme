@@ -52,7 +52,10 @@ const DYElement = class extends HTMLElement {
 	}
 
 	static get $style(){
-		return this.$template.find('style')[0]
+		if(this === DYElement){
+			return DYElement._$style
+		}
+		return this.$template.content.find('style')[0]
 	}
 	
 	/*get $template(){
@@ -146,22 +149,17 @@ const DYElement = class extends HTMLElement {
 	}
 }
 
-Object.defineProperty(
-	DYElement,
-	'$style',
-	{
-	value: $$$('style', {
-		html: Array.from(document.styleSheets)
-			.filter(s => s.href &&
-				(s.href.includes('css.css') || s.href.includes('copyright.css'))
-			)
-			.map(s => `@import '${s.href}';`)
-			.join('\n')
-		//html: Array.from(document.styleSheets, s => s.href ? `@import "${s.href}";` : '').join('\n')
+DYElement._$style = $$$('style', {
+	html: Array.from(document.styleSheets)
+		.filter(s => s.href &&
+			(s.href.includes('css.css') || s.href.includes('copyright.css') || s.href.includes('forms.css'))
+		)
+		.map(s => `@import '${s.href}';`)
+		.join('\n')
+	//html: Array.from(document.styleSheets, s => s.href ? `@import "${s.href}";` : '').join('\n')
 
-		// Doesn't work in Safari (TypeError: ...document.styleSheets is not a function?!)
-			//html: [...document.styleSheets].map(s => s.href ? `@import "${s.href}";` : '').join('\n')
-	})
+	// Doesn't work in Safari (TypeError: ...document.styleSheets is not a function?!)
+		//html: [...document.styleSheets].map(s => s.href ? `@import "${s.href}";` : '').join('\n')
 })
 
 
