@@ -1,16 +1,14 @@
 <template id="dy-project-header">
 	<style>
-		dy-project-header, :host {
+		:host {
 			display: flex;
-			justify-content: space-between;
+			justify-content: center;
+			align-items: center;
 			flex-wrap: wrap;
-			align-items: stretch;
-			flex-direction: column;
-			flex: 100%;
-			margin: 0;
 			overflow: hidden;
-			padding: var(--padding);
+			padding: calc(var(--padding) / 2);
 			position: relative;
+			z-index: 1;
 		}
 		#background, #background:before, #background * {
 			background-size: 0;
@@ -20,47 +18,48 @@
 			height: 100%;
 			left: 0;
 			top: 0;
+			z-index: -1;
 		}
 		#background:before {
 			content: '';
 			background: center/contain fixed;
 			background-image: inherit;
-			/*filter: blur(2rem);*/background-size: 1px;
+			filter: blur(1rem);
 			transform: scale(1.2);
 		}
-		#background ~ * {
-			z-index: 1;
+
+		:host > * {
+			align-items: center;
+			flex-direction: column;
+			flex: 1 40%;
+			/*flex: 1 20rem;*/
+			width: 100%;
+			max-width: max-content;
+  		}
+		:host > div > *:not(#background) {
+			margin: calc(var(--padding) / 2);
+			justify-content: center;
 		}
+
 		#title-wrapper {
 			background-image: radial-gradient(rgba(255, 255, 255, 0.25), transparent 75%);
 			mix-blend-mode: overlay;
 			text-shadow: 0 0 5rem #fff;
-
-			margin-bottom: var(--padding-small);
 			max-width: 100%;
 		}
 		#title-wrapper h1 {
-			font-size: 3.5em;
+			color: #000;
+			font-size: 3em;
 			line-height: 1.2;
 			text-align: center;
 		}
-		#inner-wrapper {
-			margin: calc(var(--padding-neg) / 2);
+
+		#horizontal-wrapper {
+			display: flex;
+			align-items: center;
 		}
-		#inner-wrapper > * {
-			margin: calc(var(--padding) / 2);
-		}
-		#featured-image {
-			flex: 1 auto;
-			max-width: max-content;
-		}
-		#details {
-			flex-direction: column;
-		}
-		#details > * + * {
-			margin-top: 1em;
-		}
-		#excerpt {
+
+		.excerpt {
 			background-color: rgba(255, 255, 255, 0.2);
 			border-radius: 0.5em;
 			font-size: 0.9em;
@@ -68,50 +67,60 @@
 			line-height: 1.6;
 			padding: 0.75em;
 			text-align: justify;
+			max-width: 35em;
 		}
 		#dates {
-			justify-content: space-between;
-			margin-bottom: var(--padding-small);
+			font-family: var(--heading-font);
+			font-weight: bold;
+			flex-wrap: wrap;
+			text-transform: uppercase;
+
+			justify-content: center;
+			align-items: baseline;
+		}
+		#dates > * {
+			margin: 0 0.25em;
+		}
+		#modified-date-wrapper {
+			font-size: 0.85em;
 		}
 
-		@media (min-width: 40rem) {
+
+		@media (min-width: 45rem) {
 			#title-wrapper {
-				width: 90%;
+				width: 80%;
+			}
+			.breakpoint-small {
+				display: none;
 			}
 		}
-		@media (max-width: 40rem) {
-			#inner-wrapper {
-				flex-direction: column;
-				align-items: center;
-			}
-			#featured-image {
-				flex: 0;
+		@media (max-width: 44.9999rem) {
+			.breakpoint-large {
+				display: none;
 			}
 		}
 	</style>
-	<div id="background">
-		<canvas></canvas>
+	<div>
+		<div id="background">
+			<canvas></canvas>
+		</div>
+		<div id="title-wrapper">
+			<h1 id="title"></h1>
+		</div>
+		<div id="dates">
+			<dy-date id="project-date"></dy-date>
+			<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
+		</div>
+		<blockquote class="excerpt breakpoint-large"></blockquote>
 	</div>
-	<div id="title-wrapper">
-		<h1 id="title"></h1>
-	</div>
-	<div id="dates" style="justify-content: center">
-		<h3><dy-date id="project-date"></dy-date></h3>
-		<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
-	</div>
-	<div id="inner-wrapper">
+	<div>
 		<figure id="featured-image">
 			<img>
 			<figcaption></figcaption>
 		</figure>
-		<div id="details">
-			<blockquote id="excerpt"></blockquote>
-			<!--<div id="dates">
-				<h3><dy-date id="project-date"></dy-date></h3>
-				<span id="modified-date-wrapper">Updated <dy-date id="modified-date"></dy-date></span>
-			</div>-->
-			<dl id="terms"></dl>
-		</div>
+	</div>
+	<div>
+		<blockquote class="excerpt breakpoint-small"></blockquote>
 		<dy-terms></dy-terms>
 	</div>
 </template>
@@ -145,8 +154,7 @@ class DYProjectHeader extends DYElement {
 				'#project-date[data-date]': data.meta.projectDate,
 				'#modified-date[data-date]': data.date,
 				'.link[href]': data.link,
-				'#excerpt': data.excerpt.rendered,
-				'#terms': ''
+				'.excerpt': data.excerpt.rendered
 			})
 			root.find('#title').fitText('7.5em')
 
