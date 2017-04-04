@@ -40,7 +40,7 @@ const DY = new class {
 	}
 }
 
-window.on("beforeunload", () => {
+window.on('beforeunload', () => {
 	DY.data.lastSession.date = Date.now()
 	localStorage.set(DY_LOCAL_STORAGE_KEY, DY.data)
 })
