@@ -1,0 +1,73 @@
+<template id="dy-project-filters">
+	<style>
+		:host {
+			transition: var(--transition-medium);
+		}
+		:host-context(.has-focused-project):host {
+			opacity: 0.25;
+		}
+
+		@media (max-width: 36rem) {
+			:host {
+				flex-wrap: wrap;
+			}
+			div[data-taxonomy] {
+				width: 100%;
+			}
+		}
+	</style>
+</template>
+
+
+<script>
+class DYProjectFilters extends DYTerms {
+	connectedCallback(){
+		;(() => {
+			const _this = DYProjectFilters.instance = this
+
+			this.$terms.on('click', function(){
+				this.toggleClass('active')
+				_this.update()
+			})
+		}).delay()
+
+		this.initialize()
+
+		//window.on('pagerender', () => this.update())
+	}
+
+	update(){
+		const root = this.root
+
+		const $projects = this.$DYProjects.$projects
+
+		this.$DYProjects.filter = Array.from(root.find('a[rel=tag].active'))
+			.map($term => $term.dataset.selector)
+			.join('')
+		for(let $term of this.$terms){
+			const filteredElements = $projects.filter(':not(.hide)') //this.$DYProjects.isotope.getFilteredItemElements()
+
+			$term.toggleClass(
+				[...filteredElements].every($element => !$element.matches($term.dataset.selector)), // this.$DYProjects.root.find(`${$term.dataset.selector}:not(.isotope-hidden)`).length
+				'disabled'
+			)
+		}
+	}
+
+	static update(){
+		if(this.instance) this.instance.update()
+	}
+
+	get $DYProjects(){//X('$DYProjects', this.closest('dy-projects'), this.parentNode, this.parentNode.host, this, this.getRootNode(), this.getRootNode())
+		//return this.parentNode.host || this.parentNode//this.closest('dy-projects')
+		return this.closest('dy-projects') || this.getRootNode().host
+	}
+
+	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
+	/*get root(){
+		this.init()
+		return this
+	}*/
+}
+customElements.define('dy-project-filters', DYProjectFilters)
+</script>

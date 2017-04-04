@@ -213,7 +213,7 @@ const MAX_COMMENT_LENGTH = 1000
 class DYComments extends DYElement {
 	connectedCallback(){
 		const root = this.root
-		//window.on('pageload', () => {
+		window.on('pageload', () => {
 			X('loading comments')
 			console.trace()
 			const id = WP.current.id
@@ -236,7 +236,7 @@ class DYComments extends DYElement {
 						$comments[comment.parent].$replies.append($comments[comment.id])
 				}
 			})
-		//})
+		})
 	}
 }
 customElements.define('dy-comments', DYComments)

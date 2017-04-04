@@ -1,0 +1,103 @@
+<template id="dy-terms">
+	<style>
+		#terms {
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			margin: -0.25em -0.5em;
+		}
+
+		div[data-taxonomy] {
+			justify-content: space-between;
+			align-items: center;
+			align-items: stretch;
+			flex-wrap: wrap;
+			align-content: flex-start;
+			align-content: stretch;
+			margin: -2px;
+			padding: 0.5em 0.5em;
+		}
+		#terms dt {
+			display: flex;
+			align-items: center;
+			align-self: center;
+			line-height: 1.15;
+			margin: 2px;
+			margin-right: auto;
+			padding-right: 0.5ch;
+		}
+		.term, [rel=tag] {
+			margin: 2px;
+		}
+		@media (max-width: 36rem) {
+			:host {
+				flex-wrap: wrap;
+			}
+			div[data-taxonomy] {
+				width: 100%;
+			}
+		}
+	</style>
+	<dl id="terms"></dl>
+</template>
+
+
+<script>
+class DYTerms extends DYElement {
+	initialize(termIDs = [], excludeTerms = ['uncategorized'], excludeTaxonomies = ['page-category', 'category']){
+		const root = this.root
+		const $termsWrapper = this.$termsWrapper
+
+		$termsWrapper.empty()
+		
+		DY.getData.then(() => {
+			const terms = Object.values(DY.data.terms)
+				.filter(term =>
+					(termIDs.length === 0 || termIDs.includes(term.term_id)) &&
+					!excludeTerms.includes(term.slug) &&
+					!excludeTaxonomies.includes(term.taxonomy)
+				)
+				.sort((term1, term2) => term2.count - term1.count)
+
+			const taxonomies = Object.values(DY.data.taxonomies)
+				.filter(taxonomy =>
+					!excludeTaxonomies.includes(taxonomy.slug) &&
+					terms.some(term => term.taxonomy === taxonomy.slug)
+				)
+
+			for(let taxonomy of taxonomies){
+				const $taxonomy = $$$('div')
+					.attr({
+						'data-taxonomy': taxonomy.slug
+					})
+					.append(
+						$$$('dt').html(taxonomy.name)
+					)
+					.appendTo($termsWrapper)
+				
+				for(const term of terms.filter(term => term.taxonomy === taxonomy.slug)){
+					const _this = this
+
+					const $term = $$$('a')
+						.attr('tabindex', '0') // Focusable
+						.attr('rel', 'tag')
+						.attr('title', term.description)
+						.attr('data-term', term.slug)
+						.attr('data-selector', `.${term.taxonomy}-${term.slug}`)
+						.html(term.name)
+						.appendTo($taxonomy)
+				}
+			}
+		})
+	}
+
+	get $termsWrapper(){
+		return this.root.find('#terms')
+	}
+
+	get $terms(){
+		return this.root.find('a[rel=tag]')
+	}
+}
+customElements.define('dy-terms', DYTerms)
+</script>
