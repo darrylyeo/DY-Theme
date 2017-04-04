@@ -75,7 +75,7 @@
 			transparent 1rem
 		);
 	font-size: calc(1rem + 2.5vmin);
-	padding: var(--padding);
+	padding: var(--padding) 0;
 
 	flex-direction: column;
 	justify-content: center;
@@ -112,7 +112,7 @@
 #header.full:not(.sticky) #logo {
 	margin-right: 0;
 	margin-bottom: 0.5em;
-	width: 90%;
+	max-width: 90%;
 	height: 40vh;
 
     flex-direction: column;
@@ -134,6 +134,7 @@
 	filter: brightness(20);
 }*/
 #header.full:not(.sticky) #logo {
+	background: radial-gradient(rgba(255, 255, 255, 0.25), transparent 50%);
 	filter: brightness(10) drop-shadow(#fff 0 0 1em);
 }
 #header.full:not(.sticky) #logo:after {
