@@ -4,7 +4,7 @@ get_header();
 ?>
 <dy-project-header></dy-project-header>
 <article>
-	<hgroup>
+	<!--<hgroup>
 		<h1><?php the_title() ?></h1>
 	</hgroup>
 	<?php //echo get_the_permalink();
@@ -14,7 +14,7 @@ get_header();
 		comments_template();
 	}*/
 	?>
-	<dy-comments></dy-comments>
+	<dy-comments></dy-comments>-->
 </article>
 <?php
 //endwhile;
