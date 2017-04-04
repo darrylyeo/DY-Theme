@@ -1,5 +1,5 @@
 const USING_SHADY_CSS = 'ShadyCSS' in window && !ShadyCSS.nativeShadow
-const USING_SHADY_DOM ='ShadyDOM' in window
+const USING_SHADY_DOM = 'ShadyDOM' in window
 
 // Get Custom Element name from JS constructor
 // Related: https://github.com/w3c/webcomponents/issues/566
