@@ -143,7 +143,12 @@ add_action('wp_enqueue_scripts', function(){
 			global $ASSETS;
 
 			foreach($ASSETS->html as $handle){
-				echo file_get_contents( get_theme_file_uri('assets/components/'.$handle.'.html') );
+				$contents = file_get_contents( get_theme_file_uri('assets/components/'.$handle.'.html') );
+				echo preg_replace(
+					'/<link (.+?)?rel="import"(.+?)?>/',
+					'',
+					$contents
+				);
 			}
 		}, 1000);
 	}
