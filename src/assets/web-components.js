@@ -141,12 +141,16 @@ const DYElement = class extends HTMLElement {
 	addTemplate($template){
 		const root = this.root
 
-		$template.content.import().appendTo(root)
-		
-		//root.appendChild(document.importNode($template.content, true))
+		if($template){
+			//$template.content.import().appendTo(root)
+			
+			root.appendChild(document.importNode($template.content, true))
 
-		//root.append(unwrap(document.importNode($template.content, true)))
-		//X('template content', this.tagName, $template.content, document.importNode(this.$template.content, true), root)
+			//root.append(unwrap(document.importNode($template.content, true)))
+			//X('template content', this.tagName, $template.content, document.importNode(this.$template.content, true), root)
+		}else{
+			X('template doesn\'t exist:', this.tagName)
+		}
 	}
 
 	addStyle($style){
