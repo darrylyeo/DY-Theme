@@ -86,6 +86,8 @@ const DYNavigation = {
 		if(this.host !== location.host){
 			window.open(this.href, '_blank')
 			e.preventDefault()
+		}else if(this.href === '#'){
+			e.preventDefault()
 		}else if(DYNavigation.navigateTo(this.href, this.host, true))
 			e.preventDefault()
 	},
