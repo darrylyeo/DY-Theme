@@ -208,6 +208,10 @@ class DYProjects extends DYElement {
 		return this.root.find('dy-project')
 	}
 
+	get $filters(){
+		return this.root.find('dy-project-filters')[0]
+	}
+
 	scrollInView(){
 		const computedStyle = this.computedStyle
 		if(parseFloat(computedStyle['height']) > parseFloat(computedStyle['min-height']))
