@@ -394,12 +394,12 @@ class DYProject extends DYElement {
 
 		this.on({
 			click(e){
-				this.$projects.$focusedProject = this
+				this.dispatchEvent(new CustomEvent('dy-project-focus'))
 			}
 		})
 		root.find('#close').on({
 			click: e => {
-				this.$projects.$focusedProject = undefined
+				this.dispatchEvent(new CustomEvent('dy-project-unfocus'))
 				e.stopPropagation()
 			}
 		})
@@ -407,10 +407,6 @@ class DYProject extends DYElement {
 
 	get data(){
 		return this._data
-	}
-
-	get $projects(){
-		return this.closest('dy-projects') || this.getRootNode().host
 	}
 
 	set hide(hide){

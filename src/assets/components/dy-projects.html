@@ -107,6 +107,7 @@
 class DYProjects extends DYElement {
 	connectedCallback(){
 		const root = this.root
+		const _this = this
 		
 		const $projectsWrapper = this.$projectsWrapper
 
@@ -128,6 +129,14 @@ class DYProjects extends DYElement {
 
 			for(const project of projects){
 				const $project = $$$('dy-project')
+					.on({
+						['dy-project-focus'](){
+							_this.$focusedProject = this
+						},
+						['dy-project-unfocus'](){
+							_this.$focusedProject = undefined
+						}
+					})
 				$project.prependTo($projectsWrapper)
 				$project.data = project
 			}
