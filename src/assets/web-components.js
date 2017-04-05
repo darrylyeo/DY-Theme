@@ -57,27 +57,18 @@ const DYElement = class extends HTMLElement {
 	}
 	
 	get root(){
-		let root = this.shadowRoot
-		if(!root){
-			root = this.attachShadow({mode: 'open'})
-			this.init()
+		if(this.shadowRoot) return this.shadowRoot
+
+		const root = this.attachShadow({mode: 'open'})
+
+		if(USING_SHADY_CSS){
+			ShadyCSS.styleElement(this)
 		}
 		if(USING_SHADY_DOM){
 			root.find = this.find.bind(this)
 			root.querySelector = this.querySelector.bind(this)
 			root.querySelectorAll = this.querySelectorAll.bind(this)
 		}
-		return root
-	}
-
-	init(){
-		if(this._init) return
-
-		if(USING_SHADY_CSS){
-			ShadyCSS.styleElement(this)
-		}
-
-		const root = this.root
 
 		this.addStyle(DYElement.$style)
 
@@ -95,7 +86,7 @@ const DYElement = class extends HTMLElement {
 
 		DYNavigation.processLinks( root.find('a') )
 
-		this._init = true
+		return root
 	}
 
 	addTemplate($template){
