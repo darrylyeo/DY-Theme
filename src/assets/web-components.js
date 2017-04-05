@@ -56,33 +56,6 @@ const DYElement = class extends HTMLElement {
 		return this.$template.content.find('style')[0]
 	}
 	
-	/*get $template(){
-		const id = '#' + this.tagName.toLowerCase()
-		if(document.currentScript){
-			// Called from within HTML Import, when the <template> may not yet have been added to the main document
-			return document.currentScript.ownerDocument.find(`template${id}`)[0]
-		}else{
-			return $(id)
-		}
-	}*/
-
-	/*get $style(){
-		//console.log('$style', this.tagName, this.root, this.root.find('style')[0], this.root.querySelector('style'))
-		//console.trace()
-		return this.root.querySelector('style')
-	}*/
-
-
-	/*get root(){
-		let root = this.shadowRoot || this._shadowRoot
-		if(!root){
-			root = this._shadowRoot = this.attachShadow({mode: 'open'})
-			//root = this.createShadowRoot()
-			X(this.shadowRoot, this.attachShadow({mode: 'open'}))
-			this.init()
-		}
-		return root
-	}*/
 	get root(){
 		let root = this.shadowRoot
 		if(!root){
@@ -96,16 +69,6 @@ const DYElement = class extends HTMLElement {
 		}
 		return root
 	}
-	/*get root(){
-		let root = this.shadowRoot || this._shadowRoot
-		if(!root){
-			root = this._shadowRoot = this.attachShadow({mode: 'open'})
-			X(root)
-			this.init()
-
-		}
-		return root
-	}*/
 
 	init(){
 		if(this._init) return
