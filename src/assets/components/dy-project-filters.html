@@ -23,48 +23,31 @@
 
 <script>
 class DYProjectFilters extends DYTerms {
-	connectedCallback(){
+	initialize(){
+		super.initialize()
+
 		;(() => {
-			const _this = DYProjectFilters.instance = this
+			const _this = this
 
 			this.$terms.on('click', function(){
 				this.toggleClass('active')
-				_this.update()
+				_this.dispatchEvent(new CustomEvent('dy-filter-change'))
 			})
+			
+			window.on('pagerender', () => this.update())
 		}).delay()
-
-		this.initialize()
-
-		//window.on('pagerender', () => this.update())
 	}
 
-	update(){
-		const root = this.root
+	get activeTerms(){
+		return this.$terms.filter('.active')
+			.map($term => this.$termToTerm.get($term))
+	}
 
-		const $projects = this.$DYProjects.$projects
-
-		this.$DYProjects.filter = Array.from(root.find('a[rel=tag].active'))
-			.map($term => $term.dataset.selector)
-			.join('')
-		for(let $term of this.$terms){
-			const filteredElements = $projects.filter(':not(.hide)') //this.$DYProjects.isotope.getFilteredItemElements()
-
-			$term.toggleClass(
-				[...filteredElements].every($element => !$element.matches($term.dataset.selector)), // this.$DYProjects.root.find(`${$term.dataset.selector}:not(.isotope-hidden)`).length
-				'disabled'
-			)
+	includeTerms(termIDs){
+		for(const $term of this.$terms){
+			const term = this.$termToTerm.get($term)
+			$term.toggleClass(!termIDs.includes(term.term_id), 'disabled')
 		}
-
-		this.dispatchEvent(new CustomEvent('dy-filter-change'))
-	}
-
-	static update(){
-		if(this.instance) this.instance.update()
-	}
-
-	get $DYProjects(){//X('$DYProjects', this.closest('dy-projects'), this.parentNode, this.parentNode.host, this, this.getRootNode(), this.getRootNode())
-		//return this.parentNode.host || this.parentNode//this.closest('dy-projects')
-		return this.closest('dy-projects') || this.getRootNode().host
 	}
 }
 customElements.define('dy-project-filters', DYProjectFilters)

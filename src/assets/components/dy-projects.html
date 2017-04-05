@@ -110,6 +110,14 @@ class DYProjects extends DYElement {
 		
 		const $projectsWrapper = this.$projectsWrapper
 
+		$projectsWrapper.on({
+			click: e => {
+				if(e.target === $projectsWrapper)
+					this.$focusedProject = undefined
+			},
+			scroll: this.scrollInView.throttle().bind(this)
+		})
+
 		DY.getData.then(() => {
 			const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
 
@@ -125,33 +133,32 @@ class DYProjects extends DYElement {
 			}
 
 			this.$filters.initialize()
-		})
-
-		$projectsWrapper.on({
-			click: e => {
-				if(e.target === $projectsWrapper)
-					this.$focusedProject = undefined
-			},
-			scroll: this.scrollInView.throttle().bind(this)
-		})
-
-
-		this.$filters.on('dy-filter-change', () => {
-			// Hide projects that don't match the filter, and animate differences in position
-			const filteredProjects = this.filteredProjects
-
-			let animate
-			this.$projects.animatePositionChange(new Promise(resolve => animate = resolve))
-
-			for(const $project of this.$projects){
-				$project.hide = !filteredProjects.includes($project.data)
-			}
-
-			animate()
+			this.$filters.on('dy-filter-change', () => this.onFilterChange())
 		})
 	}
 
-	get filteredProjects(){
+	onFilterChange(){
+		// Hide projects that don't match the filter, and animate differences in position
+		const filteredProjects = this.getFilteredProjects()
+
+		// Animate
+		let animate
+		this.$projects.animatePositionChange(new Promise(resolve => animate = resolve))
+
+		for(const $project of this.$projects){
+			$project.hide = !filteredProjects.includes($project.data)
+		}
+
+		animate()
+
+		// Get a list of all term IDs associated with the filtered project, and pass it back to <dy-project-filters>
+		const filteredProjectTermIDs = filteredProjects.reduce((terms, project) => {
+			return [...terms, ...project.terms]
+		}, [])
+		this.$filters.includeTerms(filteredProjectTermIDs)
+	}
+
+	getFilteredProjects(){
 		const activeTermIDs = this.$filters.activeTerms.map(term => term.term_id)
 
 		if(activeTermIDs.length){
