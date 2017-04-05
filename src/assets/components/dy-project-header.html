@@ -138,16 +138,14 @@ class DYProjectHeader extends DYElement {
 			this.addStyle($('#dy-project-filters').content.find('style')[0])
 		})
 	}
+
 	connectedCallback(){
 		const root = this.root
 
+		this.updateDisplay()
+
 		window.on('pagerender', () => {
-			if(WP.queryType !== 'single' || WP.postType !== 'project'){
-				this.style.display = 'none'
-				return
-			}
-			this.style.display = ''
-			
+			this.updateDisplay()
 
 			const data = WP.current
 
@@ -213,6 +211,14 @@ class DYProjectHeader extends DYElement {
 			// Initialize terms
 			root.find('dy-terms')[0].initialize(data.terms)
 		})
+	}
+
+	updateDisplay(){
+		if(WP.queryType !== 'single' || WP.postType !== 'project'){
+			this.style.display = 'none'
+			return
+		}
+		this.style.display = ''
 	}
 }
 customElements.define('dy-project-header', DYProjectHeader)
