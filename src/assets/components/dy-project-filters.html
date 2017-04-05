@@ -54,6 +54,8 @@ class DYProjectFilters extends DYTerms {
 				'disabled'
 			)
 		}
+
+		this.dispatchEvent(new CustomEvent('dy-filter-change'))
 	}
 
 	static update(){

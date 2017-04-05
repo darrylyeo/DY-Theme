@@ -398,13 +398,12 @@ class DYProject extends DYElement {
 
 		this.on({
 			click(e){
-				if(!this.hasClass('focused'))
-					this.$projects.setFocusedProject(this)
+				this.$projects.$focusedProject = this
 			}
 		})
 		root.find('#close').on({
 			click: e => {
-				this.$projects.setFocusedProject()
+				this.$projects.$focusedProject = undefined
 				e.stopPropagation()
 			}
 		})

@@ -105,16 +105,6 @@
 
 <script>
 class DYProjects extends DYElement {
-	set filter(filter){
-		let animate
-		this.$projects.animatePositionChange(new Promise(resolve => animate = resolve))
-
-		for(const $project of this.$projects){
-			$project.toggleClass(!$project.matches(filter || '*'), 'hide')
-		}
-		animate()
-	}
-
 	connectedCallback(){
 		const root = this.root
 		
@@ -122,8 +112,11 @@ class DYProjects extends DYElement {
 
 		DY.getData.then(() => {
 			const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
-			const projects = Object.values(DY.data.posts)
-				.filter(post => post['page-category'] && post['page-category'].includes(pageCategory_project_id))
+
+			const projects = this.projects = Object.values(DY.data.posts)
+				.filter(post =>
+					post['page-category'] && post['page-category'].includes(pageCategory_project_id)
+				)
 
 			for(const project of projects){
 				const $project = $$$('dy-project')
@@ -154,28 +147,60 @@ class DYProjects extends DYElement {
 
 				DYProjectFilters.update()
 			})*/
+			this.$filters.initialize()
 		})
 
 		$projectsWrapper.on({
 			click: e => {
 				if(e.target === $projectsWrapper)
-					this.setFocusedProject()
+					this.$focusedProject = undefined
 			},
 			scroll: this.scrollInView.throttle().bind(this)
 		})
+
+
+		this.$filters.on('dy-filter-change', () => {
+			// Hide projects that don't match the filter, and animate differences in position
+			const filteredProjects = this.filteredProjects
+
+			let animate
+			this.$projects.animatePositionChange(new Promise(resolve => animate = resolve))
+
+			for(const $project of this.$projects){
+				$project.hide = !filteredProjects.includes($project.data)
+			}
+
+			animate()
+		})
 	}
 
-	setFocusedProject($project){
-		const root = this.root
+	get filteredProjects(){
+		const activeTermIDs = this.$filters.activeTerms.map(term => term.term_id)
 
-		const makeProjectFocused = $project !== undefined && !$project.hasClass('focused')
+		if(activeTermIDs.length){
+			return this.projects.filter(project =>
+				activeTermIDs.every(termID => project.terms.includes(termID))
+			)
+		}else{
+			return this.projects
+		}
+	}
 
-		this.toggleClass(makeProjectFocused, 'has-focused-project')
-		//;(() => this.toggleClass(makeProjectFocused, 'has-focused-project')).delay(100)
+	set $focusedProject($focusedProject = undefined){
+		const $previousFocusedProject = this._$focusedProject
+		if($focusedProject === $previousFocusedProject) return
 
-		root.find('dy-project.focused').removeClass('focused')
+		if($previousFocusedProject){
+			$previousFocusedProject.focused = false
+		}
 
-		if($project) $project.toggleClass(makeProjectFocused, 'focused')
+		this._$focusedProject = $focusedProject
+		
+		this.toggleClass($focusedProject !== undefined, 'has-focused-project')
+
+		if($focusedProject){
+			$focusedProject.focused = true
+		}
 
 
 		let t = 0
@@ -185,8 +210,8 @@ class DYProjects extends DYElement {
 				this.blur(30)
 			})
 			.animate(function(){
-				if(makeProjectFocused && $project.data.featuredImage){
-					this.loadImage($project.data.featuredImage.source_url).then(img => {
+				if($focusedProject && $focusedProject.data.featuredImage){
+					this.loadImage($focusedProject.data.featuredImage.source_url).then(img => {
 						this.drawImage(img, 0, 0, this.width, this.width / img.ratio)
 					})
 				}else{
