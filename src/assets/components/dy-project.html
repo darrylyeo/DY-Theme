@@ -115,9 +115,10 @@
 
 			transition: transform var(--transition), max-width var(--transition);
 		}
-		:host(:hover) #inner-wrapper {
+		:host(:hover:not(.focused)) #inner-wrapper {
 			transform: rotateX(-2.5deg) translateZ(-0.5rem) translateY(-1rem);
 			/*transform: translateZ(0.5rem);*/
+			--transition: 0.35s var(--ease-out-back);
 		}
 		:host(.focused) #inner-wrapper {
 			width: var(--dy-project-max-width);
