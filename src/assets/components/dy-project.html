@@ -417,6 +417,14 @@ class DYProject extends DYElement {
 	get $projects(){
 		return this.closest('dy-projects') || this.getRootNode().host
 	}
+
+	set hide(hide){
+		this.toggleClass(hide, 'hide')
+	}
+
+	set focused(focused){
+		this.toggleClass(focused, 'focused')
+	}
 }
 customElements.define('dy-project', DYProject)
 </script>
