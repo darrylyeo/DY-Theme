@@ -124,29 +124,6 @@ class DYProjects extends DYElement {
 				$project.data = project
 			}
 
-			/*imagesLoaded($projects, () => {
-				this.isotope = new Isotope( $projects, {
-					//itemSelector: '.projects > *',//'dy-project',
-					getSortData: {
-						date: '[data-date]',
-						modifiedDate: '[data-modified-date]'
-					},
-					sortBy: 'modifiedDate',
-					sortAscending: false,
-					hiddenStyle: {
-						opacity: 0,
-						transform: "perspective(1000px) scale(0.75) rotateY(180deg)"
-					},
-					visibleStyle: {
-						opacity: 1,
-						transform: "none"
-					},
-					layoutMode: 'masonryHorizontal',
-					stagger: 20
-				})
-
-				DYProjectFilters.update()
-			})*/
 			this.$filters.initialize()
 		})
 
