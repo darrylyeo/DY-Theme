@@ -390,10 +390,6 @@ class DYProject extends DYElement {
 			}
 		}*/
 
-		for(const termID of data.terms){
-			const term = DY.data.terms[termID]
-			this.addClass(`${DY.mapTaxonomyName(term.taxonomy)}-${term.slug}`)
-		}
 		root.find('dy-terms')[0].initialize(data.terms)
 
 		this.on({
