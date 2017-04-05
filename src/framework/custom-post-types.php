@@ -59,13 +59,12 @@ add_action('init', function(){
 	) );
 	
 	
-	// Tools (Software Used)
-	register_taxonomy( 'tools', $post_types, array(
+	// Programming Language (to merge with Tools)
+	register_taxonomy( 'language', $post_types, array(
 		'hierarchical' => true,
 		'labels' => array(
-			'name' => _x( 'Tools', 'taxonomy general name' ),
-			'singular_name' => _x( 'Software Used', 'taxonomy singular name' ),
-			'menu_name'	=> _x( 'Programming Software', 'taxonomy menu name' ),
+			'name' => _x( 'Languages', 'taxonomy general name' ),
+			'singular_name'	=> _x( 'Language', 'taxonomy singular name' ),
 		),
 		'rewrite' => array(
 			'with_front' => false
@@ -73,12 +72,13 @@ add_action('init', function(){
 		'show_admin_column' => true,
 		'show_in_rest' => true
 	) );
-	// Programming Language (to merge with Tools)
-	register_taxonomy( 'language', $post_types, array(
+	// Tools (Software Used)
+	register_taxonomy( 'tools', $post_types, array(
 		'hierarchical' => true,
 		'labels' => array(
-			'name' => _x( 'Languages', 'taxonomy general name' ),
-			'singular_name'	=> _x( 'Language', 'taxonomy singular name' ),
+			'name' => _x( 'Tools', 'taxonomy general name' ),
+			'singular_name' => _x( 'Software Used', 'taxonomy singular name' ),
+			'menu_name'	=> _x( 'Programming Software', 'taxonomy menu name' ),
 		),
 		'rewrite' => array(
 			'with_front' => false
