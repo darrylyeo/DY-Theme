@@ -183,19 +183,6 @@ class DYHeader extends DYElement {
 		})
 	}
 
-	attributeChangedCallback(attr, oldVal, newVal){
-		const root = this.root
-		
-		/*if(attr === 'logo'){
-			root.updateWithModel({
-				'#logo a[src]': newVal
-			})
-		}*/
-		if(attr === 'single-post'){
-			
-		}
-	}
-
 	get $header(){
 		return this.root.find('#header')[0]
 	}
