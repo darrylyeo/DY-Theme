@@ -9,6 +9,12 @@ const USING_SHADY_DOM = 'ShadyDOM' in window
 	// Can't we use CustomElementRegistry.prototype instead?
 	customElements._define = customElements.define
 	customElements.define = function(name, constructor, options){
+		if(document.currentScript){
+			// Called from within HTML Import, when the <template> may not yet have been added to the main document
+			$template = document.currentScript.ownerDocument.find(`template#${name}`)[0]
+			document.body.append($template.clone())
+		}
+
 		elementConstructors.set(constructor, name)
 		return this._define(...arguments)
 	}
@@ -33,16 +39,8 @@ const DYElement = class extends HTMLElement {
 	}
 
 	static get $template(){
-		const tagName = customElements.getName(this)
-
-		let $template
-		const id = '#' + tagName
-		if(document.currentScript){
-			// Called from within HTML Import, when the <template> may not yet have been added to the main document
-			$template = document.currentScript.ownerDocument.find(`template${id}`)[0]
-		}else{
-			$template = $(id)
-		}
+		const name = customElements.getName(this)
+		const $template = $(`template#${name}`)
 
 		if(USING_SHADY_CSS){
 			ShadyCSS.prepareTemplate($template, tagName)
@@ -125,7 +123,6 @@ const DYElement = class extends HTMLElement {
 		for(let Prototype = this.constructor; Prototype !== DYElement; Prototype = Object.getPrototypeOf(Prototype)){
 			if(inheritTemplate || Prototype === this.constructor){
 				// Inherit entire template
-
 				this.addTemplate(Prototype.$template)
 			}else{
 				// Inherit styles only
@@ -189,11 +186,11 @@ DY.getAssetsList.then(assets => {
 		$link.rel = 'import'
 		$link.href = WP.parentTheme + `/assets/components/${handle}.html`
 		$link.id = handle + '-import'
-		$link.on({
+		/*$link.on({
 			load(){
-				document.body.append(this.import.find('template'))
+				document.body.append(this.import.find('template').clone())
 			}
-		})
+		})*/
 		document.head.appendChild($link)
 
 		/*const $link = $$$('link').attr({
