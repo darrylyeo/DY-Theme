@@ -103,7 +103,6 @@
 </template>
 
 
-
 <script>
 class DYProjects extends DYElement {
 	set filter(filter){
@@ -116,9 +115,7 @@ class DYProjects extends DYElement {
 		animate()
 	}
 
-	constructor(){
-		super()
-
+	connectedCallback(){
 		const root = this.root
 		
 		const $projectsWrapper = this.$projectsWrapper
