@@ -217,7 +217,7 @@
 			box-shadow: var(--card-shadow);
 		}
 
-		:host(:not(.focused)) #featured-image {
+		:host(:not(.focused):not(:hover)) #featured-image {
 			-webkit-mask-image: linear-gradient(#fff, #fff 7rem, rgba(255, 255, 255, 0.25) 14rem, transparent);
 			-moz-mask-image: linear-gradient(#fff, #fff 7rem, rgba(255, 255, 255, 0.25) 14rem, transparent);
 			mask-image: linear-gradient(#fff, #fff 7rem, rgba(255, 255, 255, 0.25) 14rem, transparent);
