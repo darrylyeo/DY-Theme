@@ -66,12 +66,6 @@ class DYProjectFilters extends DYTerms {
 		//return this.parentNode.host || this.parentNode//this.closest('dy-projects')
 		return this.closest('dy-projects') || this.getRootNode().host
 	}
-
-	// Using regular DOM instead of Shadow DOM for because of incompatibility between ShadyDOM and Isotope.
-	/*get root(){
-		this.init()
-		return this
-	}*/
 }
 customElements.define('dy-project-filters', DYProjectFilters)
 </script>
