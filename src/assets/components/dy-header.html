@@ -143,10 +143,9 @@ class DYHeader extends DYElement {
 		return ['logo', 'single-post', 'immersive']
 	}*/
 
-	constructor(){
-		super()
-
+	connectedCallback(){
 		const root = this.root
+
 		const $header = this.$header
 		const $mainMenu = this.$mainMenu
 		const $secondaryMenu = this.$secondaryMenu
