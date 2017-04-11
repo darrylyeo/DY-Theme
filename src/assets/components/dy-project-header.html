@@ -142,75 +142,81 @@ class DYProjectHeader extends DYElement {
 	connectedCallback(){
 		const root = this.root
 
-		this.updateDisplay()
+		this.initialize()
 
 		window.on('pagerender', () => {
-			this.updateDisplay()
+			this.initialize()
+		})
+	}
 
-			const data = WP.current
+	initialize(){
+		const root = this.root
+		
+		this.updateDisplay()
+
+		const data = WP.current
+
+		root.updateWithModel({
+			'#title': data.title.rendered,
+			'#project-date[data-date]': data.meta.projectDate,
+			'#modified-date[data-date]': data.date,
+			'.link[href]': data.link,
+			'.excerpt': data.excerpt.rendered
+		})
+		//root.find('#title').fitText('7.5em')
+
+		if(data.featuredImage){
+			const imageData = data.featuredImage
 
 			root.updateWithModel({
-				'#title': data.title.rendered,
-				'#project-date[data-date]': data.meta.projectDate,
-				'#modified-date[data-date]': data.date,
-				'.link[href]': data.link,
-				'.excerpt': data.excerpt.rendered
+				'img[src]': imageData.source_url,
+				'img[alt]': imageData.alt_text,
+				'figcaption': imageData.caption || imageData.alt_text,
+				'#background[style]': {
+					'background-image': `url(${imageData.source_url})`
+				}
 			})
-			//root.find('#title').fitText('7.5em')
 
-			if(data.featuredImage){
-				const imageData = data.featuredImage
-
-				root.updateWithModel({
-					'img[src]': imageData.source_url,
-					'img[alt]': imageData.alt_text,
-					'figcaption': imageData.caption || imageData.alt_text,
-					'#background[style]': {
-						'background-image': `url(${imageData.source_url})`
-					}
+			let loadImage
+			document.body.find('#background canvas')[0].draw(function(){
+				if(!loadImage){
+					loadImage = this.loadImage(imageData.source_url)
+					this.blur(7)
+				}
+				loadImage.then(img => {
+					//this.clear()
+					this.blur(30)
+					this.drawImage(img, 0, 0, this.width, this.width / img.ratio)
 				})
-
-				let loadImage
-				document.body.find('#background canvas')[0].draw(function(){
-					if(!loadImage){
-						loadImage = this.loadImage(imageData.source_url)
-						this.blur(7)
-					}
-					loadImage.then(img => {
-						//this.clear()
-						this.blur(30)
-						this.drawImage(img, 0, 0, this.width, this.width / img.ratio)
+			}, true)
+			/*root.find('#background canvas')[0].draw(context => {
+				with(context){
+					loadImage(imageData.source_url).then(img => {
+						image(img, 0, 0)
 					})
-				}, true)
-				/*root.find('#background canvas')[0].draw(context => {
-					with(context){
-						loadImage(imageData.source_url).then(img => {
-							image(img, 0, 0)
-						})
-					}
-				})*/
+				}
+			})*/
 
-				root.find('#featured-image')[0].modalize().on('modalize', function(e){
-					const img = this.find('img')[0]
-					Object.assign(e.detail.finalStyle, {
-						width: img.naturalWidth + 'px',
-						maxWidth: img.naturalWidth + 'px',
-						height: img.naturalHeight + 'px',
-						maxHeight: '80vh',
-					})
+			root.find('#featured-image')[0].modalize().on('modalize', function(e){
+				const img = this.find('img')[0]
+				Object.assign(e.detail.finalStyle, {
+					width: img.naturalWidth + 'px',
+					maxWidth: img.naturalWidth + 'px',
+					height: img.naturalHeight + 'px',
+					maxHeight: '80vh',
 				})
-			}else{
-				root.updateWithModel({
-					'img[src]': '',
-					'img[alt]': '',
-					'figcaption': '',
-					'#background[style]': ''
-				})
-			}
+			})
+		}else{
+			root.updateWithModel({
+				'img[src]': '',
+				'img[alt]': '',
+				'figcaption': '',
+				'#background[style]': ''
+			})
+		}
 
-			// Initialize terms
-			root.find('dy-terms')[0].initialize(data.terms)
-		})
+		// Initialize terms
+		root.find('dy-terms')[0].initialize(data.terms)
 	}
 
 	updateDisplay(){
