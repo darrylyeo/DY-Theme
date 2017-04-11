@@ -196,24 +196,10 @@ class DYProjects extends DYElement {
 		}
 
 
-		let t = 0
-		document.body.find('#background canvas')[0]
-			.draw(function(){
-				this.globalAlpha = 0.1
-				this.blur(30)
-			})
-			.animate(function(){
-				if($focusedProject && $focusedProject.data.featuredImage){
-					this.loadImage($focusedProject.data.featuredImage.source_url).then(img => {
-						this.drawImage(img, 0, 0, this.width, this.width / img.ratio)
-					})
-				}else{
-					//this.clear()
-				}
-				if(t++ > 20){
-					return false
-				}
-			}, 10)
+			if($focusedProject.data.featuredImage){
+				$DYPage.$background.animateBlurredImage($focusedProject.data.featuredImage.source_url)
+			}
+		}
 
 		this.scrollInView()
 	}
