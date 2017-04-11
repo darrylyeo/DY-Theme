@@ -155,6 +155,10 @@ class DYPage extends DYElement {
 	get $toTop(){
 		return this.root.find('#to-top')[0]
 	}
+
+	get $notifications(){
+		return this.root.find('#notifications')[0]
+	}
 }
 customElements.define('dy-page', DYPage)
 </script>
