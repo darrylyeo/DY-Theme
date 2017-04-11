@@ -219,7 +219,7 @@ class DYProjects extends DYElement {
 	scrollInView(){
 		const computedStyle = this.computedStyle
 		if(parseFloat(computedStyle['height']) > parseFloat(computedStyle['min-height']))
-			document.body.animateScrollY($('dy-header').stickyScrollY)
+			document.body.animateScrollY($DYPage.$header.stickyScrollY)
 	}
 }
 customElements.define('dy-projects', DYProjects)
