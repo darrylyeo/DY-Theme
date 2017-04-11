@@ -3,8 +3,6 @@ if(this.top.location.href !== this.location.href) this.top.location = this.locat
 
 const $html = $('html')
 const $body = document.body
-const $DYHeader = $('dy-header')
-const $toTop = $('#to-top')
 
 documentReady.then(() => {
 	$html.addClass('ready')
@@ -14,20 +12,6 @@ windowLoad.then(() => {
 	$html.addClass('load')
 	console.timeEnd('load')
 })
-
-window.on('scroll', function(e){
-	$toTop.classList[this.scrollY >= window.innerHeight * 0.5 ? 'add' : 'remove']('show')
-}.throttle())
-window.trigger('scroll')
-
-/*document.body.on('scroll', function(e){console.log(this.scrollY, this.scrollTop, e)
-	$('header').classList[this.scrollY > $('#secondary-menu').clientHeight ? 'add' : 'remove']('sticky')
-	$('#to-top').classList[this.scrollY > window.innerHeight * 0.5 ? 'add' : 'remove']('show')
-}.throttle(10))*/
-
-
-
-$$('code:not([class*=lanugage-])').addClass('language-*')
 
 
 
@@ -91,33 +75,6 @@ $$('.has-sub-menu').hover(function(){
 }, function(){
 	$body.removeClass('sub-menu-open')
 	this.closest('nav').removeClass('sub-menu-open')
-})
-
-$toTop.on('click', () => {
-	document.body.animateScrollY(0)
-})
-
-
-
-
-window.once('pagerender', () => {
-	window.on('pagerender', () => {
-		document.body.animateScrollY(0)
-		$$('#modal').click()
-	})
-})
-window.on('pagerender', () => {
-	if('Prism' in window){
-		Prism.highlightAll()
-	}
-	
-	$('aside').css('display', WP.queryType === 'single' ? '' : 'none')
-})
-
-$$('#main-menu > ul > li > a').on({
-	click(){
-		
-	}
 })
 
 
