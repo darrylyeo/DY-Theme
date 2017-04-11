@@ -36,11 +36,9 @@
 		"modal"
 	],
 	"js": [
-		"libraries/imagesloaded.pkgd.min",
 		"libraries/web-animations.min",
 		"libraries/gsap/TweenLite",
 		"libraries/gsap/easing/EasePack.min",
-		"libraries/isotope.pkgd",
 		"libraries/moment.min",
 		"libraries/prism",
 
