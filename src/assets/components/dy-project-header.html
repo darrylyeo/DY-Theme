@@ -11,6 +11,7 @@
 			padding: calc(var(--padding) / 2);
 			position: relative;
 			z-index: 1;
+			flex: 100%;
 		}
 		#background, #background:before, #background * {
 			background-size: 0;
@@ -177,25 +178,7 @@ class DYProjectHeader extends DYElement {
 				}
 			})
 
-			let loadImage
-			document.body.find('#background canvas')[0].draw(function(){
-				if(!loadImage){
-					loadImage = this.loadImage(imageData.source_url)
-					this.blur(7)
-				}
-				loadImage.then(img => {
-					//this.clear()
-					this.blur(30)
-					this.drawImage(img, 0, 0, this.width, this.width / img.ratio)
-				})
-			}, true)
-			/*root.find('#background canvas')[0].draw(context => {
-				with(context){
-					loadImage(imageData.source_url).then(img => {
-						image(img, 0, 0)
-					})
-				}
-			})*/
+			$DYPage.$background.animateBlurredImage(imageData.source_url)
 
 			root.find('#featured-image')[0].modalize().on('modalize', function(e){
 				const img = this.find('img')[0]
