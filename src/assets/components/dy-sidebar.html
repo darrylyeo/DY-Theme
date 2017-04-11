@@ -1,0 +1,27 @@
+<template id="dy-sidebar">
+	<style>
+		@import 'http://localhost:8888/darrylyeo/wp-content/themes/DY/assets/sidebar.css';
+	</style>
+	<aside>
+		<section>
+			<h3>Subscribe For Email Updates!</h3>
+			<form>
+				<input type="email" placeholder="Your Email Address">
+				<input type="text" placeholder="Your Name">
+				<input type="submit" label="Sign Me Up!">
+			</form>
+		</section>
+	</aside>
+</template>
+
+
+<script>
+class DYSidebar extends DYElement {
+	constructor(){
+		super()
+		
+		const root = this.root
+	}
+}
+customElements.define('dy-sidebar', DYSidebar)
+</script>
