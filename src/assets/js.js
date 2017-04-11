@@ -658,6 +658,8 @@ Element.prototype.animateStyleChange = function(callback, duration = 500){
 	}else if(callback instanceof Promise){
 		callback.then(then)
 	}
+
+	return this
 }
 Element.prototype.animatePositionChange = function(callback, duration = 500){
 	const beforeLeft = this.left
@@ -688,6 +690,8 @@ Element.prototype.animatePositionChange = function(callback, duration = 500){
 	}else if(callback instanceof Promise){
 		callback.then(then)
 	}
+
+	return this
 }
 
 // For anything with addEventListener()
