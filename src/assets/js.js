@@ -626,7 +626,7 @@ Element.prototype.animateScrollY = function(y = 0, speedFactor = 0.2, stopPromis
 	this.addEventListener('click', f)
 }*/
 
-Element.prototype.animateStyleChange = function(callback){
+Element.prototype.animateStyleChange = function(callback, duration = 500){
 	const beforeStyle = Object.assign({}, window.getComputedStyle(this))
 
 	if(this._styleChangeAnimation) this._styleChangeAnimation.cancel()
@@ -634,9 +634,6 @@ Element.prototype.animateStyleChange = function(callback){
 	const then = () => {	
 	//requestAnimationFrame(() => {
 		const afterStyle = Object.assign({}, window.getComputedStyle(this))
-
-		const duration = parseInt(afterStyle.transitionDuration)
-		if(duration === 0) return
 
 		const styleDifference = {}
 		for(const property in beforeStyle){
@@ -649,7 +646,7 @@ Element.prototype.animateStyleChange = function(callback){
 		}
 
 		this._styleChangeAnimation = this.animate(styleDifference, {
-			duration
+			duration: duration || parseInt(afterStyle.transitionDuration),
 		})
 		//TweenLite(this, styleDifference, duration)
 	//})
