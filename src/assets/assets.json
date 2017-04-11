@@ -63,8 +63,7 @@
 
 		"web-components",
 
-		"main",
-		"canvas"
+		"main"
 	],
 	"js-unused": [
 		"libraries/custom-elements",
