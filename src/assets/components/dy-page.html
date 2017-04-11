@@ -38,27 +38,6 @@ class DYPage extends DYElement {
 
 		const root = this.root
 
-		window.once('pagerender', () => {
-			window.on('pagerender', () => {
-				document.body.animateScrollY(0)
-				$$('#modal').click()
-			})
-		})
-
-		const $toTop = root.find('#to-top')[0]
-
-		window.on('scroll', function(e){
-			$toTop.classList[this.scrollY >= window.innerHeight * 0.5 ? 'add' : 'remove']('show')
-		}.throttle())
-		window.trigger('scroll')
-
-		$$('code:not([class*=lanugage-])').addClass('language-*')
-
-		$toTop.on('click', () => {
-			document.body.animateScrollY(0)
-		})
-
-
 		// Page Content
 		window.on('pagerender', () => {
 			let data = WP.current
@@ -109,6 +88,24 @@ class DYPage extends DYElement {
 				Prism.highlightAll()
 			}
 		})
+
+		window.once('pagerender', () => {
+			window.on('pagerender', () => {
+				document.body.animateScrollY(0)
+				$$('#modal').click()
+			})
+		})
+
+		window.on('scroll', (e => {
+			this.$toTop.classList[window.scrollY >= window.innerHeight * 0.5 ? 'add' : 'remove']('show')
+		}).throttle())
+		window.trigger('scroll')
+
+		$$('code:not([class*=lanugage-])').addClass('language-*')
+
+		this.$toTop.on('click', () => {
+			document.body.animateScrollY(0)
+		})
 	}
 
 	animateMain(onAnimateOut, onAnimateIn){
@@ -153,6 +150,10 @@ class DYPage extends DYElement {
 
 	get $sidebar(){
 		return this.root.find('dy-sidebar')[0]
+	}
+
+	get $toTop(){
+		return this.root.find('#to-top')[0]
 	}
 }
 customElements.define('dy-page', DYPage)
