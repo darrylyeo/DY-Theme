@@ -107,7 +107,7 @@ class DYNotification extends DYElement {
 
 		const root = this.root
 		
-		$('#notifications').append(this)
+		$DYPage.$notifications.append(this)
 		this.on('click', () => {
 			this.dismiss()
 		})
