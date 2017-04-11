@@ -1,22 +1,22 @@
-<?php
-get_header();
-/*while(have_posts()):*/ the_post();
-?>
-<dy-project-header></dy-project-header>
-<article>
-	<!--<hgroup>
-		<h1><?php the_title() ?></h1>
-	</hgroup>
-	<?php //echo get_the_permalink();
-	//the_content();
-	// If comments are open or we have at least one comment, load up the comment template.
-	/*if ( comments_open() || get_comments_number() ) {
-		comments_template();
-	}*/
-	?>
-	<dy-comments></dy-comments>-->
-</article>
-<?php
-//endwhile;
-get_sidebar();
-get_footer();
+<!DOCTYPE HTML>
+<html <?php language_attributes(); ?>>
+<head>
+	<script>console.time('ready');console.time('load')</script>
+	<base href="<?php echo WP_SITEURL ?>">
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<?php if ( is_singular() && pings_open( get_queried_object() ) ) : ?>
+	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
+	<?php endif; ?>
+
+	<link rel="dns-prefetch" href="https://www.khanacademy.org/">
+
+	<link rel="author" href="https://darryl-yeo.com/about">
+
+	<?php wp_head() ?>
+</head>
+<body>
+	<dy-page></dy-page>
+	<?php wp_footer() ?>
+</body>
