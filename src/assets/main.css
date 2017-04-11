@@ -1,8 +1,15 @@
+dy-page > * {
+	width: 100%;
+}
+
 main {
 	--main-background-color: rgba(255, 255, 255, 0.6);
 	background-color: var(--main-background-color);
-	flex: 1;
+
+	display: flex;
 	flex-wrap: wrap;
+	flex: 1;
+
 	transition: var(--transition-medium), filter var(--transition-slow), height var(--transition-slow);
 }
 
