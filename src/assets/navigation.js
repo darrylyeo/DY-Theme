@@ -29,44 +29,11 @@ const DYNavigation = {
 				if($meta) $meta.replaceWith($$meta)
 			}
 
-			const $main = $('main')
-			let $$main = $$document.find('main')[0]
-
 			this.onPageLoad()
 
-			const initialStyle = $main.attr('style')
-
-			const initialHeight = $main.clientHeight
-			const style = {
-				opacity: '0',
-				transform: 'scale(0.95) translate(0, 2.5vh)'
-			}
-			$main.css(style)
-			$$main.css(style)
-			$main.once('transitionend', () => {
-				//$main.replaceWith($$main)
-				$$main = $main
-
-				const finalHeight = $$main.clientHeight
-
-				$$main.css({
-					height: initialHeight + 'px',
-				})
-
-				;(() => {
-					$$main.css({
-						height: finalHeight + 'px',
-						opacity: '',
-						transform: '',
-					})
-					$$main.once('transitionend', function(){
-						this.attr('style', initialStyle)
-					}, true)
-				}).delay(1)
-
-				$$main.find('a').on('click', this.openLink)
+			$('dy-page').animateMain(() => {
 				this.onPageRender()
-			}, true)
+			})
 		})
 
 		return true
