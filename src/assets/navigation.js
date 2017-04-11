@@ -79,7 +79,11 @@ const DYNavigation = {
 			WP.queryType = ''
 			WP.postType = ''
 
-			if(currentURL.replace(/\/$/, '') === WP.siteURL.replace(/\/$/, '')){
+			if(WP.current === undefined){
+				WP.queryType = '404'
+			}
+			
+			else if(currentURL.replace(/\/$/, '') === WP.siteURL.replace(/\/$/, '')){
 				WP.queryType = 'front-page'
 			}
 
@@ -94,9 +98,7 @@ const DYNavigation = {
 				WP.postType = 'post'
 			}
 
-			else if(WP.current === undefined){
-				WP.queryType = '404'
-			}else if(WP.current.type === 'page' || WP.current.type === 'post'){
+			else if(WP.current.type === 'page' || WP.current.type === 'post'){
 				const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
 				if(WP.current.categories.includes(pageCategory_project_id)){
 					WP.queryType = 'single'

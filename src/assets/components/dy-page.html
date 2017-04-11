@@ -97,6 +97,12 @@ class DYPage extends DYElement {
 					</article>
 					<dy-sidebar></dy-sidebar>
 				`)
+			}else if(WP.queryType === '404'){
+				this.html(`
+					<article>
+						<h2>404. :(</h2>
+					</article>
+				`)
 			}
 
 			if('Prism' in window){
