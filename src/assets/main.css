@@ -6,6 +6,11 @@ main {
 	transition: var(--transition-medium), filter var(--transition-slow), height var(--transition-slow);
 }
 
+main.hide {
+	opacity: 0;
+	transform: scale(0.95) translate(0, 2.5vh);
+}
+
 /*@media (max-width: 36rem) {
 	main {
 		flex-direction: column;
