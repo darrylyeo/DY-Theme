@@ -5,6 +5,7 @@
 		"optimizeJS": false
 	},
 	"html": [
+		"dy-page",
 		"dy-icon",
 		"dy-header",
 		"dy-terms",

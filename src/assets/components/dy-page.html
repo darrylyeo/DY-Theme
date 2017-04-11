@@ -1,0 +1,153 @@
+<link rel="import" href="dy-header.html">
+<link rel="import" href="dy-project-header.html">
+<link rel="import" href="dy-sidebar.html">
+<link rel="import" href="dy-background.html">
+
+<template id="dy-page">
+	<style>
+		@import './wp-content/themes/DY/assets/main.css';
+		@import './wp-content/themes/DY/assets/article.css';
+		@import './wp-content/themes/DY/assets/footer.css';
+
+		main > *, dy-page > *, ::content, ::slotted {
+			flex: 1;
+		}
+	</style>
+
+	<dy-background></dy-background>
+	<div id="wrapper">
+		<dy-header></dy-header>
+		<main>
+			<slot>
+		</main>
+		<footer>
+			<p>Website Design and Content © 2014-2016 Darryl Yeo. All Rights Reserved.<br>Powered by <a href="https://platformmeister.com">Platform Meister</a>.</p>
+		</footer>
+	</div>
+	<div id="to-top"></div>
+	<div id="notifications"></div>
+</template>
+
+
+<script>
+class DYPage extends DYElement {
+	constructor(){
+		super()
+
+		window.$DYPage = this
+
+		const root = this.root
+
+		window.once('pagerender', () => {
+			window.on('pagerender', () => {
+				document.body.animateScrollY(0)
+				$$('#modal').click()
+			})
+		})
+
+		const $toTop = root.find('#to-top')[0]
+
+		window.on('scroll', function(e){
+			$toTop.classList[this.scrollY >= window.innerHeight * 0.5 ? 'add' : 'remove']('show')
+		}.throttle())
+		window.trigger('scroll')
+
+		$$('code:not([class*=lanugage-])').addClass('language-*')
+
+		$toTop.on('click', () => {
+			document.body.animateScrollY(0)
+		})
+
+
+		// Page Content
+		window.on('pagerender', () => {
+			let data = WP.current
+
+			if(WP.queryType === 'archive' && WP.postType === 'project'){
+				data = DY.data.objects[WP.siteURL]
+			}
+			X(data)
+
+			if(WP.queryType === 'front-page' || (WP.queryType === 'archive' && WP.postType === 'project')){
+				this.html(`
+					<link rel="import" href="./wp-content/themes/DY/assets/components/dy-projects.html">
+					<dy-projects class="alternate-layout"></dy-projects>
+				`)
+			}else if(WP.queryType === 'archive' && WP.postType === 'post'){
+				this.html(`
+					<link rel="import" href="./wp-content/themes/DY/assets/components/dy-blog.html">
+					<dy-blog></dy-blog>
+				`)
+			}else if(WP.queryType === 'single' && WP.postType === 'project'){
+				this.html(`
+					<dy-project-header></dy-project-header>
+					<article>
+						${data.meta.kaId ? `<dy-khan data-id="${data.meta.kaId}"></dy-khan>` : ''}
+						${data.content.rendered}
+						${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
+					</article>
+					<dy-sidebar></dy-sidebar>
+				`)
+			}else if(WP.queryType === 'single' && WP.postType === 'post'){
+				this.html(`
+					<dy-project-header></dy-project-header>
+					<article>
+						${data.content.rendered}
+						${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
+					</article>
+					<dy-sidebar></dy-sidebar>
+				`)
+			}
+
+			if('Prism' in window){
+				Prism.highlightAll()
+			}
+		})
+	}
+
+	animateMain(onAnimateOut, onAnimateIn){
+		const $main = this.$main
+
+		$main
+			.addClass('hide')
+			.once('transitionend', () => {
+				/*$main.animateStyleChange(function(){
+					onAnimateOut && onAnimateOut()
+					this.removeClass('hide')
+				}).once('animateend', () => {
+					onAnimateIn && onAnimateIn()
+				})*/
+
+				const initialHeight = $main.clientHeight
+
+				onAnimateOut && onAnimateOut()
+				$main.removeClass('hide')
+
+				const finalHeight = $main.clientHeight
+
+				$main.animate({
+					height: [initialHeight, finalHeight]
+				}, {
+					duration: 1000
+				})
+			}, true)
+	}
+
+	get $background(){
+		return this.root.find('dy-background')[0]
+	}
+
+	get $header(){
+		return this.root.find('dy-header')[0]
+	}
+
+	get $main(){
+		return this.root.find('main')[0]
+	}
+
+	get $sidebar(){
+		return this.root.find('dy-sidebar')[0]
+	}
+}
+customElements.define('dy-page', DYPage)
+</script>
