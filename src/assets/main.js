@@ -114,25 +114,6 @@ window.on('pagerender', () => {
 	$('aside').css('display', WP.queryType === 'single' ? '' : 'none')
 })
 
-
-
-
-// Page Content
-window.on('pagerender', () => {
-	let data = WP.current
-
-	if(WP.queryType === 'archive' && WP.postType === 'project'){
-		data = DY.data.objects[WP.siteURL]
-	}
-	X(data)
-
-	$('main > article').html(`
-		${data.meta.kaId ? `<dy-khan data-id="${data.meta.kaId}"></dy-khan>` : ''}
-		${data.content.rendered}
-		${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
-	`)
-})
-
 $$('#main-menu > ul > li > a').on({
 	click(){
 		
