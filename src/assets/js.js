@@ -964,7 +964,7 @@ HTMLCanvasElement.prototype.draw = function(callback){
 
 	if(this._drawCallback){
 		const context = this.getContext('2d')
-		this._drawCallback.call(context, context)
+		this._drawCallback.call(context)
 	}
 	return this
 }
@@ -988,8 +988,9 @@ HTMLCanvasElement.prototype.animate = function(callback, interval){
 
 	if(this._drawCallback){
 		const context = this.getContext('2d')
+		let t = 0
 		this._animationInterval = (() => {
-			return this._drawCallback.call(context, context)
+			return this._drawCallback.call(context, t++)
 		}).interval(interval)
 	}
 	return this
