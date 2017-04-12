@@ -32,17 +32,17 @@ class DYNotifications extends DYElement {
 
 	notify(message, dismiss, type){
 		// Check if a notification already has this message.
-		let notification = [...this.$notifications].find(function($this){
+		const notification = [...this.$notifications].find(function($this){
 			return $this.html() == message// && $this.childNodes.length === 0
 		})
 		if(notification){
 			notification.remind()
 		}else{
-			notification = new DYNotification()
+			new DYNotification()
 				.html(message)
 				.attr('type', type || 'info')
-			notification.dismiss(dismiss)
 				.appendTo(this)
+				.dismiss(dismiss)
 		}
 	}
 
