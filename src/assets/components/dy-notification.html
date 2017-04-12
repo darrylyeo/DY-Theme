@@ -61,6 +61,7 @@ customElements.define('dy-notifications', DYNotifications)
 			border-bottom-right-radius: 4px;
 			box-shadow: rgba(0,0,0,.118) 0 4px 3px -3px;
 			box-sizing: content-box;
+			display: flex;
 			position: relative;
 			line-height: 1.4;
 			margin: 3px;
@@ -74,22 +75,22 @@ customElements.define('dy-notifications', DYNotifications)
 			transform-origin: right bottom;
 			animation: NotificationShow .5s;
 		}
-		:host.success {
+		:host(.success) {
 			background-color: rgba(139,195,74,0.9);
 			color: rgba(255, 255, 255, 0.9);
 		}
-		:host.warning {
+		:host(.warning) {
 			background-color: rgba(255, 213, 79, 0.9);
 		}
-		:host.error {
+		:host(.error) {
 			background-color: rgba(255,87,34,0.9);
 			color: rgba(255, 255, 255, 0.9);
 		}
 
-		:host.repeat {
+		:host(.remind) {
 			animation: NotificationShow 0.3s, NotificationRepeat 0.3s;
 		}
-		:host.hide {
+		:host(.hide) {
 			animation: NotificationHide 0.3s ease-out forwards;
 		}
 
