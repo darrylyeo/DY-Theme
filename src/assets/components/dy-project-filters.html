@@ -23,7 +23,7 @@
 
 <script>
 class DYProjectFilters extends DYTerms {
-	initialize(){
+	initialize(termIDs){
 		super.initialize()
 
 		;(() => {
@@ -33,8 +33,10 @@ class DYProjectFilters extends DYTerms {
 				this.toggleClass('active')
 				_this.dispatchEvent(new CustomEvent('dy-filter-change'))
 			})
-			
-			window.on('pagerender', () => this.update())
+
+			if(termIDs){
+				this.includeTerms(termIDs)
+			}
 		}).delay()
 	}
 
