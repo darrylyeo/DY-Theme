@@ -131,15 +131,6 @@
 
 <script>
 class DYProjectHeader extends DYElement {
-	constructor(){
-		super()
-
-		const root = this.root
-		customElements.whenDefined('dy-header').then(() => {
-			this.addStyle($('#dy-project-filters').content.find('style')[0])
-		})
-	}
-
 	connectedCallback(){
 		const root = this.root
 
