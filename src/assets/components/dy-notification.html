@@ -158,10 +158,8 @@ class DYNotification extends DYElement {
 		super()
 
 		const root = this.root
-		
-		this.on('click', () => {
-			this.dismiss()
-		})
+
+		root.find('button')[0].on('click', () => this.dismiss())
 	}
 
 	remind(dismiss){
