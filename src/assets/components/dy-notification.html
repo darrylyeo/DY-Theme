@@ -188,8 +188,9 @@ class DYNotification extends DYElement {
 				}, this.duration * 1000)
 			}
 		}else{
-			this.classList.add('hide')
-			this.classList.remove('remind')
+			this
+				.addClass('hide')
+				.removeClass('remind')
 		}
 		return this
 	}
