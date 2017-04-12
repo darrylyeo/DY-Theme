@@ -45,52 +45,8 @@ class DYPage extends DYElement {
 
 		// Page Content
 		window.on('pagerender', () => {
-			const data = WP.current
-			X(data)
-
-			if(WP.queryType === 'front-page' || (WP.queryType === 'archive' && WP.postType === 'project')){
-				this.html(`
-					<link rel="import" href="./wp-content/themes/DY/assets/components/dy-projects.html">
-					<dy-projects class="alternate-layout"></dy-projects>
-				`)
-			}else if(WP.queryType === 'archive' && WP.postType === 'post'){
-				this.html(`
-					<link rel="import" href="./wp-content/themes/DY/assets/components/dy-blog.html">
-					<dy-blog></dy-blog>
-				`)
-			}else if(WP.queryType === 'single' && WP.postType === 'project'){
-				this.html(`
-					<dy-project-header></dy-project-header>
-					<article>
-						${data.meta.kaId ? `<dy-khan data-id="${data.meta.kaId}"></dy-khan>` : ''}
-						${data.content.rendered}
-						${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
-					</article>
-					<dy-sidebar></dy-sidebar>
-				`)
-			}else if(WP.queryType === 'single' && WP.postType === 'post'){
-				this.html(`
-					<article>
-						<h1>${data.title.rendered}</h1>
-						${data.content.rendered}
-						${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
-					</article>
-					<dy-sidebar></dy-sidebar>
-				`)
-			}else if(WP.queryType === 'single' && WP.postType === 'page'){
-				this.html(`
-					<article>
-						<h1>${data.title.rendered}</h1>
-						${data.content.rendered}
-					</article>
-				`)
-			}else if(WP.queryType === '404'){
-				this.html(`
-					<article>
-						<h2>404. :(</h2>
-					</article>
-				`)
-			}
+			const content = this.routeAndRender()
+			this.html(content)
 
 			if('Prism' in window){
 				Prism.highlightAll()
@@ -114,6 +70,51 @@ class DYPage extends DYElement {
 		this.$toTop.on('click', () => {
 			document.body.animateScrollY(0)
 		})
+	}
+
+	routeAndRender(){
+		const data = WP.current
+		const route = WP.queryType + (WP.postType ? ' ' + WP.postType : '')
+
+		return {
+			//'archive project': () => `
+			'front-page': () => `
+				<link rel="import" href="./wp-content/themes/DY/assets/components/dy-projects.html">
+				<dy-projects class="alternate-layout"></dy-projects>
+			`,
+			'archive post': () => `
+				<link rel="import" href="./wp-content/themes/DY/assets/components/dy-blog.html">
+				<dy-blog></dy-blog>
+			`,
+			'single project': () => `
+				<dy-project-header></dy-project-header>
+				<article>
+					${data.meta.kaId ? `<dy-khan data-id="${data.meta.kaId}"></dy-khan>` : ''}
+					${data.content.rendered}
+					${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
+				</article>
+				<dy-sidebar></dy-sidebar>
+			`,
+			'single post': () => `
+				<article>
+					<h1>${data.title.rendered}</h1>
+					${data.content.rendered}
+					${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
+				</article>
+				<dy-sidebar></dy-sidebar>
+			`,
+			'single page': () => `
+				<article>
+					<h1>${data.title.rendered}</h1>
+					${data.content.rendered}
+				</article>
+			`,
+			'404': () => `
+				<article>
+					<h2>404. :(</h2>
+				</article>
+			`
+		}[route]()
 	}
 
 	animateMain(onAnimateOut, onAnimateIn){
