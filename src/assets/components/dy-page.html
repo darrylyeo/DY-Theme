@@ -74,8 +74,8 @@ class DYPage extends DYElement {
 				`)
 			}else if(WP.queryType === 'single' && WP.postType === 'post'){
 				this.html(`
-					<dy-project-header></dy-project-header>
 					<article>
+						<h1>${data.title.rendered}</h1>
 						${data.content.rendered}
 						${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
 					</article>
