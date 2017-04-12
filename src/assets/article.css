@@ -18,6 +18,9 @@ article h1, article section h2 {
 article h1 {
 	font-size: 2em;
 }
+article section:empty {
+	display: none;
+}
 article section > h2 {
 	position: relative;
 	display: flex;
