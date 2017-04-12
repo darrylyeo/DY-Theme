@@ -26,7 +26,6 @@
 class DYNotifications extends DYElement {
 	connectedCallback(){
 		this.root
-		window.$DYNotifications = this
 		window.notify = window.alert = this.notify.bind(this)
 	}
 
