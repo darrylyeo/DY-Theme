@@ -90,6 +90,10 @@ const DYNavigation = {
 			// Temporary
 			else if(currentURL.includes('category')){
 				WP.queryType = 'archive'
+
+				if(WP.postType === 'project'){
+					data = DY.data.objects[WP.siteURL]
+				}
 			}
 
 			// Also temporary

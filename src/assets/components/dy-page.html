@@ -45,11 +45,7 @@ class DYPage extends DYElement {
 
 		// Page Content
 		window.on('pagerender', () => {
-			let data = WP.current
-
-			if(WP.queryType === 'archive' && WP.postType === 'project'){
-				data = DY.data.objects[WP.siteURL]
-			}
+			const data = WP.current
 			X(data)
 
 			if(WP.queryType === 'front-page' || (WP.queryType === 'archive' && WP.postType === 'project')){
