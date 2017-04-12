@@ -140,9 +140,15 @@ class DYProjects extends DYElement {
 				$project.data = project
 			}
 
-			this.$filters.initialize()
+			this.$filters.initialize(this.getAllTermIDs(projects))
 			this.$filters.on('dy-filter-change', () => this.onFilterChange())
 		})
+	}
+
+	getAllTermIDs(projects){
+		return projects.reduce((terms, project) => {
+			return [...terms, ...project.terms]
+		}, [])
 	}
 
 	onFilterChange(){
@@ -160,10 +166,7 @@ class DYProjects extends DYElement {
 		animate()
 
 		// Get a list of all term IDs associated with the filtered project, and pass it back to <dy-project-filters>
-		const filteredProjectTermIDs = filteredProjects.reduce((terms, project) => {
-			return [...terms, ...project.terms]
-		}, [])
-		this.$filters.includeTerms(filteredProjectTermIDs)
+		this.$filters.includeTerms(this.getAllTermIDs(filteredProjects))
 	}
 
 	getFilteredProjects(){
