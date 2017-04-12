@@ -226,14 +226,14 @@ class DYComments extends DYElement {
 				})
 
 				const $comments = []
-				for(let comment of comments){
+				for(const comment of comments){
 					const $comment = $$$('dy-comment').appendTo(root.find('#reaction'))
 					X(this, root, $comment)
 					$comment.data = comment
 					$comments[comment.id] = $comment
 					root.append($comment)
 				}
-				for(let comment of comments){
+				for(const comment of comments){
 					if(comment.parent)
 						$comments[comment.parent].$replies.append($comments[comment.id])
 				}
@@ -292,11 +292,11 @@ class DYCommentReply extends DYComment {
 		root.find('form').on('submit', function(e){
 			e.preventDefault()
 			const formData = new FormData(this)
-			for(let key in _this.formData){
+			for(const key in _this.formData){
 				formData.set(key, _this.formData[key])
 			}
 			X(_this.formData, formData, formData.entries())
-			for(let entry of formData.entries()){
+			for(const entry of formData.entries()){
 				X(entry)
 			}
 			X(formData.getAll('*'))

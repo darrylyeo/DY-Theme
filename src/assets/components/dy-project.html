@@ -376,12 +376,12 @@ class DYProject extends DYElement {
 
 		// Add terms
 		/*const $terms = root.find('#terms')
-		for(let taxonomyName in DY.data.taxonomies){
+		for(const taxonomyName in DY.data.taxonomies){
 			if(taxonomyName === 'page-category') continue
 
 			const terms = data[DY.mapTaxonomyName(taxonomyName)]
 			if(!terms.length) continue
-			for(let termID of terms){
+			for(const termID of terms){
 				const term = DY.data.terms[termID]
 
 				const $term = $$$('a').attr('rel', 'tag').appendTo($terms)

@@ -67,7 +67,7 @@ class DYTerms extends DYElement {
 					terms.some(term => term.taxonomy === taxonomy.slug)
 				)
 
-			for(let taxonomy of taxonomies){
+			for(const taxonomy of taxonomies){
 				const $taxonomy = $$$('div')
 					.attr({
 						'data-taxonomy': taxonomy.slug

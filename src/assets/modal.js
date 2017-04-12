@@ -93,7 +93,7 @@ Element.prototype.modalize = function(opts){
 		}))
 
 		const computedStyle = getComputedStyle(this)
-		for(let prop in finalStyle){
+		for(const prop in finalStyle){
 			if(!(prop in initialStyle))
 				initialStyle[prop] = computedStyle[prop]
 		}
@@ -147,7 +147,7 @@ Element.prototype.modalize = function(opts){
 		}))
 
 		const computedStyle = getComputedStyle(this)
-		for(let prop in finalStyle){
+		for(const prop in finalStyle){
 			if(!(prop in initialStyle))
 				initialStyle[prop] = computedStyle[prop]
 		}

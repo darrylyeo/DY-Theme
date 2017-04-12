@@ -41,7 +41,7 @@ Object.defineProperties(Object.prototype, {
 		writable: false,
 		value(){
 			const o = {}
-			for(let key in this){
+			for(const key in this){
 				o[this[key]] = key
 			}
 			return o
@@ -301,7 +301,7 @@ Node.prototype.appendChild = function(targetNode){
 }*/
 Node.prototype.append = function(targetNode){
 	if(arguments[0] instanceof NodeList){
-		for(let targetNode of arguments[0]){
+		for(const targetNode of arguments[0]){
 			this.appendChild(targetNode)
 		}
 	}else{
@@ -309,14 +309,14 @@ Node.prototype.append = function(targetNode){
 	}
 	return this
 }
-/*for(let Prototype of [Document, Element, DocumentFragment]){
+/*for(const Prototype of [Document, Element, DocumentFragment]){
 	Prototype.prototype._append = Prototype.prototype.append
 	Prototype.prototype.append = function(){
 		this._append(...arguments)
 		return this
 	}
 }*/
-for(let Prototype of [Document, Element, DocumentFragment]){
+for(const Prototype of [Document, Element, DocumentFragment]){
 	Prototype.prototype.append = Node.prototype.append
 }
 Node.prototype.replaceWith = function(targetNode){
@@ -434,31 +434,31 @@ Object.defineProperties(Element.prototype, {
 		}
 	}
 })
-for(let Prototype of [Document, Element, DocumentFragment]){
+for(const Prototype of [Document, Element, DocumentFragment]){
 	Prototype.prototype.find = Prototype.prototype.querySelectorAll
 }
 Element.prototype.hasClass = function(c){
 	return this.classList.contains(c)
 }
 Element.prototype.addClass = function(...classes){
-	for(let className of classes){
+	for(const className of classes){
 		this.classList.add(className)
 	}
 	return this
 }
 Element.prototype.removeClass = function(...classes){
-	for(let className of classes){
+	for(const className of classes){
 		this.classList.remove(className)
 	}
 	return this
 }
 Element.prototype.toggleClass = function(addClass, ...classes){
 	if(typeof arguments[0] === 'boolean'){
-		for(let className of classes){
+		for(const className of classes){
 			this.classList[addClass ? 'add' : 'remove'](className)
 		}
 	}else{
-		for(let className of arguments){
+		for(const className of arguments){
 			this.classList.toggle(className)
 		}
 	}
@@ -535,7 +535,7 @@ Element.prototype.css = function(style){
 		}
 	}
 
-	for(let prop in style){
+	for(const prop in style){
 		const value = style[prop]
 		//if(prop in this.style){
 		if(prop.includes('-')){
@@ -547,13 +547,13 @@ Element.prototype.css = function(style){
 	return this
 }
 Element.prototype.updateWithModel = DocumentFragment.prototype.updateWithModel = function(model){
-	for(let handle in model){
+	for(const handle in model){
 		let value = model[handle]
 		if(handle.includes('[') && !handle.includes('=')){
 			const parts = handle.match(/(.+?)\[(.+?)]/)
 			const selector = parts[1]
 			const attrName = parts[2]
-			for(let $element of this.find(selector)){
+			for(const $element of this.find(selector)){
 				if(attrName === 'style' && typeof value === 'object'){
 					$element.css(value)
 				}else{
@@ -697,12 +697,12 @@ Element.prototype.animatePositionChange = function(callback, duration = 500){
 // For anything with addEventListener()
 EventTarget.prototype.on = function(eventNames, callback, optionsOrUseCapture){
 	if(typeof eventNames === 'object'){
-		for(let eventName in eventNames){
+		for(const eventName in eventNames){
 			this.on(eventName, eventNames[eventName], optionsOrUseCapture)
 		}
 	}else{
-		//for(let eventName of [...eventNames])){
-		for(let eventName of resolveArgumentAsArray(eventNames)){
+		//for(const eventName of [...eventNames])){
+		for(const eventName of resolveArgumentAsArray(eventNames)){
 			if(eventName === 'scroll' && this === document.body){
 				window.addEventListener(eventName, callback, optionsOrUseCapture)
 				continue
@@ -715,7 +715,7 @@ EventTarget.prototype.on = function(eventNames, callback, optionsOrUseCapture){
 }
 EventTarget.prototype.off = function(eventName, callback){
 	if(typeof eventNames === 'object'){
-		for(let eventName in eventNames){
+		for(const eventName in eventNames){
 			const callback = eventNames[eventName]
 			if(eventName === 'scroll' && this === document.body){
 				window.removeEventListener(eventName, callback)
@@ -725,7 +725,7 @@ EventTarget.prototype.off = function(eventName, callback){
 				this.removeEventListener(eventName, callback)
 		}
 	}else{
-		for(let eventName of resolveArgumentAsArray(eventNames)){
+		for(const eventName of resolveArgumentAsArray(eventNames)){
 			if(eventName === 'scroll' && this === document.body){
 				window.removeEventListener(eventName, callback)
 				continue
@@ -739,7 +739,7 @@ EventTarget.prototype.off = function(eventName, callback){
 EventTarget.prototype.once = function(eventNames, callback, onlyFireOnThisElement){
 	const _this = this
 	if(typeof eventNames === 'object'){
-		for(let eventName in eventNames){
+		for(const eventName in eventNames){
 			this.addEventListener(eventName, function(e){
 				if(onlyFireOnThisElement && e.target !== _this) return
 				eventNames[eventName].apply(this, arguments)
@@ -747,8 +747,8 @@ EventTarget.prototype.once = function(eventNames, callback, onlyFireOnThisElemen
 			})
 		}
 	}else{
-		//for(let eventName of [...eventNames])){
-		for(let eventName of resolveArgumentAsArray(eventNames)){
+		//for(const eventName of [...eventNames])){
+		for(const eventName of resolveArgumentAsArray(eventNames)){
 			this.addEventListener(eventName, function(e){
 				if(onlyFireOnThisElement && e.target !== _this) return
 				callback.apply(this, arguments)
@@ -767,7 +767,7 @@ EventTarget.prototype.trigger = function(eventName){
 }
 
 const eventNames = Object.getOwnPropertyNames(Document.prototype).filter(p => p.startsWith('on')).map(name => name.slice(2))
-for(let eventName of eventNames){
+for(const eventName of eventNames){
 	EventTarget.prototype[eventName] = function(callback){
 		if(arguments.length === 0){
 			this.dispatchEvent(new Event(eventName))
@@ -779,12 +779,12 @@ for(let eventName of eventNames){
 }
 
 /*NodeList.prototype.addEventListener = function(eventName, callback){
-	for(let $element of this){
+	for(const $element of this){
 		element.addEventListener(eventName, callback)
 	})
 }*/
 /*NodeList.prototype.on = function(){
-	for(let $element of this){
+	for(const $element of this){
 		element.on(...arguments)
 	}
 }*/
@@ -801,11 +801,11 @@ NodeList.prototype.filter = function(){
 /*NodeList.prototype.find = function(){
 	return [...this].find.apply(this, arguments)
 }*/
-for(let method in Element.prototype){
+for(const method in Element.prototype){
 	if(!(method in NodeList.prototype)){
 		NodeList.prototype[method] = function(){
 			let returnValue
-			for(let $element of this){
+			for(const $element of this){
 				const value = typeof $element[method] === 'function' ? $element[method](...arguments) : $element[method]
 				returnValue = returnValue || value
 			}
@@ -863,7 +863,7 @@ function get(url, options = {}){
 
 		if(options.responseType) xhr.responseType = options.responseType
 		
-		for(let header in options.headers){
+		for(const header in options.headers){
 			xhr.setRequestHeader(header, options.headers[header])
 		}
 		
@@ -1066,7 +1066,7 @@ CanvasRenderingContext2D.prototype.blur = function(radius = 5){
 	this.filter = `blur(${radius}px)`
 }
 CanvasRenderingContext2D.prototype.context = function(){
-	for(let callback of arguments){
+	for(const callback of arguments){
 		this.save()
 		callback.call(this)
 		this.restore()

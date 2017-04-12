@@ -18,28 +18,28 @@ DY.getData = Promise.race([
 	Promise.all([
 		//./wp-json/wp/v2/pages?filter[page-category]=project
 		getJSON('./wp-json/wp/v2/pages?per_page=100').then(data => {
-			for(let post of data){
+			for(const post of data){
 				DY.data.posts[post.id] = post
 				DY.data.objects[post.link] = post
 			}
 		}),
 		getJSON('./wp-json/wp/v2/posts?per_page=100&post_status=published').then(data => {
-			for(let post of data){
+			for(const post of data){
 				DY.data.posts[post.id] = post
 				DY.data.objects[post.link] = post
 			}
 		}),
 		getJSON('./wp-json/wp/v2/taxonomies').then(data => {
 			DY.data.taxonomies = data
-			for(let taxonomy of Object.values(data)){
+			for(const taxonomy of Object.values(data)){
 				DY.data.objects[taxonomy.link] = taxonomy
 			}
 		}),
 		getJSON('./wp-json/wp/v2/terms').then(data => {
 			//DY.data.terms = data
-			for(let taxonomyName in data){
+			for(const taxonomyName in data){
 				const terms = data[taxonomyName]
-				for(let term of terms){
+				for(const term of terms){
 					DY.data.terms[term.term_id] = term
 					DY.data.termsBySlug[taxonomyName + '.' + term.slug] = term
 					DY.data.objects[term.link] = term

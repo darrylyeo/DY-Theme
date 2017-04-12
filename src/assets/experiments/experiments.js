@@ -48,7 +48,7 @@ const experimentFunctions = {
 	'night-mode': active => {
 		const replace = active ? nightModeReplace : reverseNightModeReplace
 
-		for(let $this of $$('header, main, style')){
+		for(const $this of $$('header, main, style')){
 			$this.html($this.html().replaceAll(replace))
 		}
 		
@@ -92,7 +92,7 @@ const updateExperiment = function(handle){
 	experimentFunctions[handle] && experimentFunctions[handle](active)
 }
 const updateAllExperiments = function(){
-	for(let handle in experiments){
+	for(const handle in experiments){
 		updateExperiment(handle)
 	}
 }
@@ -109,7 +109,7 @@ const toggleExperiment = function(handle, active){
 	}
 }
 const toggleAllExperiments = function(active){
-	for(let handle in experiments){
+	for(const handle in experiments){
 		toggleExperiment(handle, active)
 	}
 }
