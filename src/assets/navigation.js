@@ -98,14 +98,14 @@ const DYNavigation = {
 				WP.postType = 'post'
 			}
 
-			else if(WP.current.type === 'page' || WP.current.type === 'post'){
+			else {
+				WP.queryType = 'single'
+
 				const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
 				if(WP.current.categories.includes(pageCategory_project_id)){
-					WP.queryType = 'single'
 					WP.postType = 'project'
 				}else{
-					WP.queryType = 'single'
-					WP.postType = 'project'
+					WP.postType = WP.current.type
 				}
 			}
 
