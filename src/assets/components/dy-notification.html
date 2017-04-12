@@ -158,10 +158,10 @@ class DYNotification extends DYElement {
 
 		const root = this.root
 		
-		$DYPage.$notifications.append(this)
 		this.on('click', () => {
 			this.dismiss()
 		})
+		$DYNotifications.append(this)
 	}
 
 	remind(dismiss){
