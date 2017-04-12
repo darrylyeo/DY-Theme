@@ -21,10 +21,10 @@ const DYNavigation = {
 
 			const $$document = document.createRange().createContextualFragment(data)
 
-			for(let selector of ['title']){
+			for(const selector of ['title']){
 				$(selector).replaceWith($$document.find(selector)[0])
 			}
-			for(let $$meta of $$document.find('meta')){
+			for(const $$meta of $$document.find('meta')){
 				const $meta = $(`meta[property="${$$meta.attr('property')}"]`) || $(`meta[name="${$$meta.attr('name')}"]`)
 				if($meta) $meta.replaceWith($$meta)
 			}
