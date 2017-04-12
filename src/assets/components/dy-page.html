@@ -81,6 +81,13 @@ class DYPage extends DYElement {
 					</article>
 					<dy-sidebar></dy-sidebar>
 				`)
+			}else if(WP.queryType === 'single' && WP.postType === 'page'){
+				this.html(`
+					<article>
+						<h1>${data.title.rendered}</h1>
+						${data.content.rendered}
+					</article>
+				`)
 			}else if(WP.queryType === '404'){
 				this.html(`
 					<article>
