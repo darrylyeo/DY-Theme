@@ -1146,7 +1146,7 @@ class Interval {
 
 
 const windowLoad = new Promise(resolve => window.on('load', resolve))
-const documentReady = new Promise(resolve => document.on('readystatechange', resolve))
+const documentReady = new Promise(resolve => document.on('DOMContentLoaded', resolve))
 
 
 
