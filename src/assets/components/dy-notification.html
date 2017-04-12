@@ -42,6 +42,7 @@ class DYNotifications extends DYElement {
 				.html(message)
 				.attr('type', type || 'info')
 			notification.dismiss(dismiss)
+				.appendTo(this)
 		}
 	}
 
@@ -161,7 +162,6 @@ class DYNotification extends DYElement {
 		this.on('click', () => {
 			this.dismiss()
 		})
-		$DYNotifications.append(this)
 	}
 
 	remind(dismiss){
