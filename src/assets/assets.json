@@ -32,7 +32,6 @@
 		"article",
 		"sidebar",
 		"footer",
-		"notifications",
 		"modal"
 	],
 	"js": [
