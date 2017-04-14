@@ -76,7 +76,7 @@ class DYPage extends DYElement {
 		const data = WP.current
 		const route = WP.queryType + (WP.postType ? ' ' + WP.postType : '')
 
-		return {
+		const templates = {
 			//'archive project': () => `
 			'front-page': () => `
 				<link rel="import" href="./wp-content/themes/DY/assets/components/dy-projects.html">
@@ -113,8 +113,19 @@ class DYPage extends DYElement {
 				<article>
 					<h2>404. :(</h2>
 				</article>
+			`,
+			'error': () => `
+				<article>
+					<section>
+						<h2>Whoops!</h2>
+						<p>There was an error loading this content.</p>
+						<pre><code>No such route: ${route}</code></pre>
+					</section>
+				</article>
 			`
-		}[route]()
+		}
+		
+		return templates[route in templates ? route : alert(route) || 'error']()
 	}
 
 	animateMain(onAnimateOut, onAnimateIn){
