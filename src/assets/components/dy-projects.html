@@ -119,12 +119,7 @@ class DYProjects extends DYElement {
 		})
 
 		DY.getData.then(() => {
-			const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
-
-			const projects = this.projects = Object.values(DY.data.posts)
-				.filter(post =>
-					post['page-category'] && post['page-category'].includes(pageCategory_project_id)
-				)
+			const projects = this.projects = DY.projects
 
 			for(const project of projects){
 				const $project = $$$('dy-project')
