@@ -123,7 +123,8 @@ const DYNavigation = {
 	}
 }
 
-documentReady.then(() => {
+//documentReady.then(() => {
+customElements.whenDefined('dy-page').then(() => {
 	DYNavigation.onPageLoad()
 	window.once('pageload', () => DYNavigation.onPageRender())
 })
