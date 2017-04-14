@@ -15,6 +15,22 @@ windowLoad.then(() => {
 
 
 
+{
+	const notifications = []
+	const temporaryNotify = window.notify = function(){
+		notifications.push(arguments)
+	}
+	customElements.whenDefined('dy-notifications').then(() => {
+		window.once('pagerender', () => {
+			for(const args of notifications){
+				window.notify(...args)
+			}
+		})
+	})
+}
+
+
+
 if('moment' in window){
 	/*const timeSinceLastVisit = new Date(Date.now() - DY.data.lastSession.date)
 	if(timeSinceLastVisit.getUTCHours() < 1) return
