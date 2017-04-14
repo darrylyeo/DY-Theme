@@ -14,14 +14,13 @@ DY.addObject = function(object){
 
 DY.getData = Promise.race([
 	new Promise(function(resolve){
-		if(DY.data.objects && DY.data.posts && DY.data.taxonomies && DY.data.terms && DY.data.termsBySlug)
+		if(DY.data.objects && DY.data.posts && DY.data.taxonomies && DY.data.terms)
 			resolve()
 
 		if(!DY.data.objects) DY.data.objects = {}
 		if(!DY.data.posts) DY.data.posts = {}
 		if(!DY.data.taxonomies) DY.data.taxonomies = {}
 		if(!DY.data.terms) DY.data.terms = {}
-		if(!DY.data.termsBySlug) DY.data.termsBySlug = {}
 	}),
 	Promise.all([
 		//./wp-json/wp/v2/pages?filter[page-category]=project
@@ -49,7 +48,6 @@ DY.getData = Promise.race([
 				const terms = data[taxonomyName]
 				for(const term of terms){
 					DY.data.terms[term.term_id] = term
-					DY.data.termsBySlug[taxonomyName + '.' + term.slug] = term
 					DY.addObject(term)
 				}
 			}
