@@ -4,6 +4,14 @@ DY.mapTaxonomyName = function(taxonomyName){
 	return taxonomyName
 }
 
+DY.addObject = function(object){
+	if(object.link){
+		DY.data.objects[URL.pathName(object.link)] = object
+	}else{
+		//X(object)
+	}
+}
+
 DY.getData = Promise.race([
 	new Promise(function(resolve){
 		if(DY.data.objects && DY.data.posts && DY.data.taxonomies && DY.data.terms && DY.data.termsBySlug)
@@ -20,19 +28,19 @@ DY.getData = Promise.race([
 		getJSON('./wp-json/wp/v2/pages?per_page=100').then(data => {
 			for(const post of data){
 				DY.data.posts[post.id] = post
-				DY.data.objects[post.link] = post
+				DY.addObject(post)
 			}
 		}),
 		getJSON('./wp-json/wp/v2/posts?per_page=100&post_status=published').then(data => {
 			for(const post of data){
 				DY.data.posts[post.id] = post
-				DY.data.objects[post.link] = post
+				DY.addObject(post)
 			}
 		}),
 		getJSON('./wp-json/wp/v2/taxonomies').then(data => {
 			DY.data.taxonomies = data
 			for(const taxonomy of Object.values(data)){
-				DY.data.objects[taxonomy.link] = taxonomy
+				DY.addObject(taxonomy)
 			}
 		}),
 		getJSON('./wp-json/wp/v2/terms').then(data => {
@@ -42,7 +50,7 @@ DY.getData = Promise.race([
 				for(const term of terms){
 					DY.data.terms[term.term_id] = term
 					DY.data.termsBySlug[taxonomyName + '.' + term.slug] = term
-					DY.data.objects[term.link] = term
+					DY.addObject(term)
 				}
 			}
 		}),
