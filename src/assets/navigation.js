@@ -106,8 +106,7 @@ const DYNavigation = {
 			else {
 				WP.queryType = 'single'
 
-				const pageCategory_project_id = DY.data.termsBySlug['page-category.project'].term_id
-				if(WP.current.categories.includes(pageCategory_project_id)){
+				if(WP.current.terms.includes(DY.PROJECT_CATEGORY.term_id)){
 					WP.postType = 'project'
 				}else{
 					WP.postType = WP.current.type
