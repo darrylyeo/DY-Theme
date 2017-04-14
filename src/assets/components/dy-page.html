@@ -141,12 +141,12 @@ class DYPage extends DYElement {
 					onAnimateIn && onAnimateIn()
 				})*/
 
-				const initialHeight = $main.clientHeight
+				const initialHeight = $main.clientHeight + 'px'
 
 				onAnimateOut && onAnimateOut()
 				$main.removeClass('hide')
 
-				const finalHeight = $main.clientHeight
+				const finalHeight = $main.clientHeight + 'px'
 
 				$main.animate({
 					height: [initialHeight, finalHeight]
