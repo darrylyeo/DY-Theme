@@ -73,7 +73,8 @@ const DYNavigation = {
 
 	onPageLoad(){
 		DY.getData.then(() => {
-			const currentURL = window.location.origin + window.location.pathname
+			const currentURL = window.location.pathname
+			const siteURL = URL.pathName(WP.siteURL)
 
 			WP.current = DY.data.objects[currentURL]
 			WP.queryType = ''
@@ -83,7 +84,7 @@ const DYNavigation = {
 				WP.queryType = '404'
 			}
 			
-			else if(currentURL.replace(/\/$/, '') === WP.siteURL.replace(/\/$/, '')){
+			else if(currentURL.replace(/\/$/, '') === siteURL.replace(/\/$/, '')){
 				WP.queryType = 'front-page'
 			}
 
@@ -92,7 +93,7 @@ const DYNavigation = {
 				WP.queryType = 'archive'
 
 				if(WP.postType === 'project'){
-					data = DY.data.objects[WP.siteURL]
+					data = DY.data.objects[siteURL]
 				}
 			}
 
