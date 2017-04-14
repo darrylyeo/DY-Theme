@@ -1,7 +1,7 @@
 // Break out of iframe
 if(this.top.location.href !== this.location.href) this.top.location = this.location
 
-const $html = $('html')
+const $html = document.documentElement
 const $body = document.body
 
 documentReady.then(() => {
