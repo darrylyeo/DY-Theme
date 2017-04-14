@@ -255,6 +255,11 @@ RegExp.escape = function(s) {
 }
 
 
+URL.pathName = function(url){
+	return (new URL(url)).pathname
+}
+
+
 const OriginalNode = Node
 Node.prototype._insertBefore = Node.prototype.insertBefore
 Node.prototype.insertBefore = function(targetNode){
