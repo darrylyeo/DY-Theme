@@ -74,5 +74,16 @@ DY.getData = Promise.race([
 	])
 ])
 
+DY.getData.then(() => {
+	DY.PROJECT_CATEGORY = Object.values(DY.data.terms)
+		.find(term =>
+			term.taxonomy === 'page-category' && term.slug === 'project'
+		)
+	DY.projects = Object.values(DY.data.posts)
+		.filter(post =>
+			post['page-category'] && post['page-category'].includes(DY.PROJECT_CATEGORY.term_id)
+		)
+})
+
 
 DY.getAssetsList = getJSON(WP.parentTheme + '/assets/assets.json')
