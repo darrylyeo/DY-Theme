@@ -185,7 +185,7 @@ Element.prototype.updateWithModel = DocumentFragment.prototype.updateWithModel =
 			const parts = handle.match(/(.+?)\[(.+?)]/)
 			const selector = parts[1]
 			const attrName = parts[2]
-			for(let element of this.find(selector)){
+			for(let element of this.findAll(selector)){
 				if(attrName === 'style' && typeof value === 'object'){
 					element.css(value)
 				}else{
@@ -307,7 +307,7 @@ let DYElement
 	}
 
 	static get $style(){
-		return this.$template.find('style')[0]
+		return this.$template.find('style')
 	}*/
 	
 	get $template(){
@@ -315,7 +315,7 @@ let DYElement
 	}
 
 	get $style(){
-		return wrap(this.root.find('style')[0])
+		return wrap(this.root.find('style'))
 	}
 
 	get root(){

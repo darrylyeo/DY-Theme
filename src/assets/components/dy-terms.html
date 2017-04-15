@@ -98,7 +98,7 @@ class DYTerms extends DYElement {
 	}
 
 	get $terms(){
-		return this.root.find('a[rel=tag]')
+		return this.root.findAll('[rel=tag]')
 	}
 }
 customElements.define('dy-terms', DYTerms)

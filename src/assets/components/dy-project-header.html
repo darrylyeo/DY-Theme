@@ -170,8 +170,8 @@ class DYProjectHeader extends DYElement {
 
 			$DYPage.$background.animateBlurredImage(imageData.source_url)
 
-			root.find('#featured-image')[0].modalize().on('modalize', function(e){
-				const img = this.find('img')[0]
+			root.find('#featured-image').modalize().on('modalize', function(e){
+				const img = this.find('img')
 				Object.assign(e.detail.finalStyle, {
 					width: img.naturalWidth + 'px',
 					maxWidth: img.naturalWidth + 'px',
@@ -189,7 +189,7 @@ class DYProjectHeader extends DYElement {
 		}
 
 		// Initialize terms
-		root.find('dy-terms')[0].initialize(data.terms)
+		root.find('dy-terms').initialize(data.terms)
 	}
 }
 customElements.define('dy-project-header', DYProjectHeader)

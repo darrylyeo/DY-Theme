@@ -440,7 +440,8 @@ Object.defineProperties(Element.prototype, {
 	}
 })
 for(const Prototype of [Document, Element, DocumentFragment]){
-	Prototype.prototype.find = Prototype.prototype.querySelectorAll
+	Prototype.prototype.find = Prototype.prototype.querySelector
+	Prototype.prototype.findAll = Prototype.prototype.querySelectorAll
 }
 Element.prototype.hasClass = function(c){
 	return this.classList.contains(c)
@@ -558,7 +559,7 @@ Element.prototype.updateWithModel = DocumentFragment.prototype.updateWithModel =
 			const parts = handle.match(/(.+?)\[(.+?)]/)
 			const selector = parts[1]
 			const attrName = parts[2]
-			for(const $element of this.find(selector)){
+			for(const $element of this.findAll(selector)){
 				if(attrName === 'style' && typeof value === 'object'){
 					$element.css(value)
 				}else{
@@ -566,7 +567,7 @@ Element.prototype.updateWithModel = DocumentFragment.prototype.updateWithModel =
 				}
 			}
 		}else{
-			this.find(handle).html(value)
+			this.findAll(handle).html(value)
 			//const $el = this.querySelector(handle)
 			//if($el) $el.innerHTML = value
 		}

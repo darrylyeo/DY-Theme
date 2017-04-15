@@ -259,7 +259,7 @@ class DYComment extends DYElement {
 			'#avatar[src]': data.author_avatar_urls[96]
 		})
 
-		root.find('#reply-button')[0].on('click', () => {
+		root.find('#reply-button').on('click', () => {
 			this.$replies.prependChild(DYCommentReply.$reply)
 		})
 	}
@@ -306,8 +306,8 @@ class DYCommentReply extends DYComment {
 			e.preventDefault()
 		})
 
-		const $submit = root.find('[type=submit]')[0]
-		const $textarea = root.find('textarea')[0]
+		const $submit = root.find('[type=submit]')
+		const $textarea = root.find('textarea')
 
 		const update = () => {
 			const text = $textarea.value.trim()

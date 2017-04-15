@@ -46,7 +46,7 @@ class DYNotifications extends DYElement {
 	}
 
 	get $notifications(){
-		return this.find('dy-notification')
+		return this.findAll('dy-notification')
 	}
 }
 customElements.define('dy-notifications', DYNotifications)
@@ -158,7 +158,7 @@ class DYNotification extends DYElement {
 
 		const root = this.root
 
-		root.find('button')[0].on('click', () => this.dismiss())
+		root.find('button').on('click', () => this.dismiss())
 	}
 
 	remind(dismiss){

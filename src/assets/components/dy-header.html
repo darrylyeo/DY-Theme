@@ -183,16 +183,16 @@ class DYHeader extends DYElement {
 	}
 
 	get $header(){
-		return this.root.find('#header')[0]
+		return this.root.find('#header')
 	}
 	get $mainMenu(){
-		return this.root.find('#main-menu')[0]
+		return this.root.find('#main-menu')
 	}
 	get $secondaryMenu(){
-		return this.root.find('#secondary-menu')[0]
+		return this.root.find('#secondary-menu')
 	}
 	get $logo(){
-		return this.root.find('#logo')[0]
+		return this.root.find('#logo')
 	}
 
 	get mainMenuStickyHeight(){
@@ -245,7 +245,7 @@ class DYHeader extends DYElement {
 			})
 		}
 
-		for(const $navItem of root.find('#main-menu > ul > li')){
+		for(const $navItem of root.findAll('#main-menu > ul > li')){
 			$navItem.css('display', '')
 
 			const showStyle = {

@@ -200,15 +200,15 @@ class DYProjects extends DYElement {
 	}
 
 	get $projectsWrapper(){
-		return this.root.find('.projects')[0]
+		return this.root.find('.projects')
 	}
 
 	get $projects(){
-		return this.root.find('dy-project')
+		return this.root.findAll('dy-project')
 	}
 
 	get $filters(){
-		return this.root.find('dy-project-filters')[0]
+		return this.root.find('dy-project-filters')
 	}
 
 	scrollInView(){

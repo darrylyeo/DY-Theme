@@ -157,27 +157,27 @@ class DYPage extends DYElement {
 	}
 
 	get $background(){
-		return this.root.find('dy-background')[0]
+		return this.root.find('dy-background')
 	}
 
 	get $header(){
-		return this.root.find('dy-header')[0]
+		return this.root.find('dy-header')
 	}
 
 	get $main(){
-		return this.root.find('main')[0]
+		return this.root.find('main')
 	}
 
 	get $sidebar(){
-		return this.root.find('dy-sidebar')[0]
+		return this.root.find('dy-sidebar')
 	}
 
 	get $toTop(){
-		return this.root.find('#to-top')[0]
+		return this.root.find('#to-top')
 	}
 
 	get $notifications(){
-		return this.root.find('#notifications')[0]
+		return this.root.find('#notifications')
 	}
 }
 customElements.define('dy-page', DYPage)

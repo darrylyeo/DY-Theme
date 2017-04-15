@@ -46,7 +46,7 @@ let DYElement = class extends HTMLElement {
 	}
 
 	static get $style(){
-		return this.$template.find('style')[0]
+		return this.$template.find('style')
 	}*/
 	
 	get $template(){
@@ -54,7 +54,7 @@ let DYElement = class extends HTMLElement {
 	}
 
 	get $style(){
-		return this.root.querySelector('style')[0]
+		return this.root.querySelector('style')
 	}
 
 	get root(){

@@ -53,7 +53,7 @@ const DYElement = class extends HTMLElement {
 		if(this === DYElement){
 			return DYElement._$style
 		}
-		return this.$template.content.find('style')[0]
+		return this.$template.content.find('style')
 	}
 	
 	get root(){
@@ -84,7 +84,7 @@ const DYElement = class extends HTMLElement {
 			}
 		}
 
-		DYNavigation.processLinks( root.find('a') )
+		DYNavigation.processLinks( root.findAll('a') )
 
 		return root
 	}
@@ -112,7 +112,7 @@ const DYElement = class extends HTMLElement {
 		else
 			$style.import().appendTo(root)
 
-		document.importNode(DYElement.$style, true).insertBefore(root.find('style')[0])
+		document.importNode(DYElement.$style, true).insertBefore(root.find('style'))
 	}
 }
 
@@ -142,7 +142,7 @@ DY.getAssetsList.then(assets => {
 		$link.id = handle + '-import'
 		/*$link.on({
 			load(){
-				document.body.append(this.import.find('template').clone())
+				document.body.append(this.import.findAll('template').clone())
 			}
 		})*/
 		document.head.appendChild($link)
