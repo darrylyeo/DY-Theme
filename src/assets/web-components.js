@@ -11,7 +11,7 @@ const USING_SHADY_DOM = 'ShadyDOM' in window
 	customElements.define = function(name, constructor, options){
 		if(document.currentScript){
 			// Called from within HTML Import, when the <template> may not yet have been added to the main document
-			$template = document.currentScript.ownerDocument.find(`template#${name}`)[0]
+			$template = document.currentScript.ownerDocument.find(`template#${name}`)
 			document.body.append($template.clone())
 		}
 
