@@ -32,6 +32,11 @@ gulp.task('html', () => {
 	const htmlFiles = assets.html.map(handle => `src/assets/components/${handle}.html`)
 
 	return gulp.src(htmlFiles)
+		// Concatenate
+		.pipe(
+			concat('all.min.html')
+		)
+
 		/*// Lint
 		.pipe(
 			lintspaces({
@@ -56,11 +61,6 @@ gulp.task('html', () => {
 			})
 		)
 
-		// Concatenate
-		.pipe(
-			concat('all.min.html')
-		)
-
 		// Output
 		.pipe(
 			gulp.dest(`${BUILD_DIR}/assets/components`)
@@ -73,18 +73,23 @@ gulp.task('css', () => {
 	const cssFiles = assets.css.map(handle => `src/assets/${handle}.css`)
 
 	return gulp.src(cssFiles)
+		// Concatenate
+		.pipe(
+			concat('all.min.css')
+		)
+
 		// Transpile
 		.pipe(
 			postcss([
 				postcss_import(),
 				postcss_url(),
-				postcss_cssnext({
+				/*postcss_cssnext({
 					features: {
 						rem: {
 							html: false
 						}
 					}
-				}),
+				}),*/
 				//require('gulp-cssnano')(),
 			])
 		)
@@ -107,11 +112,6 @@ gulp.task('css', () => {
 			})
 		)
 
-		// Concatenate
-		.pipe(
-			concat('all.min.css')
-		)
-
 		// Output
 		.pipe(
 			gulp.dest(`${BUILD_DIR}/assets`)
@@ -124,6 +124,11 @@ gulp.task('js', () => {
 	const jsFiles = assets.js.map(handle => `src/assets/${handle}.js`)
 
 	return gulp.src(jsFiles)
+		// Concatenate
+		.pipe(
+			concat('all.min.js')
+		)
+
 		// Transpile
 		.pipe(
 			babel({
@@ -140,11 +145,6 @@ gulp.task('js', () => {
 				indentation: 'tabs'
 			})
 		)*/
-
-		// Concatenate
-		.pipe(
-			concat('all.min.js')
-		)
 
 		// Output
 		.pipe(
