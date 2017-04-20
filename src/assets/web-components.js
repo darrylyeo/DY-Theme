@@ -70,7 +70,8 @@ const DYElement = class extends HTMLElement {
 			root.querySelectorAll = this.querySelectorAll.bind(this)
 		}
 
-		this.addStyle(DYElement.$style)
+		//this.addStyle(DYElement.$style)
+		root.appendChild($$$('dy-style'))
 
 		const inheritTemplate = this.constructor._DY_INHERIT_TEMPLATE !== false
 
