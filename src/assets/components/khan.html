@@ -210,7 +210,7 @@ class DYKhan extends DYElement {
 		
 		const $project = root.find('#project')
 		const $playRestartButton = root.find('.play-restart')
-		root.find('#project, .play-restart').on('click', function(){
+		root.findAll('#project, .play-restart').on('click', function(){
 			$project.addClass('play')
 			//$project.find('iframe').src = project.embedded
 			$project.find('iframe').attr('src', project.embedded)
