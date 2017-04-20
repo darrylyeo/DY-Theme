@@ -32,13 +32,14 @@
 
 		:host([theme=plain]) button, :host(:not([theme])) button {
 			background-color: rgba(255,255,255,.5);
-			border-radius: 1ch;
 			color: rgba(0,0,0,.75);
+			transition: var(--transition-fast);
+			
+			border-radius: 1ch;
 			font-size: .8em;
 			padding: 0 1.5ch;
 			vertical-align: .15em;
 			line-height: 2;
-			transition: var(--transition-fast);
 		}
 		:host([theme=plain]:hover) button,
 		:host([theme=plain].active) button {
