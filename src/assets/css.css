@@ -175,17 +175,17 @@ hr {
 	pointer-events: none;
 }
 :focus {
-	--jump-height: 1.5;
+	/*--jump-height: 1.5;
 	--jump-bounce: 0.7;
-	--jump-shake: 2;
+	--jump-shake: 2;*/
 	filter: drop-shadow(var(--accent-1) 0 1px 3px);
 	outline: none;
 	transition: var(--transition-fast);
 	z-index: 1;
 }
-:focus:not(:active) {
+/*:focus:not(:active) {
 	animation: ButtonMouseUpJump 0.4s;
-}
+}*/
 
 a {
 	border-radius: 1px;
