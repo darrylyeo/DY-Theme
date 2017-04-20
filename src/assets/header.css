@@ -156,7 +156,7 @@
 	font-size: 0.75em;
 	line-height: var(--secondary-menu-height);
 	position: relative;
-	z-index: 2;
+	z-index: 3;
 }
 #secondary-menu.immersive {
 	background-color: transparent;
