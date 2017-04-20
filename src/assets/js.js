@@ -518,6 +518,19 @@ Element.prototype.attr = function(attr, value){
 	}
 	return this
 }
+Element.prototype.toggleAttr = function(addAttr, ...attrs){
+	if(typeof arguments[0] === 'boolean'){
+		for(const attrName of attrs){
+			this.attr(attrName, addAttr ? '' : undefined)
+		}
+	}else{
+		for(const attrName of arguments){
+			this.attr(attrName, this.hasAttribute(attrName) ? undefined : '')
+		}
+	}
+	return this
+	this.setAttribute.bind(this)
+}
 /*Element.prototype.css = function(style){
 	if(arguments.length === 1){
 		Object.assign(this.style, style)
