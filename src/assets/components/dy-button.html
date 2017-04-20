@@ -70,13 +70,13 @@
 			text-transform: uppercase;
 		}
 
-		:host([shadowed]) button {
+		:host([theme~='3D']) button {
 			--button-height: 4px;
 			box-shadow: var(--accent-1) 0 var(--button-height);
 			margin-bottom: calc(var(--button-height) / 2);
 			top: calc(var(--button-height) / -2);
 		}
-		:host([shadowed]) button:active {
+		:host([theme~='3D']) button:active {
 			box-shadow: var(--accent-1) 0 0, var(--accent-1-quarter) 0 0;
 			top: calc(var(--button-height) / 2);
 		}
