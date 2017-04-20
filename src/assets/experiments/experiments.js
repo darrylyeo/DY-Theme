@@ -78,15 +78,17 @@ const updateExperiment = function(handle){
 	$this.addClass(active, 'active')
 
 	const href = `${WP.parentTheme}/assets/experiments/${handle}.css`//$this.attr('data-css')
-	if (href) {
-		let $stylesheet = $$(`link[href="${href}"]`)
+	if (href) {X(href)
+		DYStyle.toggle(active, href)
+
+		/*let $stylesheet = $$(`link[href="${href}"]`)
 		if (active && !$stylesheet.length) $stylesheet = $$$('link').attr({
 			rel: 'stylesheet',
 			href: href
 		}).appendTo($('head'))
 
 		//$stylesheet[0].disabled = !active
-		if(!active) $stylesheet.remove()
+		if(!active) $stylesheet.remove()*/
 	}
 
 	experimentFunctions[handle] && experimentFunctions[handle](active)
