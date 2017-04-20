@@ -1,0 +1,178 @@
+<template id="dy-button">
+	<style>
+		button {
+			-webkit-appearance: none;
+			border: none;
+			border-radius: 0.5em;
+			color: inherit;
+			font: inherit;
+		}
+		:host, button {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex: auto;
+
+			cursor: pointer;
+			
+			position: relative;
+			text-align: center;
+			white-space: nowrap;
+			transition: 0.2s;
+		}
+
+		:host(:disabled), :host([disabled]) {
+			cursor: default;
+			opacity: 0.75;
+			pointer-events: none;
+			filter: grayscale();
+		}
+
+
+		:host([theme=plain]) button, :host(:not([theme])) button {
+			background-color: rgba(255,255,255,.5);
+			border-radius: 1ch;
+			color: rgba(0,0,0,.75);
+			font-size: .8em;
+			padding: 0 1.5ch;
+			vertical-align: .15em;
+			line-height: 2;
+			transition: var(--transition-fast);
+		}
+		:host([theme=plain]:hover) button,
+		:host([theme=plain].active) button {
+			background-color: var(--accent-1);
+			color: #fff;
+		}
+		:host([theme=plain].active) button {
+			opacity: 1;
+		}
+		:host([theme=plain][disabled]) button {
+			background-color: rgba(0, 0, 0, .05);
+			opacity: 0.3;
+		}
+
+		:host([theme=accented]) button {
+			background-color: var(--accent-1-light);
+			color: rgba(255, 255, 255, 0.95);
+			text-shadow: rgba(0, 0, 0, 0.1) 0 1px 1px;
+		}
+
+		button.small {
+			font-size: 0.75em;
+		}
+
+		:host([heavy]) button {
+			font-weight: bold;
+			line-height: 1;
+			padding: 1ch 1em;
+			text-transform: uppercase;
+		}
+
+		:host([shadowed]) button {
+			--button-height: 4px;
+			box-shadow: var(--accent-1) 0 var(--button-height);
+			margin-bottom: calc(var(--button-height) / 2);
+			top: calc(var(--button-height) / -2);
+		}
+		:host([shadowed]) button:active {
+			box-shadow: var(--accent-1) 0 0, var(--accent-1-quarter) 0 0;
+			top: calc(var(--button-height) / 2);
+		}
+
+
+		:host([animated]) button:focus {
+			--jump-height: 1.02;
+			--jump-bounce: 0.98;
+			--jump-shake: 0.15;
+
+			--jump-height: 1.00;
+			--jump-bounce: 1;
+			--jump-shake: 0;
+			box-shadow: var(--accent-1) 0 0 2px 2px;
+		}
+		:host([animated]) button:not(:active):focus {
+			--jump-height: 3;
+			--jump-bounce: 0.7;
+			--jump-shake: 2;
+			animation: ButtonMouseUpJump 0.5s, ButtonMouseUpShadow 0.5s 0.25s backwards;
+			box-shadow: var(--accent-1) 0 var(--button-height);
+			z-index: 1;
+		}
+
+		/*button:focus {
+			box-shadow: var(--accent-1) 0 var(--button-height), transparent 0 0 0 5em;
+		}*/
+
+		@keyframes ButtonMouseUpJump {
+			from {
+				transform: scale(0.95);
+			}
+			25% {
+				transform: scale(var(--jump-height)) rotate(calc(var(--jump-shake) * 1deg));
+				animation-timing-function: ease-in;
+			}
+			50% {
+				box-shadow: var(--accent-1) 0 0, var(--accent-1-quarter) 0 0;
+				transform: scale(var(--jump-bounce)) rotate(calc(var(--jump-shake) * -2deg));
+				opacity: 0.9;
+			}
+			to {
+				transform: none;
+			}
+		}
+		@keyframes ButtonMouseUpShadow {
+			from {
+				box-shadow: var(--accent-1) 0 0, var(--accent-1-quarter) 0 0;
+				top: calc(var(--button-height) / 2);
+			}
+			/*50% {
+				box-shadow: var(--accent-1) 0 0, var(--accent-1-quarter) 0 0;
+			}*/
+			to {
+				box-shadow: var(--accent-1) 0 var(--button-height), transparent 0 0 0 5em;
+				top: calc(var(--button-height) / -2);
+			}
+		}
+	</style>
+	<button>
+		<slot>
+	</button>
+</template>
+
+
+<script>
+class DYButton extends DYElement {
+	connectedCallback(){
+		const root = this.root
+	}
+
+	static get observedAttributes() { return ['disabled'] }
+
+	get disabled() {
+		return this.hasAttribute('disabled')
+	}
+
+	set disabled(disabled) {
+		this.toggleAttr(disabled, 'disabled')
+	}
+
+	attributeChangedCallback(name, oldValue, newValue) {
+		if (this.disabled) {
+			this.attr({
+				'tabindex': -1,
+				'aria-disabled': true
+			})
+		} else {
+			this.attr({
+				'tabindex': 0,
+				'aria-disabled': false
+			})
+		}
+	}
+
+}
+customElements.define('dy-button', DYButton/*, {
+	extends: 'button'
+}*/)
+</script>
