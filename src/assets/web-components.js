@@ -50,9 +50,6 @@ const DYElement = class extends HTMLElement {
 	}
 
 	static get $style(){
-		if(this === DYElement){
-			return DYElement._$style
-		}
 		return this.$template.content.find('style')
 	}
 	
@@ -70,7 +67,6 @@ const DYElement = class extends HTMLElement {
 			root.querySelectorAll = this.querySelectorAll.bind(this)
 		}
 
-		//this.addStyle(DYElement.$style)
 		root.appendChild($$$('dy-style'))
 
 		const inheritTemplate = this.constructor._DY_INHERIT_TEMPLATE !== false
@@ -112,16 +108,8 @@ const DYElement = class extends HTMLElement {
 			$style.import().insertBefore(this.$style)
 		else
 			$style.import().appendTo(root)
-
-		document.importNode(DYElement.$style, true).insertBefore(root.find('style'))
 	}
 }
-
-DYElement._$style = $$$('style', {
-	html: ['css', 'copyright'/*, 'forms'*/]
-		.map(stylesheet => `@import '${WP.childTheme}/assets/${stylesheet}.css';`)
-		.join('\n')
-})
 
 
 DY.getAssetsList.then(assets => {
