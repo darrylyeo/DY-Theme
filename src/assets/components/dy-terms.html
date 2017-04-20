@@ -1,3 +1,5 @@
+<link rel="import" href="dy-button.html">
+
 <template id="dy-terms">
 	<style>
 		#terms {
@@ -80,8 +82,10 @@ class DYTerms extends DYElement {
 				for(const term of terms.filter(term => term.taxonomy === taxonomy.slug)){
 					const _this = this
 
-					const $term = $$$('a')
-						.attr('tabindex', '0') // Focusable
+					const $term = $$$('dy-button')
+						.attr('theme', 'plain')
+						.attr('animated', '')
+						//.attr('tabindex', '0') // Focusable
 						.attr('rel', 'tag')
 						.attr('title', term.description)
 						.html(term.name)
