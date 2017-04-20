@@ -83,19 +83,6 @@ window.on('offline', function(){
 
 
 
-
-
-$$('.has-sub-menu').hover(function(){
-	$body.addClass('sub-menu-open')
-	this.closest('nav').addClass('sub-menu-open')
-}, function(){
-	$body.removeClass('sub-menu-open')
-	this.closest('nav').removeClass('sub-menu-open')
-})
-
-
-
-
 // Experiment - Pin window to screen
 /*!function(){
 	$('body').attr('style', {

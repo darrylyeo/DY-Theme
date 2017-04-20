@@ -180,6 +180,14 @@ class DYHeader extends DYElement {
 				this.showNavItems(location.href.split('/').pop())
 			}
 		})
+
+		root.find('li.has-sub-menu').hover(function(){
+			$body.addClass('sub-menu-open')
+			this.closest('nav').addClass('sub-menu-open')
+		}, function(){
+			$body.removeClass('sub-menu-open')
+			this.closest('nav').removeClass('sub-menu-open')
+		})
 	}
 
 	get $header(){
