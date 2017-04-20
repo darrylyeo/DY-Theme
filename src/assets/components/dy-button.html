@@ -1,12 +1,5 @@
 <template id="dy-button">
 	<style>
-		button {
-			-webkit-appearance: none;
-			border: none;
-			border-radius: 0.5em;
-			color: inherit;
-			font: inherit;
-		}
 		:host, button {
 			display: flex;
 			justify-content: center;
@@ -19,6 +12,14 @@
 			text-align: center;
 			white-space: nowrap;
 			transition: 0.2s;
+
+			-webkit-appearance: none;
+			border: none;
+			color: inherit;
+			font: inherit;
+
+			border-radius: 0.5em;
+		}
 		}
 
 		:host(:disabled), :host([disabled]) {
