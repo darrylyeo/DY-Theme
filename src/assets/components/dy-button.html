@@ -81,8 +81,7 @@
 			top: calc(var(--button-height) / 2);
 		}
 
-
-		:host([animated]) button:focus {
+		:host([theme~=animated]) button:focus {
 			--jump-height: 1.02;
 			--jump-bounce: 0.98;
 			--jump-shake: 0.15;
@@ -92,7 +91,7 @@
 			--jump-shake: 0;
 			box-shadow: var(--accent-1) 0 0 2px 2px;
 		}
-		:host([animated]) button:not(:active):focus {
+		:host([theme~=animated]) button:not(:active):focus {
 			--jump-height: 3;
 			--jump-bounce: 0.7;
 			--jump-shake: 2;
