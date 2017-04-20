@@ -136,7 +136,7 @@ customElements.define('dy-notifications', DYNotifications)
 			right: 100%;
 			top: 0;
 		}
-		:host > * + button {
+		:host > * + dy-button {
 			margin-left: 1ch;
 		}
 		:host > div {
@@ -147,7 +147,7 @@ customElements.define('dy-notifications', DYNotifications)
 	<div>
 		<slot>
 	</div>
-	<button class="small">OK</button>
+	<dy-button theme="accented heavy 3D small">OK</button>
 </template>
 
 
@@ -158,7 +158,7 @@ class DYNotification extends DYElement {
 
 		const root = this.root
 
-		root.find('button').on('click', () => this.dismiss())
+		root.find('dy-button').on('click', () => this.dismiss())
 	}
 
 	remind(dismiss){
