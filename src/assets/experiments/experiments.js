@@ -74,24 +74,14 @@ const updateExperiment = function(handle){
 	const $this = getToggleLink(handle)
 
 	const active = experiments[handle]
-
 	$this.addClass(active, 'active')
 
-	const href = `${WP.parentTheme}/assets/experiments/${handle}.css`//$this.attr('data-css')
-	if (href) {X(href)
-		DYStyle.toggle(active, href)
+	const href = `${WP.parentTheme}/assets/experiments/${handle}.css`
+	DYStyle.toggle(active, href)
 
-		/*let $stylesheet = $$(`link[href="${href}"]`)
-		if (active && !$stylesheet.length) $stylesheet = $$$('link').attr({
-			rel: 'stylesheet',
-			href: href
-		}).appendTo($('head'))
-
-		//$stylesheet[0].disabled = !active
-		if(!active) $stylesheet.remove()*/
+	if(handle in experimentFunctions){
+		experimentFunctions[handle]()
 	}
-
-	experimentFunctions[handle] && experimentFunctions[handle](active)
 }
 const updateAllExperiments = function(){
 	for(const handle in experiments){
