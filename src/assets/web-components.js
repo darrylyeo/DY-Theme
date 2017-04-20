@@ -128,7 +128,7 @@ DY.getAssetsList.then(assets => {
 
 	const webComponents = assets.settings.optimizeHTML ? ['all.min'] : assets.html
 
-	for(let handle of webComponents){
+	for(const handle of webComponents){
 		const $link = document.createElement('link')
 		$link.rel = 'import'
 		$link.href = WP.parentTheme + `/assets/components/${handle}.html`
