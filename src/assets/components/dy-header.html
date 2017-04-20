@@ -203,6 +203,10 @@ class DYHeader extends DYElement {
 		return this.root.find('#logo')
 	}
 
+	get $experiments(){
+		return this.root.find('#experiments')
+	}
+
 	get mainMenuStickyHeight(){
 		// Need a better way to get the computed pixel value of --main-menu-sticky-height
 		return parseInt(this.$header.computedStyle.getPropertyValue('flex-basis'))
