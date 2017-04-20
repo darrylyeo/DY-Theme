@@ -80,6 +80,12 @@
 			box-shadow: var(--accent-1) 0 0, var(--accent-1-quarter) 0 0;
 			top: calc(var(--button-height) / 2);
 		}
+		:host([theme~='3D']) button:focus {
+			box-shadow: var(--accent-1) 0 0 2px 2px;
+		}
+		:host([theme~='3D']) button:not(:active):focus {
+			box-shadow: var(--accent-1) 0 var(--button-height);
+		}
 
 		:host([theme~=animated]) button:focus {
 			--jump-height: 1.02;
@@ -89,14 +95,12 @@
 			--jump-height: 1.00;
 			--jump-bounce: 1;
 			--jump-shake: 0;
-			box-shadow: var(--accent-1) 0 0 2px 2px;
 		}
 		:host([theme~=animated]) button:not(:active):focus {
 			--jump-height: 3;
 			--jump-bounce: 0.7;
 			--jump-shake: 2;
 			animation: ButtonMouseUpJump 0.5s, ButtonMouseUpShadow 0.5s 0.25s backwards;
-			box-shadow: var(--accent-1) 0 var(--button-height);
 			z-index: 1;
 		}
 
