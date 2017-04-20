@@ -29,8 +29,7 @@
 			filter: grayscale();
 		}
 
-
-		:host([theme=plain]) button, :host(:not([theme])) button {
+		:host([theme~=plain]) button, button {
 			background-color: rgba(255,255,255,.5);
 			color: rgba(0,0,0,.75);
 			transition: var(--transition-fast);
@@ -41,20 +40,20 @@
 			vertical-align: .15em;
 			line-height: 2;
 		}
-		:host([theme=plain]:hover) button,
-		:host([theme=plain].active) button {
+		:host([theme~=plain]:hover) button,
+		:host([theme~=plain].active) button {
 			background-color: var(--accent-1);
 			color: #fff;
 		}
-		:host([theme=plain].active) button {
+		:host([theme~=plain].active) button {
 			opacity: 1;
 		}
-		:host([theme=plain][disabled]) button {
+		:host([theme~=plain][disabled]) button {
 			background-color: rgba(0, 0, 0, .05);
 			opacity: 0.3;
 		}
 
-		:host([theme=accented]) button {
+		:host([theme~=accented]) button {
 			background-color: var(--accent-1-light);
 			color: rgba(255, 255, 255, 0.95);
 			text-shadow: rgba(0, 0, 0, 0.1) 0 1px 1px;
