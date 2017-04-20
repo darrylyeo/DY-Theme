@@ -827,7 +827,6 @@ NodeList.prototype.filter = function(){
 		const selector = arguments[0]
 		return [...this].filter($element => $element.matches(selector))
 	}
-	
 }
 /*NodeList.prototype.find = function(){
 	return [...this].find.apply(this, arguments)
