@@ -53,8 +53,8 @@ const experimentFunctions = {
 		}
 		
 		document.body
-			.addClass(active, 'night-mode')
 			.attr('style', (document.body.attr('style') || '').replaceAll(replace))
+			.toggleClass(active, 'night-mode')
 	},
 	/*'ajax-navigation': active => {
 		if(active){
