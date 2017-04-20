@@ -18,8 +18,15 @@
 			color: inherit;
 			font: inherit;
 
-			border-radius: 0.5em;
+			--border-radius: 0.5em;
 		}
+
+		button {
+			border-radius:
+				var(--border-top-left-radius, var(--border-radius))
+				var(--border-top-right-radius, var(--border-radius))
+				var(--border-bottom-right-radius, var(--border-radius))
+				var(--border-bottom-left-radius, var(--border-radius));
 		}
 
 		:host(:disabled), :host([disabled]) {
@@ -34,7 +41,7 @@
 			color: rgba(0,0,0,.75);
 			transition: var(--transition-fast);
 			
-			border-radius: 1ch;
+			--border-radius: 1ch;
 			font-size: .8em;
 			padding: 0 1.5ch;
 			vertical-align: .15em;
