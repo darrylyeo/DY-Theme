@@ -249,6 +249,18 @@ Function.prototype.debounce = function(time, immediate) {
 }
 
 
+Set.prototype.toggle = function(add, ...objects){
+	if(typeof arguments[0] === 'boolean'){
+		this[add ? 'add' : 'delete'](...objects)
+	}else{
+		for(const object of arguments){
+			this[this.has(object) ? 'delete' : 'add'](object)
+		}
+	}
+	return this
+}
+
+
 // http://stackoverflow.com/a/3561711
 RegExp.escape = function(s) {
 	return String(s).replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
