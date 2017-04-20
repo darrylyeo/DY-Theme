@@ -2,6 +2,7 @@
 	"settings": {
 		"asyncHTML": false,
 		"optimizeCSS": false,
+		"optimizeHTML": false,
 		"optimizeJS": false
 	},
 	"html": [

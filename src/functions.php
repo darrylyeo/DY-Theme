@@ -142,7 +142,8 @@ add_action('wp_enqueue_scripts', function(){
 		add_action( 'wp_footer', function(){
 			global $ASSETS;
 
-			foreach($ASSETS->html as $handle){
+			$htmlFiles = $ASSETS->settings->optimizeHTML ? ['all.min'] : $ASSETS->html;
+			foreach($htmlFiles as $handle){
 				$contents = file_get_contents( get_theme_file_uri('assets/components/'.$handle.'.html') );
 				echo preg_replace(
 					'/<link (.+?)?rel="import"(.+?)?>/',

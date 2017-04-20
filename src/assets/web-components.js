@@ -133,7 +133,7 @@ DYElement._$style = $$$('style', {
 DY.getAssetsList.then(assets => {
 	if(!assets.settings.asyncHTML) return
 
-	const webComponents = assets.html
+	const webComponents = assets.settings.optimizeHTML ? ['all.min'] : assets.html
 
 	for(let handle of webComponents){
 		const $link = document.createElement('link')
