@@ -129,7 +129,7 @@ window.on('pagerender', () => {
 
 // Clear experiments with the "e" key
 document.keyup(e => {
-	if(e.keyCode == 69){
+	if(e.key === 'e'){
 		toggleAllExperiments(false)
 	}
 })
