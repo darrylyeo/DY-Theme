@@ -117,16 +117,9 @@ const DYElement = class extends HTMLElement {
 }
 
 DYElement._$style = $$$('style', {
-	html: Array.from(document.styleSheets)
-		.filter(s => s.href &&
-			(s.href.includes('css.css') || s.href.includes('copyright.css') || s.href.includes('forms.css'))
-		)
-		.map(s => `@import '${s.href}';`)
+	html: ['css', 'copyright'/*, 'forms'*/]
+		.map(stylesheet => `@import '${WP.childTheme}/assets/${stylesheet}.css';`)
 		.join('\n')
-	//html: Array.from(document.styleSheets, s => s.href ? `@import "${s.href}";` : '').join('\n')
-
-	// Doesn't work in Safari (TypeError: ...document.styleSheets is not a function?!)
-		//html: [...document.styleSheets].map(s => s.href ? `@import "${s.href}";` : '').join('\n')
 })
 
 
