@@ -39,6 +39,11 @@
 
 			pointer-events: initial;
 		}
+		@media (max-height: 535px){
+			:host {
+				--tilt: 0;
+			}
+		}
 		:host(.focused) {
 			--transition-duration: 0.4s;
 
@@ -116,7 +121,7 @@
 			transition: transform var(--transition), max-width var(--transition);
 		}
 		:host(:hover:not(.focused)) #inner-wrapper {
-			transform: rotateX(-2.5deg) translateZ(-0.5rem) translateY(-1rem);
+			transform: /*rotateX(-2.5deg)*/ translateZ(0.5rem) translateY(-0.5rem);
 			/*transform: translateZ(0.5rem);*/
 			--transition: 0.35s var(--ease-out-back);
 		}
@@ -217,10 +222,12 @@
 			box-shadow: var(--card-shadow);
 		}
 
-		:host(:not(.focused):not(:hover)) #featured-image {
-			-webkit-mask-image: linear-gradient(#fff, #fff 7rem, rgba(255, 255, 255, 0.25) 14rem, transparent);
-			-moz-mask-image: linear-gradient(#fff, #fff 7rem, rgba(255, 255, 255, 0.25) 14rem, transparent);
-			mask-image: linear-gradient(#fff, #fff 7rem, rgba(255, 255, 255, 0.25) 14rem, transparent);
+		@media (min-height: 536px){
+			:host(:not(.focused):not(:hover)) #featured-image {
+				-webkit-mask-image: linear-gradient(#fff, #fff 7rem, rgba(255, 255, 255, 0.25) 14rem, transparent);
+				-moz-mask-image: linear-gradient(#fff, #fff 7rem, rgba(255, 255, 255, 0.25) 14rem, transparent);
+				mask-image: linear-gradient(#fff, #fff 7rem, rgba(255, 255, 255, 0.25) 14rem, transparent);
+			}
 		}
 		#featured-image img {
 			min-height: 0;
