@@ -13,6 +13,7 @@ const concat = require('gulp-concat')
 const htmlmin = require('gulp-htmlmin')
 
 const babel = require('gulp-babel')
+const vulcanize = require('gulp-vulcanize')
 
 const cssnano = require('gulp-cssnano')
 const postcss = require('gulp-postcss')
@@ -31,11 +32,17 @@ const assets = require('./src/assets/assets')
 gulp.task('html', () => {
 	const htmlFiles = assets.html.map(handle => `src/assets/components/${handle}.html`)
 
-	return gulp.src(htmlFiles)
+	/*return gulp.src(htmlFiles)
 		// Concatenate
 		.pipe(
 			concat('all.min.html')
-		)
+		)*/
+	return gulp.src('src/assets/components/dy-page.html')
+		.pipe(vulcanize({
+			abspath: '',
+			excludes: [],
+			stripExcludes: false
+		}))
 
 		/*// Lint
 		.pipe(
