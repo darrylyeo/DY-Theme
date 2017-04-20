@@ -288,36 +288,3 @@ body * {
 #to-top:hover {
 	background-color: var(--accent-1);
 }
-
-
-.term, [rel=tag] {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	background-color: rgba(255,255,255,.5);
-	border-radius: 1ch;
-	color: rgba(0,0,0,.75);
-	cursor: pointer;
-	font-size: .8em;
-	padding: 0 1.5ch;
-	vertical-align: .15em;
-	line-height: 2;
-	margin: 2px;
-	flex: auto;
-	text-align: center;
-	white-space: nowrap;
-	transition: var(--transition-fast);
-}
-.term:hover, [rel=tag]:hover,
-.term.active, [rel=tag].active {
-	background-color: var(--accent-1);
-	color: #fff;
-}
-.term.active, [rel=tag].active {
-	opacity: 1;
-}
-.term.disabled, [rel=tag].disabled {
-	background-color: rgba(0, 0, 0, .05);
-	opacity: 0.3;
-}
