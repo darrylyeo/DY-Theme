@@ -116,14 +116,16 @@ const toggleAllExperiments = function(active){
 	}
 }
 
-$$('#experiments a').on('click', function() {
-	toggleExperiment(this.dataset.experiment)
+window.on('pagerender', () => {
+	$DYPage.$header.$experiments.findAll('a').on('click', function() {
+		toggleExperiment(this.dataset.experiment)
+	})
+	updateAllExperiments()
 })
 
 
 
 
-updateAllExperiments()
 
 // Clear experiments with the "e" key
 document.keyup(e => {
