@@ -67,7 +67,7 @@ const experimentFunctions = {
 }
 
 const getToggleLink = function(handle){
-	return $(`#experiments [data-experiment="${handle}"]`)
+	return $DYPage.$header.$experiments.find(`[data-experiment="${handle}"]`)
 }
 
 const updateExperiment = function(handle){
