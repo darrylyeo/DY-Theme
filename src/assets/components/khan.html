@@ -82,18 +82,10 @@
 			opacity: 0;
 			transform: scale(2);
 		}
-		#buttons {
-			overflow: hidden;
-			max-height: 0;
-			text-align: left;
-			transition: 0.3s;
-		}
-		#project.play #buttons {
-			margin-top: 5px;
-			max-height: 42px;
-		}
-		#buttons > * + * {
-			float: right;
+
+		#project:not(.play) ~ dy-buttons.show-if-playing, 
+		#project.play ~ dy-buttons.show-if-not-playing {
+			display: none;
 		}
 	</style>
 	<a class="link"><h3 id="title"></h3></a>
@@ -107,8 +99,11 @@
 		<img id="thumbnail">
 		<span>►Play</span>
 	</div>
-	<dy-buttons>
-		<dy-button theme="accented heavy 3D" class="play-restart">Play</dy-button>
+	<dy-buttons class="show-if-not-playing">
+		<dy-button theme="accented heavy 3D" class="play">Play</dy-button>
+	</dy-buttons>
+	<dy-buttons class="show-if-playing">
+		<dy-button theme="accented heavy 3D" class="restart">Restart</dy-button>
 		<dy-button theme="accented heavy 3D" class="stop">Stop</dy-button>
 	</dy-buttons>
 	<dy-khan-badge id="fork"></dy-khan-badge>
