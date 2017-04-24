@@ -12,8 +12,8 @@
 		@import './wp-content/themes/DY/assets/article.css';
 		@import './wp-content/themes/DY/assets/footer.css';
 
-		main > *, dy-page > *, ::content, ::slotted {
-			flex: 1;
+		::slotted(*) {
+			flex: 100%;
 		}
 
 		#to-top.show ~ dy-notifications {
