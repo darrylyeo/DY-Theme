@@ -31,9 +31,9 @@ const DYElement = class extends HTMLElement {
 		super()
 
 		// TODO: Find a way to figure out if a custom element was made through cloning
-		if(this.find('style').length){
-			 this._init = true
-		}
+		/*if(this.findAll('style').length){
+			this._init = true
+		}*/
 	}
 
 	attributeChangedCallback(attr, oldVal, newVal){
