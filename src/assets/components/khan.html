@@ -43,20 +43,20 @@
 		#project.play iframe ~ * {
 			pointer-events: none;
 		}
-		#project img {
+		#project img, #project ::slotted(img) {
 			background-color: #000;
 			background: radial-gradient(rgba(0, 0, 0, 0.6), #000);
 			position: relative;
 			transition: 0.3s;
 		}
-		#project img:not([src]) {
+		#project img:not([src]), #project ::slotted(img:not([src])) {
 			width: 400px;
 			padding-top: 100%;
 		}
-		#project:hover img {
+		#project:hover img, #project:hover ::slotted(img) {
 			transform: scale(1.05);
 		}
-		#project.play img {
+		#project.play img, #project.play ::slotted(img) {
 			opacity: 0;
 			pointer-events: none;
 			transform: scale(1.2);
@@ -96,7 +96,9 @@
 	</dy-khan-stats>
 	<div id="project">
 		<iframe></iframe>
-		<img id="thumbnail">
+		<slot name="thumbnail">
+			<img id="thumbnail">
+		</slot>
 		<span>►Play</span>
 	</div>
 	<dy-buttons class="show-if-not-playing">
