@@ -2,22 +2,25 @@ const DYNavigation = {
 	navigatingTo: '',
 	prerenderedURLs: [],
 
-	navigateTo(url, host, pushNewState){
+	navigateTo(url, host, pushNewState = false){
 		if(!url || host !== location.host/* || url === location.href*/) return false
 
 		this.navigatingTo = url
 
-		history.pushState({
-			whee: 9
-		}, 'bloink', url)
+		if(pushNewState) {
+			history.pushState({
+				whee: 9
+			}, 'bloink', url)
+		}
 
 		get(url).then(data => {
 			if(this.navigatingTo !== url) return
 
-			if(pushNewState)
+			if(pushNewState) {
 				history.pushState({
 					whee: 9
 				}, 'bloink', url)
+			}
 
 			const $$document = document.createRange().createContextualFragment(data)
 
