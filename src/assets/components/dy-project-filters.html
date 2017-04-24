@@ -48,7 +48,7 @@ class DYProjectFilters extends DYTerms {
 	includeTerms(termIDs){
 		for(const $term of this.$terms){
 			const term = this.$termToTerm.get($term)
-			$term.toggleClass(!termIDs.includes(term.term_id), 'disabled')
+			$term.disabled = !termIDs.includes(term.term_id)
 		}
 	}
 }
