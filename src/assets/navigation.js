@@ -89,6 +89,8 @@ const DYNavigation = {
 			
 			else if(currentURL.replace(/\/$/, '') === siteURL.replace(/\/$/, '')){
 				WP.queryType = 'front-page'
+				//WP.queryType = 'archive'
+				//WP.postType = 'project'
 			}
 
 			// Temporary
