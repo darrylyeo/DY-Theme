@@ -91,7 +91,13 @@ class DYPage extends DYElement {
 			'single project': () => `
 				<dy-project-header></dy-project-header>
 				<article>
-					${data.meta.kaId ? `<dy-khan data-id="${data.meta.kaId}"></dy-khan>` : ''}
+					${data.meta.kaId ? `
+						<dy-khan data-id="${data.meta.kaId}">
+							${data.featuredImage ? `
+								<img slot="thumbnail" src="${data.featuredImage.source_url}">
+							` : ''}
+						</dy-khan>
+					` : ''}
 					${data.content.rendered}
 					${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
 				</article>
