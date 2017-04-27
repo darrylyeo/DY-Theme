@@ -38,9 +38,7 @@
 
 <script>
 class DYPage extends DYElement {
-	constructor(){
-		super()
-
+	connectedCallback(){
 		window.$DYPage = this
 
 		const root = this.root
