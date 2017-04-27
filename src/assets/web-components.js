@@ -92,9 +92,9 @@ const DYElement = class extends HTMLElement {
 		const root = this.root
 
 		if($template){
-			//$template.content.import().appendTo(root)
+			$template.content.import().appendTo(root)
 			
-			root.appendChild(document.importNode($template.content, true))
+			//root.appendChild(document.importNode($template.content, true))
 
 			//root.append(unwrap(document.importNode($template.content, true)))
 			//X('template content', this.tagName, $template.content, document.importNode(this.$template.content, true), root)
