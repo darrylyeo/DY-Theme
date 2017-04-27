@@ -44,6 +44,9 @@
 				--tilt: 0;
 			}
 		}
+		:host(:hover:not(.focused)) {
+			--tilt: -5deg;
+		}
 		:host(.focused) {
 			--transition-duration: 0.4s;
 
@@ -121,7 +124,7 @@
 			transition: transform var(--transition), max-width var(--transition);
 		}
 		:host(:hover:not(.focused)) #inner-wrapper {
-			transform: /*rotateX(-2.5deg)*/ translateZ(0.5rem) translateY(-0.5rem);
+			transform: rotateX(var(--tilt)) translateZ(-10px) translateY(-0.5rem);
 			/*transform: translateZ(0.5rem);*/
 			--transition: 0.35s var(--ease-out-back);
 		}
