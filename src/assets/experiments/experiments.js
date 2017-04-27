@@ -49,6 +49,23 @@ const experimentFunctions = {
 		document.body
 			.attr('style', (document.body.attr('style') || '').replaceAll(replace))
 			.toggleClass(active, 'night-mode')
+	},
+
+	['pin-window'](active){
+		let {screenX, screenY} = window
+		!function(){
+			if(screenX !== window.screenX || screenY !== window.screenY){
+				$('body').css({
+					'min-width': screen.width + 'px',
+					'min-height': screen.height + 'px',
+					transform: `translate(${-screenX}px, ${-screenY}px)`,
+					transition: 'none'
+				})
+
+				screenX = window.screenX
+				screenY = window.screenY
+			}
+		}.interval()
 	}
 }
 
