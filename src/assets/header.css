@@ -355,7 +355,7 @@ nav > ul > li ul > li > a {
 
 
 
-#secondary-menu.sub-menu-open ~ #header > nav > ul > li > a {
+#secondary-menu.sub-menu-open ~ #header:not(.full) > nav > ul > li > a {
 	opacity: 0;
 }
 /*body.sub-menu-open main > * > *,
