@@ -74,11 +74,15 @@ navigator.getBattery && navigator.getBattery()
 		console.error(e)
 	})*/
 
-window.on('offline', function(){
-	notify("Whoops! You've lost internet connection.", new Promise(function(resolve){
-		window.on('online', resolve)
-	}))
-})
+function checkOnlineStatus(){
+	if(!navigator.onLine){
+		notify("Whoops! You've lost internet connection.", new Promise(function(resolve){
+			window.once('online', resolve)
+		}))
+	}
+}
+checkOnlineStatus()
+window.on('offline', checkOnlineStatus)
 
 
 
