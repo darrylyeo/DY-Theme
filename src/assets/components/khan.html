@@ -14,6 +14,21 @@
 		:host > * + * {
 			margin-top: 0.5em;
 		}
+
+		:host(:not(.load)) #title:before {
+			content: 'Loading...';
+			animation: Loading 2s infinite linear;
+		}
+		@keyframes Loading {
+			from { content: 'Loading....'; }
+			25% { content: 'Loading.'; }
+			50% { content: 'Loading..'; }
+			75% { content: 'Loading...'; }
+		}
+		:host(:not(.load)) dy-khan-stats, :host(:not(.load)) dy-buttons {
+			display: none;
+			transform: scale(0);
+		}
 		
 		#project {
 			background-color: rgba(0, 0, 0, 0.02);
