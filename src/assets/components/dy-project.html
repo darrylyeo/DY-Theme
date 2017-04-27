@@ -163,14 +163,15 @@
 
 			transform: rotateX(var(--tilt-neg));
 			transform-origin: bottom;
+			transform-style: preserve-3d;
 
 			transition: transform var(--transition), opacity var(--transition);
 		}
-		:host(:hover) #title-wrapper {
-			transform: none;
-		}
 		:host(.focused) #title-wrapper {
 			font-size: 0.9em;
+		}
+		#title-wrapper > * {
+			transform: translateZ(5px);
 		}
 		#title-wrapper h2 {
 			color: rgba(0, 0, 0, 0.85);
