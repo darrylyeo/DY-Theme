@@ -129,7 +129,6 @@ img {
 	display: block;
 	max-width: 100%;
 	margin: 0 auto;
-	vertical-align: middle;
 }
 main img, :host img {
 	background-color: rgba(0, 0, 0, 0.05);
