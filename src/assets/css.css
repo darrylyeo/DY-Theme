@@ -189,35 +189,68 @@ hr {
 }*/
 
 a {
+	--color: var(--accent-1-dark);
+	color: var(--color);
+
 	border-radius: 1px;
-	color: var(--accent-1-dark);
 	text-decoration: none;
 	text-shadow: var(--shadow-dark-0);
-	transition: var(--transition-fast);
+	transition: var(--transition-fast), box-shadow var(--transition-medium);
 }
 a:hover {
 	opacity: 0.75;
 }
 
-main :visited {
-	color: var(--accent-1-rotate);
+article :visited {
+	--color: var(--accent-1-rotate);
 	
 	/* Why doesn't this work? */
 	/*filter: hue-rotate(10deg);*/
 }
 
-::selection,
-main :link:hover, main :visited:hover,
-/*a:focus, */main :link:focus, main :visited:focus {
-	background-color: var(--accent-1-half);
-	color: #fff;
+article :link:not(.style-scope), article :visited {
+	--link-underline:
+		var(--link-underline-color) 0 calc(var(--link-underline-size) * 0.2px),
+		var(--link-underline-color) 0 calc(var(--link-underline-size) * -0.4px) inset;
+	--link-underline-color: var(--color);
+	--link-underline-size: 1;
+
+	--link-highlight:
+		var(--link-highlight-color) 0 0 0 var(--link-highlight-size),
+		var(--link-highlight-color) 0 0 0 100vmax inset;
+	--link-highlight-color: transparent;
+	--link-highlight-size: 0;
+
+	box-shadow: var(--link-highlight), var(--link-underline);
+
+	/*mix-blend-mode: multiply;
+	text-shadow: #fff -2px 2px, #fff -1px 2px, #fff 0 2px, #fff 1px 2px, #fff 2px 2px;*/
+}
+
+article ::selection,
+article :link:hover, article :visited:hover,
+article :link:focus, article :visited:focus {
+	/*background-color: var(--accent-1-half);*/
+	--color: #fff;
 	text-shadow: var(--shadow-dark-1);
 }
-main :link:hover, main :visited:hover,
-main :link:focus, main :visited:focus {
-	background-color: var(--accent-1-half);
-	box-shadow: /*var(--accent-1-half) 0 0 0, var(--accent-1-half) 0 0 0,*/ var(--accent-1-half) 0 0 0 0.2em;
+article :link:hover, article :visited:hover,
+article :link:focus, article :visited:focus {
+	/*--link-underline-size: 0;*/
+
+	--link-highlight-color: var(--accent-1);
+	--link-highlight-size: 0.2em;
 }
+
+/* -- Text underline skip technique - requires background on main container -- */
+/*main {
+	background: linear-gradient(var(--main-background-color), var(--main-background-color)), var(--page-background);
+}
+main a:link {
+	mix-blend-mode: multiply;
+	text-shadow: #fff -2px 2px, #fff -1px 2px, #fff 0 2px, #fff 1px 2px, #fff 2px 2px;
+}
+/* -- End -- */
 
 
 
