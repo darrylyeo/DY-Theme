@@ -13,7 +13,7 @@ main > aside, dy-sidebar {
 	overflow-y: auto;
 }
 
-@media (max-width: 36rem) {
+@media (max-width: 60rem) {
 	main > aside, dy-sidebar {
 		margin: 0;
 		margin-top: 2em;

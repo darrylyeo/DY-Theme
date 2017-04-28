@@ -5,7 +5,7 @@ article {
 	text-align: justify;
 	padding: var(--padding);
 }
-@media (min-width: 36rem) {
+@media (min-width: 60rem) {
 	article {
 		margin-right: var(--padding-neg);
 	}
