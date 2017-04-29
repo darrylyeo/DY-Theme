@@ -1,8 +1,9 @@
 article {
 	flex: 1;
 	max-width: 100%;
-	text-align: justify;
 	padding: var(--padding);
+
+	text-align: justify;
 }
 @media (min-width: 60rem) {
 	article {
