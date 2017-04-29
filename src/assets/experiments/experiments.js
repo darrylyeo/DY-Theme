@@ -131,7 +131,7 @@ class DYExperiment {
 		return `${WP.parentTheme}/assets/experiments/${this.handle}.css`
 	}
 	get isActive(){
-		return DY.data.experiments[this.handle]
+		return !!DY.data.experiments[this.handle]
 	}
 }
 
