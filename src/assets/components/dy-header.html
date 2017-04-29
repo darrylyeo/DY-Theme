@@ -153,14 +153,7 @@ class DYHeader extends DYElement {
 		const $mainMenu = this.$mainMenu
 		const $secondaryMenu = this.$secondaryMenu
 
-		/*window.on('scroll', (e => {
-			this.$header.classList[window.scrollY > $('#secondary-menu').clientBottom ? 'add' : 'remove']('sticky')
-		}).throttle(10))*/
-
 		window.on('scroll resize pageload', (e => {
-			//X($header.computedStyle, $header.computedStyle['--main-menu-sticky-height'], parseInt($header.computedStyle['--main-menu-sticky-height']))
-
-			//$header.toggleClass($header.top <= 0, 'sticky')
 			//$header.animateStyleChange(function(){
 				const isSticky = this.isSticky
 				$header.toggleClass(isSticky, 'sticky')
