@@ -1,6 +1,6 @@
 <?php
 add_action('the_content', function($content){
-    if(!empty($content)) return $content;
+	if(!empty($content)) return $content;
     ob_start();
     ?>
     <section>
