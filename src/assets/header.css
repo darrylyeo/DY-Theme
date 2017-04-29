@@ -103,11 +103,9 @@
 }*/
 
 #logo {
-	margin-right: auto;
 	padding: 0 var(--padding);
-	height: 100%;
 	transition: height var(--transition-slow);
-	will-change: transform;
+	order: 1;
 }
 #header.full:not(.sticky) #logo {
 	margin-right: 0;
@@ -122,10 +120,9 @@
 	max-height: 7rem;
 }
 #logo svg {
-	margin: auto;
 	width: auto;
 	max-width: 100%;
-	height: 52.5%;
+	height: 100%;
 	transform: perspective(500px) translate(0); /* adding translate(0) ensures height is updated after transitioning from sticky #header to non sticky #header */
 	transform-origin: left;
 	transition: var(--transition-slow) var(--ease-in-out-back);
