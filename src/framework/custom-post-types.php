@@ -142,38 +142,38 @@ add_action('init', function(){
 
 
 /*function wpse_remove_cpt_slug( $post_link, $post, $leavename ) {
-    // leave these CPT alone
-    $whitelist = array ('project');
+	// leave these CPT alone
+	$whitelist = array ('project');
 
-    if ( ! in_array( $post->post_type, $whitelist ) || 'publish' != $post->post_status )
-        return $post_link;
+	if ( ! in_array( $post->post_type, $whitelist ) || 'publish' != $post->post_status )
+		return $post_link;
 
-    if( isset($GLOBALS['wp_post_types'][$post->post_type],
-             $GLOBALS['wp_post_types'][$post->post_type]->rewrite['slug'])){
-        $slug = $GLOBALS['wp_post_types'][$post->post_type]->rewrite['slug'];
-    } else {
-        $slug = $post->post_type;
-    }
+	if( isset($GLOBALS['wp_post_types'][$post->post_type],
+			 $GLOBALS['wp_post_types'][$post->post_type]->rewrite['slug'])){
+		$slug = $GLOBALS['wp_post_types'][$post->post_type]->rewrite['slug'];
+	} else {
+		$slug = $post->post_type;
+	}
 
-    // remove post slug from url
-    $post_link = str_replace( '/' . $slug  . '/', '/', $post_link );
+	// remove post slug from url
+	$post_link = str_replace( '/' . $slug  . '/', '/', $post_link );
 
-    return $post_link;
+	return $post_link;
 }
 add_filter( 'post_type_link', 'wpse_remove_cpt_slug', 10, 3 );
 add_filter( 'post_link', 'wpse_remove_cpt_slug', 10, 3 );
 
 add_action( 'pre_get_posts', function( $query ) {
-    // Only noop the main query
-    if ( ! $query->is_main_query() )
-        return;
+	// Only noop the main query
+	if ( ! $query->is_main_query() )
+		return;
 
-    // Only noop our very specific rewrite rule match
-    if ( 2 != count( $query->query )
-         || ! isset( $query->query['page'] ) )
-        return;
+	// Only noop our very specific rewrite rule match
+	if ( 2 != count( $query->query )
+		 || ! isset( $query->query['page'] ) )
+		return;
 
-    // 'name' will be set if post permalinks are just post_name, otherwise the page rule will match
-    if ( ! empty( $query->query['name'] ) )
-        $query->set( 'post_type', array( 'post', 'project', 'page' ) );
+	// 'name' will be set if post permalinks are just post_name, otherwise the page rule will match
+	if ( ! empty( $query->query['name'] ) )
+		$query->set( 'post_type', array( 'post', 'project', 'page' ) );
 });*/
