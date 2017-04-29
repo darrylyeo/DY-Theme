@@ -16,10 +16,13 @@ add_action('rest_api_init', function () {
 				'and'
 			);
 			foreach ($taxonomies as $taxonomy) {
-				$data[$taxonomy] = get_terms([
+				$terms = $data[$taxonomy] = get_terms([
 					'taxonomy' => $taxonomy,
 					'hide_empty' => false
 				]);
+				foreach($terms as $term){
+					$term->link = get_term_link($term);
+				}
 			}
 			return new WP_REST_Response($data, 200);
 		}
