@@ -96,6 +96,21 @@
 		:host:not(.has-focused-project) .projects {
 			pointer-events: none;
 		}
+
+		.projects:before {
+			content: '';
+			--bg: radial-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15) 0.5rem, transparent 0.5rem);
+			background-image: var(--bg), var(--bg), var(--bg), var(--bg);
+			background-position: 0 0, 2rem 3rem, 1rem 4rem;
+			background-size: 5rem 5rem, 12.5rem 12.5rem, 8rem 8rem, 2.5rem 2.5rem;
+			background-repeat: repeat;
+			width: 100%;
+			height: 100%;
+			left: 0;
+			top: 0;
+			position: absolute;
+			transform: translateZ(calc(var(--perspective) * -1)) scale(2);
+		}
 	</style>
 	<dy-project-filters></dy-project-filters>
 	<div class="projects"></div>
