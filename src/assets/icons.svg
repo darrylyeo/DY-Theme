@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="-32 -32 64 64">
 	<symbol id="code" viewBox="-32 -32 64 64">
-		<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="6">
+		<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="6" transform="scale(0.95)">
 			<polyline points="-16,-10 -26,0 -16,10"/>
 			<polyline points="16,-10 26,0 16,10"/>
 			<polyline points="8,-16, -8,16"/>
