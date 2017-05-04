@@ -200,6 +200,9 @@ class DYHeader extends DYElement {
 	get $logo(){
 		return this.root.find('#logo')
 	}
+	get $mainMenuItems(){
+		return this.$mainMenu.findAll('ul > li')
+	}
 
 	get $experiments(){
 		return this.root.find('#experiments')
@@ -223,81 +226,16 @@ class DYHeader extends DYElement {
 		return window.scrollY >= this.stickyScrollY
 	}
 
-	showNavItems(){
-		const items = [...arguments]
+	showNavItems(...items){
+		const hasHiddenItems = items.length > 0
+		this.$mainMenu.toggleClass(hasHiddenItems, 'has-hidden-items')
 
-		const root = this.root
-		const $logo = this.$logo
-
-		const duration = 500
-
-
-		const logoStyleWithMargin = { marginRight: getComputedStyle($logo).marginRight }
-		const logoStyleWithoutMargin = { marginRight: '-1em' }
-
-		if(items.length){
-			$logo.animate([
-				logoStyleWithMargin,
-				logoStyleWithoutMargin
-			], { 
-				duration,
-				fill: 'forwards',
-				easing: 'ease-out'
-			})
-		}else{
-			$logo.animate([
-				logoStyleWithoutMargin,
-				logoStyleWithMargin
-			], { 
-				duration,
-				fill: 'forwards',
-				easing: 'ease-out'
-			})
-		}
-
-		for(const $navItem of root.findAll('#main-menu > ul > li')){
-			$navItem.css('display', '')
-
-			const showStyle = {
-				opacity: '1',
-				width: $navItem.computedStyle.width,
-				transform: 'none'
-			}
-			const hideStyle = {
-				opacity: '0',
-				width: '0',
-				transform: 'scale(0.5)'
-			}
-
-			if(!items.length || items.includes($navItem.innerText.toLowerCase().trim())){
-				$navItem.play()
-				/*$navItem.animate([
-					hideStyle,
-					showStyle
-				], { 
-					duration: 500,
-					//fill: 'forwards',
-					easing: 'ease-out'
-				})*/
-			}else{
-				$navItem.animate([
-					showStyle,
-					hideStyle
-				], { 
-					duration,
-					//fill: 'forwards',
-					easing: 'ease-out'
-				})
-				;(() => {
-					$navItem.css('display', 'none')
-				}).delay(duration)
-				/*$navItem.once({
-					animationend(){
-						X(this, 'end')
-						this.css('display', 'none')
-					}
-				})*/
-			}
+		for(const $navItem of this.$mainMenuItems){
+			const show = items.includes($navItem.innerText.toLowerCase().trim())
+			$navItem.toggleClass(hasHiddenItems && !show, 'hide')
+			
+			const $a = $navItem.find('a')
+			$a.toggleClass($a.href === location.href, 'current')
 		}
 	}
 }

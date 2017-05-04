@@ -156,6 +156,17 @@
 	transform: perspective(500px) rotateY(20deg);
 }
 
+#main-menu:before {
+	content: '';
+	flex: 1;
+	order: 2;
+	transition: var(--transition-slow);
+}
+#main-menu.has-hidden-items:before,
+#header.full #main-menu:before {
+	flex: 0;
+}
+
 #secondary-menu {
 	background-color: var(--accent-1);
 	color: #fff;
@@ -175,6 +186,9 @@ nav ul {
 #secondary-menu > ul {
 	width: 100%;
 }
+#main-menu > ul {
+	order: 3;
+}
 #header.sticky #main-menu > ul {
 	flex-wrap: nowrap;
 }
@@ -190,6 +204,15 @@ nav > ul > li {
 }
 #secondary-menu > ul > li + li:not(:nth-last-child(2)):before {
 	content: "●";
+	transform: scale(0.5);
+}
+#main-menu > ul > li {
+	max-width: 100%;
+	transition: var(--transition-slow);
+}
+#main-menu > ul > li.hide {
+	opacity: 0;
+	max-width: 0;
 	transform: scale(0.5);
 }
 #header.full:not(.sticky) #main-menu > ul > li {
