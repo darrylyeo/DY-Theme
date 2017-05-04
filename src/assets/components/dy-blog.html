@@ -45,13 +45,8 @@ class DYBlog extends DYElement {
 
 		const root = this.root
 		
-		Promise.all([
-			windowLoad,
-			DY.getData,
-			customElements.whenDefined('dy-project')
-		]).then(() => {
-			X(Object.values(DY.data.posts).filter(post => post.type === 'post'))
-			for(const post of Object.values(DY.data.posts).filter(post => post.type === 'post')){
+		DY.getData.then(data => {
+			for(const post of data.postsByPostType['post']){
 				const $post = $$$('dy-post')
 				$post.appendTo(root)
 				$post.data = post
