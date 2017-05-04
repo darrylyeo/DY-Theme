@@ -14,6 +14,7 @@
 	--body-font: 'Hallo Sans', Asap, Roboto, sans-serif;
 	--color: rgba(0, 0, 0, 0.66);
 	--heading-font: 'Fun Font', 'Klinic Slab', 'Slabo 13px', var(--body-font);
+	--link-color: var(--accent-1-dark);
 	
 	--site-width: 100%;
 	--site-padding: calc((100vw - var(--site-width)) / 2);
@@ -189,8 +190,7 @@ hr {
 }*/
 
 a {
-	--color: var(--accent-1-dark);
-	color: var(--color);
+	color: var(--link-color);
 
 	border-radius: 1px;
 	text-decoration: none;
@@ -202,7 +202,7 @@ a:hover {
 }
 
 article :visited {
-	--color: var(--accent-1-rotate);
+	--link-color: var(--accent-1-rotate);
 	
 	/* Why doesn't this work? */
 	/*filter: hue-rotate(10deg);*/
@@ -212,7 +212,7 @@ article :link:not(.style-scope), article :visited {
 	--link-underline:
 		var(--link-underline-color) 0 calc(var(--link-underline-size) * 0.2px),
 		var(--link-underline-color) 0 calc(var(--link-underline-size) * -0.4px) inset;
-	--link-underline-color: var(--color);
+	--link-underline-color: var(--link-color);
 	--link-underline-size: 1;
 
 	--link-highlight:
@@ -231,7 +231,7 @@ article ::selection,
 article :link:hover, article :visited:hover,
 article :link:focus, article :visited:focus {
 	/*background-color: var(--accent-1-half);*/
-	--color: #fff;
+	--link-color: #fff;
 	text-shadow: var(--shadow-dark-1);
 }
 article :link:hover, article :visited:hover,
