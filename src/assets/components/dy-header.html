@@ -151,37 +151,13 @@ class DYHeader extends DYElement {
 	connectedCallback(){
 		const root = this.root
 
-		const $header = this.$header
-		const $mainMenu = this.$mainMenu
-		const $secondaryMenu = this.$secondaryMenu
-
-		window.on('scroll resize pageload', (e => {
-			//$header.animateStyleChange(function(){
-				const isSticky = this.isSticky
-				$header.toggleClass(isSticky, 'sticky')
-
-				if(this.isFull && !isSticky)
-					$header.css('--main-menu-height', window.innerHeight - window.scrollY + 'px')
-				else
-					$header.css('--main-menu-height', '')
-			//})
-		}).throttle())
-
-
 		window.on('pagerender', () => {
-			$header.toggleClass(WP.queryType === 'front-page', 'full', 'immersive')
-			$secondaryMenu.toggleClass(WP.queryType === 'front-page', 'immersive')
-
-			if(WP.queryType === 'front-page'){
-				this.showNavItems()
-			}else if(WP.queryType === 'single' && WP.postType === 'project'){
-				this.showNavItems(...WP.current.categories.map(id => WP.data.termsByID[id].slug))
-			}else if(WP.queryType === 'single' && WP.postType === 'post'){
-				this.showNavItems('blog')
-			}else{
-				this.showNavItems()
-			}
+			this.update()
 		})
+
+		window.on('scroll resize pageload', (() => {
+			this.updateStickyStatus()
+		}).throttle())
 
 		root.find('li.has-sub-menu').hover(function(){
 			$body.addClass('sub-menu-open')
@@ -190,6 +166,47 @@ class DYHeader extends DYElement {
 			$body.removeClass('sub-menu-open')
 			this.closest('nav').removeClass('sub-menu-open')
 		})
+	}
+
+	update(){
+		this.$header.toggleClass(WP.queryType === 'front-page', 'full', 'immersive')
+		this.$secondaryMenu.toggleClass(WP.queryType === 'front-page', 'immersive')
+
+		if(WP.queryType === 'front-page'){
+			this.showNavItems()
+		}else if(WP.queryType === 'single' && WP.postType === 'project'){
+			this.showNavItems(...WP.current.categories.map(id => WP.data.termsByID[id].slug))
+		}else if(WP.queryType === 'single' && WP.postType === 'post'){
+			this.showNavItems('blog')
+		}else{
+			this.showNavItems()
+		}
+	}
+
+	showNavItems(...items){
+		const hasHiddenItems = items.length > 0
+		this.$mainMenu.toggleClass(hasHiddenItems, 'has-hidden-items')
+
+		for(const $navItem of this.$mainMenuItems){
+			const show = items.includes($navItem.innerText.toLowerCase().trim())
+			$navItem.toggleClass(hasHiddenItems && !show, 'hide')
+			
+			const $a = $navItem.find('a')
+			$a.toggleClass($a.href === location.href, 'current')
+		}
+	}
+	
+	updateStickyStatus(){
+		const isSticky = this.window.scrollY >= this.stickyScrollY
+
+		const $header = this.$header
+		$header.toggleClass(isSticky, 'sticky')
+
+		if(this.isFull && !isSticky){
+			$header.css('--main-menu-height', window.innerHeight - window.scrollY + 'px')
+		}else{
+			$header.css('--main-menu-height', '')
+		}
 	}
 
 	get $header(){
@@ -225,22 +242,6 @@ class DYHeader extends DYElement {
 
 	get isFull(){
 		return this.$header.hasClass('full')
-	}
-	get isSticky(){
-		return window.scrollY >= this.stickyScrollY
-	}
-
-	showNavItems(...items){
-		const hasHiddenItems = items.length > 0
-		this.$mainMenu.toggleClass(hasHiddenItems, 'has-hidden-items')
-
-		for(const $navItem of this.$mainMenuItems){
-			const show = items.includes($navItem.innerText.toLowerCase().trim())
-			$navItem.toggleClass(hasHiddenItems && !show, 'hide')
-			
-			const $a = $navItem.find('a')
-			$a.toggleClass($a.href === location.href, 'current')
-		}
 	}
 }
 customElements.define('dy-header', DYHeader, {
