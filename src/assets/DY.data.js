@@ -4,54 +4,36 @@ DY.mapTaxonomyName = function(taxonomyName){
 	return taxonomyName
 }
 
-DY.addObject = function(object){
-	if(object.link){
-		DY.data.objects[URL.pathName(object.link)] = object
-	}else{
-		//X(object)
+DY.getData = new Promise((resolve, reject) => {
+	if(DY.data.objects){
+		resolve(DY.data.objects)
+		return
 	}
-}
 
-DY.getData = Promise.race([
-	new Promise(function(resolve){
-		if(DY.data.objects && DY.data.posts && DY.data.taxonomies && DY.data.terms)
-			resolve()
+	function assignType(objects, objectType){
+		for(const object of objects){
+			object.objectType = objectType
+		}
+		return objects
+	}
 
-		if(!DY.data.objects) DY.data.objects = {}
-		if(!DY.data.posts) DY.data.posts = {}
-		if(!DY.data.taxonomies) DY.data.taxonomies = {}
-		if(!DY.data.terms) DY.data.terms = {}
-	}),
 	Promise.all([
 		//./wp-json/wp/v2/pages?filter[page-category]=project
-		getJSON('./wp-json/wp/v2/pages?per_page=100').then(data => {
-			for(const post of data){
-				DY.data.posts[post.id] = post
-				DY.addObject(post)
-			}
-		}),
-		getJSON('./wp-json/wp/v2/posts?per_page=100&post_status=published').then(data => {
-			for(const post of data){
-				DY.data.posts[post.id] = post
-				DY.addObject(post)
-			}
-		}),
-		getJSON('./wp-json/wp/v2/taxonomies').then(data => {
-			DY.data.taxonomies = data
-			for(const taxonomy of Object.values(data)){
-				DY.addObject(taxonomy)
-			}
-		}),
-		getJSON('./wp-json/wp/v2/terms').then(data => {
-			//DY.data.terms = data
-			for(const taxonomyName in data){
-				const terms = data[taxonomyName]
-				for(const term of terms){
-					DY.data.terms[term.term_id] = term
-					DY.addObject(term)
-				}
-			}
-		}),
+		getJSON('./wp-json/wp/v2/pages?per_page=100').then(
+			pages => assignType(pages, 'post')
+		),
+		getJSON('./wp-json/wp/v2/posts?per_page=100&post_status=published').then(
+			posts => assignType(posts, 'post')
+		),
+		getJSON('./wp-json/wp/v2/taxonomies').then(
+			taxonomies => assignType(Object.values(taxonomies), 'taxonomy')
+		),
+		getJSON('./wp-json/wp/v2/terms').then(
+			termsByTaxonomy => assignType(
+				[].concat(...Object.values(termsByTaxonomy)),
+				'term'
+			)
+		),
 		/*getJSON('./wp-json/wp/v2/users/me', {
 			headers: {
 				'X-WP-Nonce': WP.nonce
@@ -70,17 +52,59 @@ DY.getData = Promise.race([
 			DY.user = data
 		})*/
 	])
-])
+	.then(objects => resolve([].concat(...objects)))
+	.catch(reject)
+}).then(objects => {
+	const objectsByType = {
+		'post': [],
+		'taxonomy': [],
+		'term': []
+	}
+	const objectsByURL = {}
+	
+	for(const object of objects){
+		objectsByType[object.objectType].push(object)
+		if(object.link){
+			objectsByURL[URL.pathName(object.link)] = object
+		}
+	}
 
-DY.getData.then(() => {
-	DY.PROJECT_CATEGORY = Object.values(DY.data.terms)
-		.find(term =>
-			term.taxonomy === 'page-category' && term.slug === 'project'
-		)
-	DY.projects = Object.values(DY.data.posts)
-		.filter(post =>
-			post['page-category'] && post['page-category'].includes(DY.PROJECT_CATEGORY.term_id)
-		)
+
+	const termsByID = {}
+	let PROJECT_CATEGORY_ID
+
+	for(const term of objectsByType['term']){
+		termsByID[term.term_id] = term
+		if(term.taxonomy === 'page-category' && term.slug === 'project'){
+			PROJECT_CATEGORY_ID = term.term_id
+		}
+	}
+
+
+	const postsByPostType = {
+		'page': [],
+		'post': [],
+		'project': []
+	}
+
+	for(const post of objectsByType['post']){
+		const type = post.terms.includes(PROJECT_CATEGORY_ID) ? 'project' : post.type
+		postsByPostType[type].push(post)
+	}
+
+
+	DY.data.objects = objects
+
+	WP.data = {
+		objects,
+		objectsByType,
+		objectsByURL,
+		termsByID,
+		postsByPostType,
+		PROJECT_CATEGORY_ID
+	}
+
+	return WP.data
 })
 
 
