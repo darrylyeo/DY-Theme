@@ -108,6 +108,9 @@ class DYPage extends DYElement {
 			'single post': () => `
 				<article>
 					<h1>${data.title.rendered}</h1>
+					${data.featuredImage ? `
+						<img slot="thumbnail" src="${data.featuredImage.source_url}">
+					` : ''}
 					${data.content.rendered}
 					${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
 				</article>
