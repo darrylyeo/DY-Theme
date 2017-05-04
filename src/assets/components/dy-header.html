@@ -155,9 +155,11 @@ class DYHeader extends DYElement {
 			this.update()
 		})
 
-		window.on('scroll resize pageload', (() => {
-			this.updateStickyStatus()
-		}).throttle())
+		window.once('pagerender', () => {
+			window.on('scroll resize', (() =>
+				this.updateStickyStatus()
+			).throttle())
+		})
 
 		root.find('li.has-sub-menu').hover(function(){
 			$body.addClass('sub-menu-open')
