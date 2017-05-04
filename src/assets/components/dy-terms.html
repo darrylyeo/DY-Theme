@@ -54,8 +54,8 @@ class DYTerms extends DYElement {
 
 		const $termToTerm = this.$termToTerm = new WeakMap()
 		
-		DY.getData.then(() => {
-			const terms = Object.values(DY.data.terms)
+		DY.getData.then(data => {
+			const terms = data.objectsByType['term']
 				.filter(term =>
 					(termIDs.length === 0 || termIDs.includes(term.term_id)) &&
 					!excludeTerms.includes(term.slug) &&
@@ -63,7 +63,7 @@ class DYTerms extends DYElement {
 				)
 				.sort((term1, term2) => term2.count - term1.count)
 
-			const taxonomies = Object.values(DY.data.taxonomies)
+			const taxonomies = data.objectsByType['taxonomy']
 				.filter(taxonomy =>
 					!excludeTaxonomies.includes(taxonomy.slug) &&
 					terms.some(term => term.taxonomy === taxonomy.slug)
