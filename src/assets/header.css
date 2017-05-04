@@ -112,6 +112,7 @@
 }*/
 
 #logo {
+	height: 100%;
 	padding: 0 var(--padding);
 	transition: height var(--transition-slow);
 	order: 1;
