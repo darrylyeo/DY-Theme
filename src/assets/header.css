@@ -11,6 +11,11 @@
 	}
 }
 
+:host {
+	/* Inherit link color from regular color property */
+	--link-color: initial;
+}
+
 #header {
 	/* used to get computed pixel value in JavaScript: */ flex-basis: var(--main-menu-sticky-height);
 
@@ -23,11 +28,16 @@
 
 	/*position: sticky;
 	top: 0;*/
+
+	--color: rgba(0,0,0,0.75);
 }
 #header.full {
 	height: calc(100vh - var(--secondary-menu-height));
 	--main-menu-height: 100vh;
 	/*box-shadow: rgba(0, 0, 0, 0.5) 0 0 0 100vmax, rgba(0, 0, 0, 0.5) 0 0 0 100vmax inset;*/
+}
+#header.full:not(.sticky) {
+	color: rgba(255, 255, 255, 0.95);
 }
 #header.sticky {
 	--main-menu-height: var(--main-menu-sticky-height);
@@ -41,7 +51,6 @@
 	/*background: rgba(255, 255, 255, 0.95) url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 13"><g opacity=".4"><rect width="18" height="3" rx="1"/><rect y="5" width="18" height="3" rx="1"/><rect y="10" width="18" height="3" rx="1"/></g></svg>') 200% center/7.5% 25% no-repeat;*/
 	background-color: rgba(255, 255, 255, 0.95);
 	box-shadow: rgba(0,0,0,0.1) 0 -1px inset;
-	color: rgba(0,0,0,0.75);
 
 	flex: 0 auto;
 	justify-content: center;
@@ -201,7 +210,6 @@ nav > ul > li {
 }
 
 nav ul > li > a {
-	color: inherit;
 	width: 100%;
 }
 #main-menu > ul > li > a {
@@ -226,7 +234,6 @@ nav ul > li > a {
 	font-size: 0.9em;
 }
 #header.full:not(.sticky) #main-menu > ul > li > a {
-	color: rgba(255, 255, 255, 0.95);
 	/*font-size: 2.5rem;*/
 	line-height: 3;
 }
