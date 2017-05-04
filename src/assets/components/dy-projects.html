@@ -118,8 +118,8 @@ class DYProjects extends DYElement {
 			scroll: this.scrollInView.throttle().bind(this)
 		})
 
-		DY.getData.then(() => {
-			const projects = this.projects = DY.projects
+		DY.getData.then(data => {
+			let projects = this.projects = data.postsByPostType['project']
 
 			for(const project of projects){
 				const $project = $$$('dy-project')
