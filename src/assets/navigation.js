@@ -16,11 +16,11 @@ const DYNavigation = {
 		get(url).then(data => {
 			if(this.navigatingTo !== url) return
 
-			if(pushNewState) {
+			/*if(pushNewState) {
 				history.pushState({
 					whee: 9
 				}, 'bloink', url)
-			}
+			}*/
 
 			const $$document = document.createRange().createContextualFragment(data)
 
