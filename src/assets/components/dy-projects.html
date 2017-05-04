@@ -121,6 +121,13 @@ class DYProjects extends DYElement {
 		DY.getData.then(data => {
 			let projects = this.projects = data.postsByPostType['project']
 
+			const filterCategoryID = +this.attr('category')
+			if(filterCategoryID){
+				projects = projects.filter(project =>
+					project.terms.includes(filterCategoryID)
+				)
+			}
+
 			for(const project of projects){
 				const $project = $$$('dy-project')
 					.on({
