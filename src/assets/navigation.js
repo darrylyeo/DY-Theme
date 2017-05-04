@@ -75,43 +75,38 @@ const DYNavigation = {
 
 
 	onPageLoad(){
-		DY.getData.then(() => {
+		DY.getData.then(data => {
 			const currentURL = window.location.pathname
 			const siteURL = URL.pathName(WP.siteURL)
 
-			WP.current = DY.data.objects[currentURL]
+			WP.current = data.objectsByURL[currentURL]
 			WP.queryType = ''
 			WP.postType = ''
 
 			if(WP.current === undefined){
 				WP.queryType = '404'
 			}
-			
+
 			else if(currentURL.replace(/\/$/, '') === siteURL.replace(/\/$/, '')){
 				WP.queryType = 'front-page'
 				//WP.queryType = 'archive'
 				//WP.postType = 'project'
 			}
 
-			// Temporary
-			else if(currentURL.includes('category')){
-				WP.queryType = 'archive'
-
-				if(WP.postType === 'project'){
-					data = DY.data.objects[siteURL]
-				}
+			else if(WP.current.objectType === 'term'){
+				WP.queryType = 'term-archive'
 			}
-
-			// Also temporary
+			
+			// Temporary
 			else if(WP.current.slug === 'blog'){
 				WP.queryType = 'archive'
 				WP.postType = 'post'
 			}
 
-			else {
+			else if(WP.current.objectType === 'post'){
 				WP.queryType = 'single'
 
-				if(WP.current.terms.includes(DY.PROJECT_CATEGORY.term_id)){
+				if(WP.current.terms.includes(data.PROJECT_CATEGORY_ID)){
 					WP.postType = 'project'
 				}else{
 					WP.postType = WP.current.type
