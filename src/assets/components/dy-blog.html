@@ -3,10 +3,10 @@
 <template id="dy-blog">
 	<style>
 		:host {
-			padding: var(--padding);
+			margin: 0;
 		}
-		dy-post + dy-post {
-			margin-top: 1em;
+		dy-post {
+			padding: 0 var(--padding);
 		}
 	</style>
 </template>
@@ -17,23 +17,81 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: stretch;
+			overflow: hidden;
+			position: relative;
+			min-height: 10rem;
+			max-height: 21rem;
 		}
-		div {
+
+		#background {
+			background-attachment: fixed;
+			background-position: center;
+			position: absolute;
+			left: 0;
+			top: 0;
+
+			opacity: 0.9;
+			filter: blur(1rem);
+
+			transform: scale(1.1);
+			z-index: -1;
+		}
+
+		#featured-image-wrapper, #outer-wrapper {
 			flex-direction: column;
+			overflow-y: scroll;
+			padding: var(--padding) 0;
 		}
+
 		#featured-image-wrapper {
-			max-width: 50%;
+			flex: 0 20rem;
+			margin-right: var(--padding);
+		}
+		:host(.no-featured-image) #featured-image-wrapper {
+			display: none;
+		}
+		
+		#featured-image-wrapper > *, #inner-wrapper {
+			margin: auto 0;
+		}
+
+		#outer-wrapper {
+			flex: 1;
+		}
+		:host(.no-featured-image) #outer-wrapper {
+			text-align: center;
 		}
 		#inner-wrapper {
-			margin-left: 1em;
+			display: block;
+			background-color: rgba(255, 255, 255, 0.3);
+			padding: var(--padding-small);
+			border-radius: 0.5rem;
+		}
+
+		@media (max-width: 50rem) {
+			:host {
+				display: block;
+				max-height: none;
+				text-align: center;
+			}
+			#featured-image-wrapper {
+				margin-right: 0;
+				padding-bottom: 0;
+				max-height: 50vh;
+			}
 		}
 	</style>
-	<a class="link" id="featured-image-wrapper"><img id="featured-image"></a>
-	<div id="inner-wrapper">
-		<dy-date id="modified-date"></dy-date>
-		<a class="link"><h2 id="title"></h2></a>
-		<blockquote id="excerpt"></blockquote>
-		<p><a class="link button">Read More</a></p>
+	<div id="background"></div>
+	<div id="featured-image-wrapper">
+		<a class="link"><img id="featured-image"></a>
+	</div>
+	<div id="outer-wrapper">
+		<div id="inner-wrapper">
+			<dy-date id="modified-date"></dy-date>
+			<a class="link"><h2 id="title"></h2></a>
+			<blockquote id="excerpt"></blockquote>
+			<p><a class="link"><dy-button theme="accented heavy 3D">Read More</dy-button></a></p>
+		</div>
 	</div>
 </template>
 
@@ -66,13 +124,15 @@ class DYPost extends DYElement {
 			'#excerpt': data.excerpt.rendered
 		})
 		if(data.featuredImage){
-			//root.css('backgroundImage', `url(${data.featuredImage.source_url})`)
 			root.updateWithModel({
 				'img[src]': data.featuredImage.source_url,
-				'img[alt]': data.featuredImage.alt_text
+				'img[alt]': data.featuredImage.alt_text,
+				'#background[style]': {
+					'background-image': `url(${data.featuredImage.source_url})`
+				}
 			})
 		}else{
-			//root.addClass('no-featured-image')
+			this.addClass('no-featured-image')
 		}
 	}
 }
