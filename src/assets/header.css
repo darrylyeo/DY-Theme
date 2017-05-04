@@ -247,11 +247,17 @@ nav ul > li > a {
 	align-items: center;
 	transition: var(--transition-fast), font-size var(--transition-slow), transform var(--transition-medium) 0.05s var(--ease-in-out-back);
 }
-#main-menu ul > li > a:hover {
-	/*color: var(--accent-1);*/
+#main-menu ul > li > a:hover,
+#main-menu ul > li > a:focus,
+#main-menu ul > li > a.current {
 	opacity: 1;
 	text-shadow: rgba(0, 0, 0, 0.1) 0 0 0.1em;
 	transform: scale(1.15);
+}
+#main-menu ul > li > a.current {
+	font-weight: bold;
+	/*--link-color: #000;
+	mix-blend-mode: color-burn;*/
 }
 #header.sticky #main-menu > ul > li > a {
 	font-size: 0.9em;
@@ -281,11 +287,16 @@ nav ul > li > dy-icon {
 	top: 0;
 	z-index: -1;
 }
-nav ul > li > a:hover + dy-icon {
+nav ul > li > a:hover + dy-icon,
+nav ul > li > a:focus + dy-icon,
+nav ul > li > a.current + dy-icon {
 	opacity: 0.8;
 	transform: scale(1.2);
 }
-nav ul > li > a:not(:hover) + dy-icon {
+nav ul > li > a.current + dy-icon {
+	filter: drop-shadow(0 0 1.5em);
+}
+nav ul > li > a:not(:hover):not(.current) + dy-icon {
 	opacity: 0.1;
 	color: #000;
 }
