@@ -82,6 +82,10 @@ class DYPage extends DYElement {
 				<link rel="import" href="./wp-content/themes/DY/assets/components/dy-projects.html">
 				<dy-projects class="alternate-layout"></dy-projects>
 			`,
+			'term-archive': () => `
+				<link rel="import" href="./wp-content/themes/DY/assets/components/dy-projects.html">
+				<dy-projects class="alternate-layout" category=${data.term_id}></dy-projects>
+			`,
 			'archive post': () => `
 				<link rel="import" href="./wp-content/themes/DY/assets/components/dy-blog.html">
 				<dy-blog></dy-blog>
