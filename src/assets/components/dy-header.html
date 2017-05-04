@@ -199,7 +199,7 @@ class DYHeader extends DYElement {
 	}
 	
 	updateStickyStatus(){
-		const isSticky = this.window.scrollY >= this.stickyScrollY
+		const isSticky = window.scrollY >= this.stickyScrollY
 
 		const $header = this.$header
 		$header.toggleClass(isSticky, 'sticky')
