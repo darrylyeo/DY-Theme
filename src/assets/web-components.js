@@ -41,8 +41,8 @@ const DYElement = class extends HTMLElement {
 	}
 
 	static get $template(){
-		const name = customElements.getName(this)
-		const $template = $(`template#${name}`)
+		const tagName = customElements.getName(this)
+		const $template = $(`template#${tagName}`)
 
 		if(USING_SHADY_CSS){
 			ShadyCSS.prepareTemplate($template, tagName)
