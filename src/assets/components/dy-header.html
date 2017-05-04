@@ -174,8 +174,12 @@ class DYHeader extends DYElement {
 
 			if(WP.queryType === 'front-page'){
 				this.showNavItems()
-			}else if(WP.queryType === 'archive'){
-				this.showNavItems(location.href.split('/').pop())
+			}else if(WP.queryType === 'single' && WP.postType === 'project'){
+				this.showNavItems(...WP.current.categories.map(id => WP.data.termsByID[id].slug))
+			}else if(WP.queryType === 'single' && WP.postType === 'post'){
+				this.showNavItems('blog')
+			}else{
+				this.showNavItems()
 			}
 		})
 
