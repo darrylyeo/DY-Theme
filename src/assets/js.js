@@ -726,20 +726,63 @@ Element.prototype.animatePositionChange = function(callback, duration = 500){
 }
 
 // For anything with addEventListener()
-EventTarget.prototype.on = function(eventNames, callback, optionsOrUseCapture){
+EventTarget.prototype.on = function(eventNames, callback, options = {}){
 	if(typeof eventNames === 'object'){
 		for(const eventName in eventNames){
-			this.on(eventName, eventNames[eventName], optionsOrUseCapture)
+			this.on(eventName, eventNames[eventName], options)
 		}
 	}else{
-		//for(const eventName of [...eventNames])){
-		for(const eventName of resolveArgumentAsArray(eventNames)){
+		if(typeof callback === 'object'){
+			const _callback = callback
+			callback = function(){
+				_callback.handleEvent.apply(this, arguments)
+			}
+		}
+		if(callback === undefined) console.trace()
+
+		if(typeof options === 'boolean'){
+			options = {capture: false}
+		}
+
+		for(const eventNameWithModifiers of resolveArgumentAsArray(eventNames)){
+			const [eventName, ...modifiers] = eventNameWithModifiers.split('.')
+
+			for(const option of ['once', 'capture', 'passive']){
+				if(modifiers.includes(option)){
+					options[option] = true
+				}
+			}
+
+			//const runOnce = modifiers.includes('once')
+			//const useCapture = modifiers.includes('capture')
+			const checkIfIsEventTarget = modifiers.includes('self')
+			const preventDefault = modifiers.includes('prevent')
+			const stopPropagation = modifiers.includes('stop')
+			const throttle = modifiers.includes('throttle')
+
+			const _callback = callback
+			if(checkIfIsEventTarget || preventDefault || stopPropagation){
+				callback = function(e){
+					if(checkIfIsEventTarget && e.target !== this) return
+
+					_callback.apply(this, arguments)
+
+					//if(runOnce) e.target.removeEventListener(e.type, callback)
+					if(preventDefault) e.preventDefault()
+					if(stopPropagation) e.stopPropagation()
+				}
+			}
+			if(throttle){
+				callback = callback.throttle()
+			}
+
 			if(eventName === 'scroll' && this === document.body){
-				window.addEventListener(eventName, callback, optionsOrUseCapture)
+				window.addEventListener(eventName, callback, options)
 				continue
 			}
-			if(typeof callback === 'function')
-				this.addEventListener(eventName, callback, optionsOrUseCapture)
+			if(typeof callback === 'function'){
+				this.addEventListener(eventName, callback, options)
+			}
 		}
 	}
 	return this
