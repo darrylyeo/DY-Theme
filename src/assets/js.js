@@ -806,23 +806,14 @@ EventTarget.prototype.off = function(eventName, callback){
 	return this
 }
 EventTarget.prototype.once = function(eventNames, callback, onlyFireOnThisElement){
-	const _this = this
 	if(typeof eventNames === 'object'){
 		for(const eventName in eventNames){
-			this.addEventListener(eventName, function(e){
-				if(onlyFireOnThisElement && e.target !== _this) return
-				eventNames[eventName].apply(this, arguments)
-				e.target.removeEventListener(e.type, arguments.callee)
-			})
+			this.once(eventName, eventNames[eventName], onlyFireOnThisElement)
 		}
 	}else{
-		//for(const eventName of [...eventNames])){
+		const modifier = '.once' + (onlyFireOnThisElement ? '.self' : '')
 		for(const eventName of resolveArgumentAsArray(eventNames)){
-			this.addEventListener(eventName, function(e){
-				if(onlyFireOnThisElement && e.target !== _this) return
-				callback.apply(this, arguments)
-				e.target.removeEventListener(e.type, arguments.callee)
-			})
+			this.on(eventName + modifier, callback)
 		}
 	}
 	return this
