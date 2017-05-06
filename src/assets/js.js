@@ -791,12 +791,7 @@ EventTarget.prototype.off = function(eventName, callback){
 	if(typeof eventNames === 'object'){
 		for(const eventName in eventNames){
 			const callback = eventNames[eventName]
-			if(eventName === 'scroll' && this === document.body){
-				window.removeEventListener(eventName, callback)
-				continue
-			}
-			if(typeof callback === 'function')
-				this.removeEventListener(eventName, callback)
+			this.off(eventName, callback)
 		}
 	}else{
 		for(const eventName of resolveArgumentAsArray(eventNames)){
