@@ -171,8 +171,12 @@ class DYHeader extends DYElement {
 	}
 
 	update(){
-		this.$header.toggleClass(WP.queryType === 'front-page', 'full', 'immersive')
-		this.$secondaryMenu.toggleClass(WP.queryType === 'front-page', 'immersive')
+		this.$header
+			.toggleClass(this.isFullHeight, 'full-height')
+			.toggleClass(this.isImmersive, 'immersive')
+		
+		this.$secondaryMenu
+			.toggleClass(this.isImmersive, 'immersive')
 
 		if(WP.queryType === 'front-page'){
 			this.showNavItems()
@@ -199,16 +203,10 @@ class DYHeader extends DYElement {
 	}
 	
 	updateStickyStatus(){
-		const isSticky = window.scrollY >= this.stickyScrollY
-
-		const $header = this.$header
-		$header.toggleClass(isSticky, 'sticky')
-
-		if(this.isFull && !isSticky){
-			$header.css('--main-menu-height', window.innerHeight - window.scrollY + 'px')
-		}else{
-			$header.css('--main-menu-height', '')
-		}
+		this.$header
+			.toggleClass(this.isFull, 'full')
+			.toggleClass(this.isSticky, 'sticky')
+			.css('--main-menu-height', this.isFull ? window.innerHeight - window.scrollY + 'px' : '')
 	}
 
 	get $header(){
@@ -236,14 +234,23 @@ class DYHeader extends DYElement {
 		return parseInt(this.$header.computedStyle.getPropertyValue('flex-basis'))
 	}
 	get stickyScrollY(){
-		if(this.isFull)
+		if(this.isFullHeight)
 			return this.clientBottom - this.mainMenuStickyHeight
 		else
 			return this.$secondaryMenu.clientBottom
 	}
+	get isSticky(){
+		return window.scrollY >= this.stickyScrollY
+	}
 
+	get isFullHeight(){
+		return WP.queryType === 'front-page'
+	}
 	get isFull(){
-		return this.$header.hasClass('full')
+		return this.isFullHeight && !this.isSticky
+	}
+	get isImmersive(){
+		return this.isFull
 	}
 }
 customElements.define('dy-header', DYHeader, {

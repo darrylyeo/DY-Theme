@@ -31,12 +31,12 @@
 
 	--color: rgba(0,0,0,0.75);
 }
-#header.full {
+#header.full-height {
 	height: calc(100vh - var(--secondary-menu-height));
 	--main-menu-height: 100vh;
 	/*box-shadow: rgba(0, 0, 0, 0.5) 0 0 0 100vmax, rgba(0, 0, 0, 0.5) 0 0 0 100vmax inset;*/
 }
-#header.full:not(.sticky) {
+#header.full {
 	color: rgba(255, 255, 255, 0.95);
 }
 #header.sticky {
@@ -69,7 +69,7 @@
 	min-height: max-content;
 	transition: background var(--transition-slow);
 }
-#header.full:not(.sticky) #main-menu {
+#header.full #main-menu {
 	background:
 		radial-gradient(
 			at center 30%,
@@ -107,7 +107,7 @@
 	color: #fff;
 }*/
 
-/*#header.full:not(.sticky) #main-menu > * {
+/*#header.full #main-menu > * {
 	filter: drop-shadow(#fff 0 0 4rem);
 }*/
 
@@ -117,7 +117,7 @@
 	transition: height var(--transition-slow);
 	order: 1;
 }
-#header.full:not(.sticky) #logo {
+#header.full #logo {
 	margin-right: 0;
 	margin-bottom: 0.5em;
 	max-width: 90%;
@@ -140,11 +140,11 @@
 /*#header.immersive #logo img {
 	filter: brightness(20);
 }*/
-#header.full:not(.sticky) #logo {
+#header.full #logo {
 	background: radial-gradient(rgba(255, 255, 255, 0.25), transparent 50%);
 	filter: brightness(10) drop-shadow(#fff 0 0 1em);
 }
-#header.full:not(.sticky) #logo:after {
+#header.full #logo:after {
 	content: 'BE INSPIRED.';
 	font-family: var(--heading-font);
 	font-size: 0.5em;
@@ -193,7 +193,7 @@ nav ul {
 #header.sticky #main-menu > ul {
 	flex-wrap: nowrap;
 }
-#header.full:not(.sticky) #main-menu > ul {
+#header.full #main-menu > ul {
 	justify-content: center;
 }
 
@@ -216,14 +216,14 @@ nav > ul > li {
 	max-width: 0;
 	transform: scale(0.5);
 }
-#header.full:not(.sticky) #main-menu > ul > li {
+#header.full #main-menu > ul > li {
 	margin: 0 1.5vw;
 }
-#header.full:not(.sticky) #main-menu > ul > li:nth-child(-n + 3) {
+#header.full #main-menu > ul > li:nth-child(-n + 3) {
 	order: 1;
 }
 @media (min-width: 20rem) and (min-height: 26rem) {
-	#header.full:not(.sticky) #main-menu > ul:after {
+	#header.full #main-menu > ul:after {
 		content: '';
 		flex: 100%;
 		order: 2;
@@ -263,7 +263,7 @@ nav ul > li > a {
 #header.sticky #main-menu > ul > li > a {
 	font-size: 0.9em;
 }
-#header.full:not(.sticky) #main-menu > ul > li > a {
+#header.full #main-menu > ul > li > a {
 	/*font-size: 2.5rem;*/
 	line-height: 3;
 }
