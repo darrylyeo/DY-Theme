@@ -43,7 +43,7 @@ Element.prototype.fitText = function(maxFontSize = Infinity, alwaysFitToWidth = 
 		})
 	}
 	fitText.delay()
-	window.on('resize', fitText.throttle(10))
+	window.on('resize.throttle', fitText)
 }
 
 /*
