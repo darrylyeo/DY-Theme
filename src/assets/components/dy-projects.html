@@ -126,11 +126,8 @@ class DYProjects extends DYElement {
 		const $projectsWrapper = this.$projectsWrapper
 
 		$projectsWrapper.on({
-			click: e => {
-				if(e.target === $projectsWrapper)
-					this.$focusedProject = undefined
-			},
-			scroll: this.scrollInView.throttle().bind(this)
+			'click.self': () => this.$focusedProject = undefined,
+			'scroll.throttle': () => this.scrollInView()
 		})
 
 		DY.getData.then(data => {
