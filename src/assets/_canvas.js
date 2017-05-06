@@ -10,12 +10,12 @@
 		canvas.resize()
 	}.debounce(100))
 
-	window.on('mousemove', function(e){
+	window.on('mousemove.throttle', function(e){
 		mouseX = e.clientX
 		mouseY = e.clientY
 		pmouseX = mouseX
 		pmouseY = mouseY
-	}.throttle())
+	})
 	
 
 	const sin = a => Math.sin(a / Math.PI * 180)
