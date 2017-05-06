@@ -822,8 +822,12 @@ EventTarget.prototype.hover = function(on, off){
 	if(on) this.on('mouseover', on)
 	if(off) this.on('mouseout', off)
 }
-EventTarget.prototype.trigger = function(eventName){
-	this.dispatchEvent(new Event(eventName))
+EventTarget.prototype.trigger = function(event){
+	if(typeof event === 'string'){
+		event = new Event(event)
+	}
+	this.dispatchEvent(event)
+	return this
 }
 
 const eventNames = Object.getOwnPropertyNames(Document.prototype).filter(p => p.startsWith('on')).map(name => name.slice(2))
