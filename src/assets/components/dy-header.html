@@ -156,9 +156,9 @@ class DYHeader extends DYElement {
 		})
 
 		window.once('pagerender', () => {
-			window.on('scroll resize', (() =>
+			window.on('scroll.throttle resize.throttle pagerender.throttle', () =>
 				this.updateStickyStatus()
-			).throttle())
+			)
 		})
 
 		root.find('li.has-sub-menu').hover(function(){
