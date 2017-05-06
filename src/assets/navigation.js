@@ -58,8 +58,9 @@ const DYNavigation = {
 			e.preventDefault()
 		}else if(this.href === '#'){
 			e.preventDefault()
-		}else if(DYNavigation.navigateTo(this.href, this.host, true))
+		}else if(DYNavigation.navigateTo(this.href, this.host, true)){
 			e.preventDefault()
+		}
 	},
 	onLinkMouseOver(){
 		const href = this.href
