@@ -116,11 +116,11 @@ const DYNavigation = {
 
 			this.processLinks( $$('a') )
 
-			window.dispatchEvent(new CustomEvent('pageload'))
+			window.trigger(new CustomEvent('pageload'))
 		})
 	},
 	onPageRender(){
-		window.dispatchEvent(new CustomEvent('pagerender'))
+		window.trigger(new CustomEvent('pagerender'))
 	}
 }
 
