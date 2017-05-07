@@ -73,7 +73,7 @@ class DYPage extends DYElement {
 
 	routeAndRender(){
 		const data = WP.current
-		const route = WP.queryType + (WP.postType ? ' ' + WP.postType : '')
+		const route = WP.route
 
 		const templates = {
 			//'archive project': () => `
