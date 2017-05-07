@@ -31,9 +31,9 @@ class DYNotifications extends DYElement {
 
 	notify(message, dismiss, type){
 		// Check if a notification already has this message.
-		const notification = [...this.$notifications].find(function($this){
-			return $this.html() == message// && $this.childNodes.length === 0
-		})
+		const notification = [...this.$notifications]
+			.find($notification => $notification.html() == message) // && $this.childNodes.length === 0
+		
 		if(notification){
 			notification.remind()
 		}else{
