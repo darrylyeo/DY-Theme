@@ -35,9 +35,9 @@ class DYNotifications extends DYElement {
 			.find($notification => $notification.html() == message) // && $this.childNodes.length === 0
 		
 		if(notification){
-			notification.remind()
+			return notification.remind()
 		}else{
-			new DYNotification()
+			return new DYNotification()
 				.html(message)
 				.attr('type', type || 'info')
 				.appendTo(this)
