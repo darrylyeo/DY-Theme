@@ -14,6 +14,11 @@
 			z-index: 1;
 			flex: 100%;
 		}
+		:host(.dark) {
+			color: rgba(255, 255, 255, 0.8);
+			-webkit-font-smoothing: antialiased;
+		}
+
 		#background, #background:before, #background * {
 			background-size: 0;
 			overflow: hidden;
@@ -51,6 +56,10 @@
 			text-shadow: 0 0 5rem #fff;
 			max-width: 100%;
 		}
+		:host(.dark) #title-wrapper {
+			color: #fff;
+			text-shadow: 0 0 5rem #000;
+		}
 		#title-wrapper h1 {
 			color: #000;
 			font-size: 3em;
@@ -73,6 +82,10 @@
 			text-align: justify;
 			max-width: 35em;
 		}
+		:host(.dark) .excerpt {
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+
 		#dates {
 			font-family: var(--heading-font);
 			font-weight: bold;
@@ -155,6 +168,8 @@ class DYProjectHeader extends DYElement {
 			'.excerpt': data.excerpt.rendered
 		})
 		//root.find('#title').fitText('7.5em')
+
+		this.toggleClass(data.meta.projectHeaderDarkMode === 'true', 'dark')
 
 		if(data.featuredImage){
 			const imageData = data.featuredImage
