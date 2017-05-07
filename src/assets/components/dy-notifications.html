@@ -166,6 +166,7 @@ class DYNotification extends DYElement {
 			.removeClass('hide')
 			.animateClass('remind')
 			.dismiss(dismiss || this.duration)
+		return this
 	}
 
 	// .dismiss(duration)
