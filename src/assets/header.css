@@ -57,7 +57,7 @@
 	width: var(--site-width);
 	height: var(--main-menu-height);
 
-	transition: var(--transition-slow);
+	transition: height var(--transition-slow), background var(--transition-slow), box-shadow var(--transition-slow);
 	z-index: 2;
 
 	/*position: sticky;
@@ -114,7 +114,6 @@
 #logo {
 	height: 100%;
 	padding: 0 var(--padding);
-	transition: height var(--transition-slow);
 	order: 1;
 }
 #header.full #logo {
@@ -161,7 +160,7 @@
 	content: '';
 	flex: 1;
 	order: 2;
-	transition: var(--transition-slow);
+	transition: flex var(--transition-slow);
 }
 #main-menu.has-hidden-items:before,
 #header.full #main-menu:before {
@@ -209,7 +208,7 @@ nav > ul > li {
 }
 #main-menu > ul > li {
 	max-width: 100%;
-	transition: var(--transition-slow);
+	transition: opacity var(--transition-slow), max-width var(--transition-slow), transform var(--transition-slow);
 }
 #main-menu > ul > li.hide {
 	opacity: 0;
