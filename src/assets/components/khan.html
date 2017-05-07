@@ -212,7 +212,7 @@ class DYKhan extends DYElement {
 		const project = KhanProject(id)
 
 		getJSON(project.scratchpad).then(data => {
-			this.classList.add('load')
+			this.addClass('load')
 			root.updateWithModel({
 				'#title': data.title,
 				'#stats [slot=votes]': data.sumVotesIncremented,
