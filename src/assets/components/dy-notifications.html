@@ -196,6 +196,12 @@ class DYNotification extends DYElement {
 	get $button(){
 		return this.root.find('dy-button')
 	}
+	setButtonText(text){
+		if(text){
+			this.$button.html(text)
+		}
+		return this
+	}
 }
 customElements.define('dy-notification', DYNotification)
 </script>
