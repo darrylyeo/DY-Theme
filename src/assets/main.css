@@ -1,3 +1,31 @@
+:root:not(.render) {
+	background: url(../logo/DY-Logo-Animated.svg) center/25vmin no-repeat fixed;
+}
+#background, #wrapper {
+	transition: 0.25s ease-out;
+}
+:root:not(.render) #background,
+:root:not(.render) #wrapper {
+	opacity: 0;
+	transform: perspective(100rem) scale(0.9) rotateX(10deg) translateY(10em);
+}
+
+/*:root.load * {
+	transition: 3s cubic-bezier(0, 1, 0, 1);
+	text-shadow: 0 0 !important;
+	-webkit-text-fill-color: transparent !important;
+}*/
+/*:root:not(.load) * {
+	-webkit-text-fill-color: transparent !important;
+	text-shadow: 0 0 2em !important;
+}*/
+/*:root:not(.load), :root:not(.load) * {
+	transform: translateZ(100px) !important;
+	transform-style: preserve-3d !important;
+}*/
+
+
+
 main {
 	--main-background-color: rgba(255, 255, 255, 0.6);
 	background-color: var(--main-background-color);
