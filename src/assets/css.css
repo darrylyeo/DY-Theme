@@ -28,10 +28,13 @@
 	--shadow-dark-0: rgba(0, 0, 0, 0.1) 0 1px 1px;
 	--shadow-dark-1: rgba(0, 0, 0, 0.2) 0 1px 2px;
 	--shadow-light-1: rgba(255, 255, 255, 0.2) 0 1px 2px;
+
 	--box-shadow-1: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
+
 	--transition-fast: 0.15s;
 	--transition-medium: 0.3s;
 	--transition-slow: 0.5s;
+
 	--ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 	--ease-out-back-2: cubic-bezier(0.0875, 0.4425, 0.16, 2.55);
 	--ease-in-out-back: cubic-bezier(0.3,4,.25,-0.2);
