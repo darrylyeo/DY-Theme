@@ -106,6 +106,9 @@
 		dy-khan-badge {
 			font-size: 0.8em;
 		}
+		:host(:not(.is-fork)) dy-khan-badge {
+			display: none;
+		}
 	</style>
 	<a class="link"><h3 id="title"></h3></a>
 	<dy-khan-stats id="stats">
@@ -222,6 +225,8 @@ class DYKhan extends DYElement {
 				'#fork[data-id]': data.originScratchpadId,
 				'.link[href]': data.url
 			})
+
+			this.toggleClass(!!data.originScratchpadId, 'is-fork')
 		})
 		
 		const $project = root.find('#project')
