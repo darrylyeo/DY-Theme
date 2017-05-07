@@ -41,8 +41,6 @@ class DYPage extends DYElement {
 	connectedCallback(){
 		window.$DYPage = this
 
-		const root = this.root
-
 		// Page Content
 		window.on('pagerender', () => {
 			const content = this.routeAndRender()
@@ -59,6 +57,8 @@ class DYPage extends DYElement {
 				$$('#modal').click()
 			})
 		})
+
+		const root = this.root
 
 		this.$toTop.on('click', () => {
 			document.body.animateScrollY(0)
