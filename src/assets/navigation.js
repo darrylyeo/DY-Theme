@@ -114,6 +114,8 @@ const DYNavigation = {
 				}
 			}
 
+			WP.route =  WP.queryType + (WP.postType ? ' ' + WP.postType : '')
+
 			this.processLinks( $$('a') )
 
 			window.trigger(new CustomEvent('pageload'))
