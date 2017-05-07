@@ -151,9 +151,7 @@ class DYHeader extends DYElement {
 	connectedCallback(){
 		const root = this.root
 
-		window.on('pagerender', () => {
-			this.update()
-		})
+		window.on('pagerender', () => this.update())
 
 		window.once('pagerender', () => {
 			window.on('scroll.throttle resize.throttle pagerender.throttle', () =>
