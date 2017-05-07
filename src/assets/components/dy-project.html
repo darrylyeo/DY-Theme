@@ -405,12 +405,12 @@ class DYProject extends DYElement {
 
 		this.on({
 			click(e){
-				this.trigger(new CustomEvent('dy-project-focus'))
+				this.trigger(new CustomEvent('dy-project-focus', {bubbles: true}))
 			}
 		})
 		root.find('#close').on({
 			'click.stop': () => {
-				this.trigger(new CustomEvent('dy-project-unfocus'))
+				this.trigger(new CustomEvent('dy-project-unfocus', {bubbles: true}))
 			}
 		})
 	}

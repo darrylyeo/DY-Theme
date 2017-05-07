@@ -113,7 +113,9 @@
 		}
 	</style>
 	<dy-project-filters></dy-project-filters>
-	<div class="projects"></div>
+	<div class="projects">
+		<slot>
+	</div>
 </template>
 
 
@@ -143,18 +145,17 @@ class DYProjects extends DYElement {
 			this.projects = projects
 
 			for(const project of projects){
-				const $project = $$$('dy-project')
-					.on({
-						['dy-project-focus'](){
-							_this.$focusedProject = this
-						},
-						['dy-project-unfocus'](){
-							_this.$focusedProject = undefined
-						}
-					})
-				$project.prependTo($projectsWrapper)
+				const $project = $$$('dy-project').prependTo(this)
 				$project.data = project
 			}
+			this.on({
+				['dy-project-focus'](e){
+					this.$focusedProject = e.target
+				},
+				['dy-project-unfocus'](){
+					this.$focusedProject = undefined
+				}
+			})
 
 			this.$filters.initialize(this.getAllTermIDs(projects))
 			this.$filters.on('dy-filter-change', () => this.onFilterChange())
@@ -225,7 +226,7 @@ class DYProjects extends DYElement {
 	}
 
 	get $projects(){
-		return this.root.findAll('dy-project')
+		return this.findAll('dy-project')
 	}
 
 	get $filters(){
