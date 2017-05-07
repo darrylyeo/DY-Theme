@@ -29,7 +29,7 @@ class DYNotifications extends DYElement {
 		window.notify = window.alert = this.notify.bind(this)
 	}
 
-	notify(message, dismiss, type){
+	notify(message, {dismiss, type, buttonText} = {}){
 		// Check if a notification already has this message.
 		const notification = [...this.$notifications]
 			.find($notification => $notification.html() == message) // && $this.childNodes.length === 0
@@ -42,6 +42,7 @@ class DYNotifications extends DYElement {
 				.attr('type', type || 'info')
 				.appendTo(this)
 				.dismiss(dismiss)
+				.setButtonText(buttonText)
 		}
 	}
 
