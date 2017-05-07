@@ -28,6 +28,7 @@
 	--shadow-dark-0: rgba(0, 0, 0, 0.1) 0 1px 1px;
 	--shadow-dark-1: rgba(0, 0, 0, 0.2) 0 1px 2px;
 	--shadow-light-1: rgba(255, 255, 255, 0.2) 0 1px 2px;
+	--box-shadow-1: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
 	--transition-fast: 0.15s;
 	--transition-medium: 0.3s;
 	--transition-slow: 0.5s;
