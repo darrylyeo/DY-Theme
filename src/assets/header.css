@@ -64,12 +64,6 @@
 	top: 0;*/
 }
 #header.full #main-menu {
-	position: absolute;
-	bottom: 0;
-	min-height: max-content;
-	transition: background var(--transition-slow);
-}
-#header.full #main-menu {
 	background:
 		radial-gradient(
 			at center 30%,
@@ -83,12 +77,19 @@
 			transparent 0.5rem,
 			transparent 1rem
 		);
-	font-size: calc(1rem + 2.5vmin);
-	padding: var(--padding) 0;
-
+	
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+
+	position: absolute;
+	bottom: 0;
+	min-height: max-content;
+	padding: var(--padding) 0;
+
+	font-size: calc(1rem + 2.5vmin);
+
+	transition: background var(--transition-slow);
 }
 #header.sticky #main-menu {
 	/*box-shadow: var(--shadow-dark-0);*/
