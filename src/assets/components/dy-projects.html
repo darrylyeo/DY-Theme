@@ -131,7 +131,7 @@ class DYProjects extends DYElement {
 		})
 
 		DY.getData.then(data => {
-			let projects = this.projects = data.postsByPostType['project']
+			let projects = [...data.postsByPostType['project']].reverse()
 
 			const filterCategoryID = +this.attr('category')
 			if(filterCategoryID){
@@ -139,6 +139,8 @@ class DYProjects extends DYElement {
 					project.terms.includes(filterCategoryID)
 				)
 			}
+
+			this.projects = projects
 
 			for(const project of projects){
 				const $project = $$$('dy-project')
