@@ -1,0 +1,38 @@
+<template id="dy-nav">
+	<style>
+		:host {
+			display: flex;
+			justify-content: center;
+			align-items: flex-end;
+			flex-direction: column;
+			line-height: 1.25;
+		}
+		#current-title {
+			margin: 0;
+			font-size: 1.1em;
+		}
+	</style>
+	<h1 id="current-title"></h1>
+	<div>
+		<a rel="prev">Previous: <span></span></a>
+		<a rel="next">Next: <span></span></a>
+	</div>
+</template>
+
+
+<script>
+class DYNav extends DYElement {
+	connectedCallback(){
+		const root = this.root
+
+		window.on('pagerender', () => {
+			const data = WP.current
+
+			root.updateWithModel({
+				'#current-title': data.title.rendered
+			})
+		})
+	}
+}
+customElements.define('dy-nav', DYNav)
+</script>
