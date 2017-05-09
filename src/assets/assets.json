@@ -1,8 +1,8 @@
 {
 	"settings": {
-		"asyncHTML": false,
-		"optimizeCSS": false,
+		"asyncHTML": true,
 		"optimizeHTML": false,
+		"optimizeCSS": false,
 		"optimizeJS": false
 	},
 	"html": [
