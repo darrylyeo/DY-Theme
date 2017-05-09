@@ -243,7 +243,11 @@ class DYProjectHeader extends DYElement {
 		}
 
 		// Initialize terms
-		root.find('dy-terms').initialize(data.terms)
+		const $termsContainer = this.$termsContainer
+		$termsContainer.initialize(data.terms)
+	}
+	get $termsContainer(){
+		return this.root.find('dy-terms')
 	}
 }
 customElements.define('dy-project-header', DYProjectHeader)
