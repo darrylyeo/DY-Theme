@@ -2,14 +2,35 @@
 	<style>
 		:host {
 			display: flex;
+			line-height: 1.5;
+		}
+
+		#inner-wrapper {
+			display: flex;
 			justify-content: center;
 			align-items: flex-end;
 			flex-direction: column;
-			line-height: 1.25;
+			margin-left: 1em;
 		}
 		#current-title {
 			margin: 0;
 			font-size: 1.1em;
+		}
+
+		#prev-next {
+			font-size: 0.8em;
+			justify-content: space-between;
+			min-width: 100%;
+			margin: -0.5em;
+		}
+		#prev-next > * {
+			margin: 0.5em;
+		}
+		[rel=prev]:before {
+			content: '‹ ';
+		}
+		[rel=next]:after {
+			content: ' ›';
 		}
 	</style>
 	<div id="inner-wrapper">
