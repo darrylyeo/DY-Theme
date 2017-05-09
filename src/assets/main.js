@@ -77,14 +77,24 @@ navigator.getBattery && navigator.getBattery()
 		const level = battery.level * 100;
 		if(level < 100){
 			notify(
-				`Your battery level is at ${level.toFixed(1)}%` +
-				(battery.charging ?
-					` and will be fully charged ${moment().add(battery.chargingTime, 's').fromNow()}` :
-					` and will be depleted ${moment().add(battery.dischargingTime, 's').fromNow()}`) +
-				`.`
+				`Your battery level is at ${
+					level.toFixed(1)
+				}%${
+					battery.charging ?
+						` and will be fully charged ${moment().add(battery.chargingTime, 's').fromNow()}` :
+						` and will be depleted ${moment().add(battery.dischargingTime, 's').fromNow()}`
+				}.`,
+				{
+					buttonText: 'Thanks!'
+				}
 			)
 		}else{
-			notify('Your battery is fully charged.')
+			notify(
+				'Your battery is fully charged.',
+				{
+					buttonText: 'Ok'
+				}
+			)
 		}
 	})
 	/*.catch(function(e) {
