@@ -157,7 +157,7 @@ class DYHeader extends DYElement {
 			)
 		})
 
-		root.find('li.has-sub-menu').hover(function(){
+		root.findAll('li.has-sub-menu').hover(function(){
 			$body.addClass('sub-menu-open')
 			this.closest('nav').addClass('sub-menu-open')
 		}, function(){
