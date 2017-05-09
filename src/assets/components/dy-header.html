@@ -212,9 +212,6 @@ class DYHeader extends DYElement {
 	get $mainMenu(){
 		return this.root.find('#main-menu')
 	}
-	get $secondaryMenu(){
-		return this.root.find('#secondary-menu')
-	}
 	get $logo(){
 		return this.root.find('#logo')
 	}
@@ -222,6 +219,9 @@ class DYHeader extends DYElement {
 		return this.$mainMenu.findAll('ul > li')
 	}
 
+	get $secondaryMenu(){
+		return this.root.find('#secondary-menu')
+	}
 	get $experiments(){
 		return this.root.find('#experiments')
 	}
