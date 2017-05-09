@@ -16,7 +16,7 @@
 	--heading-font: 'Fun Font', 'Klinic Slab', 'Slabo 13px', var(--body-font);
 	--link-color: var(--accent-1-dark);
 	
-	--site-width: 100%;
+	--site-width: 96vw;
 	--site-padding: calc((100vw - var(--site-width)) / 2);
 	/*--padding: 1.75rem;*/
 	--padding: calc(10px + 2vw);
