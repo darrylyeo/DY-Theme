@@ -1,0 +1,51 @@
+<template id="dy-figure">
+	<style>
+	:host {
+		display: block;
+		margin: auto;
+	}
+	figure {
+		margin: 0;
+	}
+	</style>
+	<figure>
+		<img>
+		<figcaption></figcaption>
+	</figure>
+</template>
+
+
+<script>
+class DYFigure extends DYElement {
+	static get observedAttributes(){
+		return ['src']
+	}
+
+	set data(data){X(data)
+		const title = (
+			typeof data.title === 'object' ?
+				data.title.rendered :
+				data.title || data.caption.rendered || data.alt_text
+		).decodeHTMLEntities()
+
+		this.attr('title', title)
+		
+		this.root.updateWithModel({
+			'img[src]': data.source_url,
+			'img[alt]': data.alt_text,
+			'figcaption': data.caption.rendered || data.alt_text
+		})
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal){
+		const root = this.root
+
+		if(attr === 'src'){
+			const src = newVal
+			getJSON(`./wp-json/wp/v2/media?search=${src}`)
+				.then(data => {X(data, src);this.data = data[0]})
+		}
+	}
+}
+customElements.define('dy-figure', DYFigure)
+</script>
