@@ -1,15 +1,17 @@
-html,
-:not(body):not(#wrapper):not(#main):not(#content):not(.fusion-footer) {
-	-webkit-transition-duration: 10s;
-	transition-duration: 10s;
-	-webkit-transform: rotate(180deg);
-	-ms-transform: rotate(180deg);
+/*html,
+:not(body):not(#wrapper):not(#main):not(#content):not(.fusion-footer)*/
+* {
+	transition: transform 10s;
+	transform: rotate(180deg);
+	overflow: visible;
+}
+:host, ::slotted(*) {
+	transition: transform 10s;
 	transform: rotate(180deg);
 }
-html {
-	-webkit-transition-duration: 1s !important;
+html, body, dy-page {
 	transition-duration: 1s !important;
 }
-.fusion-header-wrapper.fusion-is-sticky {
-	display: none !important;
+html {
+	margin-bottom: 50vh;
 }

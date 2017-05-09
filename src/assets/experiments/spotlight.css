@@ -8,9 +8,7 @@
 * {
 	transition: box-shadow 0.2s;
 }
-*:hover {
-	box-shadow: rgba(0, 0, 0, 0.2) 0 0 900px 1000px;
-}
-*:hover {
+:hover {
+	/*box-shadow: rgba(0, 0, 0, 0.2) 0 0 900px 1000px;*/
 	box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 1000px;
 }
