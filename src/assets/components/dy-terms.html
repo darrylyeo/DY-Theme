@@ -82,13 +82,7 @@ class DYTerms extends DYElement {
 				for(const term of terms.filter(term => term.taxonomy === taxonomy.slug)){
 					const _this = this
 
-					const $term = $$$('dy-button')
-						.attr('theme', 'plain')
-						.attr('animated', '')
-						//.attr('tabindex', '0') // Focusable
-						.attr('rel', 'tag')
-						.attr('title', term.description)
-						.html(term.name)
+					const $term = DYTerms.make$Term(term)
 						.appendTo($taxonomy)
 
 					$termToTerm.set($term, term)
