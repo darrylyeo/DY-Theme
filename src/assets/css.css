@@ -126,6 +126,7 @@ pre[class*=language],
 pre:not([class*=language]) > code {
 	background: rgba(255, 255, 255, 0.6) linear-gradient(rgba(255, 255, 255, 0.4) 50%, transparent 50%) 1px var(--padding-smaller)/1px 3em;
 	border-radius: var(--padding-smaller);
+	box-shadow: var(--box-shadow-1);
 	padding: var(--padding-smaller);
 }
 
