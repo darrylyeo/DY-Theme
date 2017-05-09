@@ -240,7 +240,8 @@ class DYHeader extends DYElement {
 			return this.$secondaryMenu.clientBottom
 	}
 	get isSticky(){
-		return window.scrollY >= this.stickyScrollY
+		const stickyScrollY = this.stickyScrollY
+		return stickyScrollY > 0 && window.scrollY >= stickyScrollY
 	}
 
 	get isFullHeight(){
