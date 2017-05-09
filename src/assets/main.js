@@ -13,8 +13,8 @@ windowLoad.then(() => {
 	console.timeEnd('load')
 })
 window.on('pagerender', (() => {
-	$html.addClass('render')
-}).delay())
+	(() => $html.addClass('render')).delay()
+}))
 
 
 {
