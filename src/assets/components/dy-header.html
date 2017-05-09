@@ -170,6 +170,7 @@ class DYHeader extends DYElement {
 		this.$header
 			.toggleClass(this.isFullHeight, 'full-height', 'full')
 			.toggleClass(this.isImmersive, 'immersive')
+		this.updateStickyStatus()
 		
 		this.$secondaryMenu
 			.toggleClass(this.isImmersive, 'immersive')
