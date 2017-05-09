@@ -123,6 +123,24 @@
 			font-size: 0.85em;
 		}
 
+		#featured-image {
+			margin: var(--padding-neg) 0;
+			max-height: 28rem;
+			overflow-y: auto;
+			padding: var(--padding) 0;
+			-webkit-mask-image: linear-gradient(
+				transparent,
+				#fff var(--padding),
+				#fff calc(100% - var(--padding)),
+				transparent
+			);
+			mask-image: linear-gradient(
+				transparent,
+				#fff var(--padding),
+				#fff calc(100% - var(--padding)),
+				transparent
+			);
+		}
 
 		@media (min-width: 45rem) {
 			#title-wrapper {
