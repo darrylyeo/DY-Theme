@@ -95,6 +95,13 @@ String.prototype.replaceAll = function(replace, replaceWith) {
 	}
 	return this
 }
+{
+const $el = $$$('span')
+String.prototype.decodeHTMLEntities = function(){
+	return $el.html(this).text()
+	//return this.replace(/&#(\d+);/g, (match, dec) => String.fromCharCode(dec))
+}
+}
 
 
 
