@@ -32,6 +32,8 @@ const DYNavigation = {
 				if($meta) $meta.replaceWith($$meta)
 			}
 
+			$$('#wpadminbar').replaceWith($$document.find('#wpadminbar'))
+
 			this.onPageLoad()
 
 			$('dy-page').animateMain(() => {
