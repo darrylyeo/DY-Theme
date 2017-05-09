@@ -55,7 +55,7 @@ class DYTerms extends DYElement {
 		const $termToTerm = this.$termToTerm = new WeakMap()
 		
 		DY.getData.then(data => {
-			const terms = data.objectsByType['term']
+			const terms = this.terms = data.objectsByType['term']
 				.filter(term =>
 					(termIDs.length === 0 || termIDs.includes(term.term_id)) &&
 					!excludeTerms.includes(term.slug) &&
