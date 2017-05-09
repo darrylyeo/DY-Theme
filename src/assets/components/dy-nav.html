@@ -12,10 +12,13 @@
 			font-size: 1.1em;
 		}
 	</style>
-	<h1 id="current-title"></h1>
-	<div>
-		<a rel="prev">Previous: <span></span></a>
-		<a rel="next">Next: <span></span></a>
+	<div id="inner-wrapper">
+		<h1 id="current-title"></h1>
+		<div id="prev-next">
+			<a rel="prev" class="prev"></a>
+			<div class="current-term"></div>
+			<a rel="next" class="next"></a>
+		</div>
 	</div>
 </template>
 
@@ -25,13 +28,85 @@ class DYNav extends DYElement {
 	connectedCallback(){
 		const root = this.root
 
-		window.on('pagerender', () => {
-			const data = WP.current
+		window.on('pagerender', () => this.update())
+	}
 
-			root.updateWithModel({
-				'#current-title': data.title.rendered
-			})
+	update(){
+		if(WP.queryType !== 'single') return
+
+		const currentPost = WP.current
+		const previousPost = this.previousPost
+		const nextPost = this.nextPost
+
+		this.root.updateWithModel({
+			'#current-title': currentPost.title.rendered
 		})
+
+		const showPrev = previousPost && previousPost !== currentPost
+		X(this.root.find('.prev').text)
+		this.root.find('.prev')
+			.html(showPrev ? previousPost.title.rendered : '')
+			.attr('href', showPrev ? previousPost.link : '')
+
+		const showNext = nextPost && nextPost !== currentPost
+		this.root.find('.next')
+			.html(showNext ? nextPost.title.rendered : '')
+			.attr('href', showNext ? nextPost.link : '')
+
+		this.$currentTerm.empty()
+			.append(
+				DYTerms.make$Term(WP.data.termsByID[this.currentTerm])
+			)
+		//this.$currentTerm.initialize([this.currentTerm])
+	}
+
+	get currentCategory(){
+		if(!this.data.category || !WP.current.categories.includes(this.data.category)){
+			this.data.category = WP.current.categories[0]
+		}
+		return this.data.category
+	}
+	set currentCategory(categoryID){
+		this.data.category = categoryID
+		this.update()
+	}
+
+	get currentTerm(){
+		if(!this.data.term || !WP.current.terms.includes(this.data.term)){
+			this.data.term = this.currentCategory || WP.current.terms[0]
+		}
+		return this.data.term
+	}
+	set currentTerm(termID){
+		this.data.term = termID
+		this.update()
+	}
+
+	get posts(){
+		return WP.data.postsByPostType['project']
+			.filter(project => project.terms.includes(this.currentTerm))
+	}
+
+	get previousPost(){
+		const i = this.posts.indexOf(WP.current)
+		const l = this.posts.length
+		return this.posts[(i + l - 1) % l]
+	}
+	get nextPost(){
+		const i = this.posts.indexOf(WP.current)
+		const l = this.posts.length
+		return this.posts[(i + 1) % l]
+	}
+
+	get data(){
+		if(!DY.data.navigation){
+			DY.data.navigation = {}
+		}
+		return DY.data.navigation
+	}
+
+	get $currentTerm(){
+		return this.root.find('.current-term')
 	}
 }
 customElements.define('dy-nav', DYNav)
