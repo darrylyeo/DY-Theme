@@ -33,28 +33,43 @@ window.on('pagerender', (() => {
 
 
 
-if('moment' in window){
+WP.getUser.then(user => {
 	/*const timeSinceLastVisit = new Date(Date.now() - DY.data.lastSession.date)
 	if(timeSinceLastVisit.getUTCHours() < 1) return
 	
 	let timeString = ''
 	if(timeSinceLastVisit.getUTCDays()*/
-	
-	const lastVisit = moment(DY.data.lastSession.date)
-	if(moment().diff(lastVisit, 'hours') >= 1){
-		let username = ''
+
+	function getUsername(){
 		if(document.referrer === 'https://www.khanacademy.org'){
-			username = 'fellow Khan Academy user'
+			return 'fellow Khan Academy user'
 		}
-		
-		if(DY.data.lastSession.date){
-			const greeting = moment().diff(lastVisit, 'days') < 5 ? 'Welcome back' : 'Long time no see'
-			notify(`${greeting}, ${username}! You last visited this site ${lastVisit.fromNow()}.`)
-		}else{
-			notify(`Welcome to my online portfolio, ${username}!`)
+		if(user){
+			return user.name
 		}
 	}
-}
+
+	const username = getUsername()
+
+	if('moment' in window && DY.data.lastSession){
+		const now = moment()
+		const lastVisit = moment(DY.data.lastSession.date)
+		const beenAnHour = now.diff(lastVisit, 'hours') >= 1
+		const beenFiveDays = now.diff(lastVisit, 'days') >= 5
+
+		if(beenAnHour){
+			const greeting = beenFiveDays ? 'Welcome back' : 'Long time no see'
+			notify(
+				`${greeting}${username ? ', ' + username : ''}! You last visited this site ${lastVisit.fromNow()}.`,
+				{
+					buttonText: 'Hello!'
+				}
+			)
+		}
+	}else{
+		notify(`Welcome to my online portfolio${username ? ', ' + username : ''}!`)
+	}
+})
 
 
 navigator.getBattery && navigator.getBattery()
