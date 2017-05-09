@@ -103,9 +103,11 @@ navigator.getBattery && navigator.getBattery()
 
 function checkOnlineStatus(){
 	if(!navigator.onLine){
-		notify("Whoops! You've lost internet connection.", new Promise(function(resolve){
-			window.once('online', resolve)
-		}))
+		notify('Whoops! You\'ve lost internet connection.', {
+			dismiss: new Promise(function(resolve){
+				window.once('online', resolve)
+			})
+		})
 	}
 }
 checkOnlineStatus()
