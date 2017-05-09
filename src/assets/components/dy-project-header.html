@@ -170,10 +170,9 @@
 		<blockquote class="excerpt breakpoint-large"></blockquote>
 	</div>
 	<div>
-		<figure id="featured-image">
-			<img>
-			<figcaption></figcaption>
-		</figure>
+		<div>
+			<dy-figure id="featured-image"></dy-figure>
+		</div>
 	</div>
 	<div>
 		<blockquote class="excerpt breakpoint-small"></blockquote>
@@ -210,21 +209,19 @@ class DYProjectHeader extends DYElement {
 
 		this.toggleClass(data.meta.projectHeaderDarkMode === 'true', 'dark')
 
-		if(data.featuredImage){
-			const imageData = data.featuredImage
+		const imageData = data.featuredImage
+		this.$featuredImage.data = imageData
 
-			root.updateWithModel({
-				'img[src]': imageData.source_url,
-				'img[alt]': imageData.alt_text,
-				'figcaption': imageData.caption || imageData.alt_text,
-				'#background[style]': {
-					'background-image': `url(${imageData.source_url})`
-				}
-			})
+		const imageURL = imageData.source_url
 
-			$DYPage.$background.animateBlurredImage(imageData.source_url)
+		this.$background.css({
+			'background-image': imageData ? `url(${imageURL})` : ''
+		})
 
-			root.find('#featured-image').modalize().on('modalize', function(e){
+		if(imageData){
+			$DYPage.$background.animateBlurredImage(imageURL)
+
+			this.$featuredImage.modalize().on('modalize', function(e){
 				const img = this.find('img')
 				Object.assign(e.detail.finalStyle, {
 					width: img.naturalWidth + 'px',
@@ -233,19 +230,28 @@ class DYProjectHeader extends DYElement {
 					maxHeight: '80vh',
 				})
 			})
-		}else{
-			root.updateWithModel({
-				'img[src]': '',
-				'img[alt]': '',
-				'figcaption': '',
-				'#background[style]': ''
-			})
 		}
 
 		// Initialize terms
 		const $termsContainer = this.$termsContainer
 		$termsContainer.initialize(data.terms)
+		;(() => {
+			$termsContainer.$terms.on('click', function(){
+				$DYPage.$header.$nav.currentTerm = $termsContainer.$termToTerm.get(this).term_id 
+				notify(
+					`You're navigating projects tagged ${this.outerHTML}. Enjoy!`
+				)
+			})
+		}).delay()
 	}
+
+	get $featuredImage(){
+		return this.root.find('#featured-image')
+	}
+	get $background(){
+		return this.root.find('#background')
+	}
+
 	get $termsContainer(){
 		return this.root.find('dy-terms')
 	}
