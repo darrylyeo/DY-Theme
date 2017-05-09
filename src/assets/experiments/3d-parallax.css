@@ -24,13 +24,13 @@ html:hover body {
 	transform-origin: top;
 	transform: none;
 }
-html:hover #wrapper {
+html:hover dy-page {
 	transform: translateZ(-20px) /*rotateY(-1deg) translateX(-50px)*/;
 }
-html:hover #wrapper :nth-child(odd) {
+html:hover :nth-child(odd) {
 	transform: rotateX(0.05deg) translateZ(4px);
 }
-html:hover #wrapper :nth-child(even) {
+html:hover :nth-child(even) {
 	transform: rotateX(0.05deg) translateZ(-4px);
 }
 html:hover #experiments .sub-menu {
