@@ -86,7 +86,7 @@
 			flex: 100%;
 			font-size: 0.8em;
 		}
-		header * + * {
+		header > * + * {
 			margin-left: 0.5em;
 		}
 		cite {
@@ -193,6 +193,20 @@
 
 			text-transform: uppercase;
 		}
+
+		footer {
+			justify-content: space-between;
+		}
+
+		#meta {
+			font-size: 0.9em;
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
+		#meta div {
+			flex: 1 10rem;
+			padding: 0.5em;
+		}
 	</style>
 	<img id="avatar">
 	<div id="inner-wrapper">
@@ -210,14 +224,26 @@
 			<div id="content">
 				<textarea name="content" placeholder="Your reaction..." required></textarea>
 			</div>
-			<button type="submit">Post Reaction</button>
+			<footer>
+				<p><span class="character-count"></span> Characters</p>
+				<button type="submit">Post Reaction</button>
+			</footer>
+			<hr>
+			<div id="meta">
+				<div>
+					<h3>Guidelines</h3>
+					<p>Please use your real name.</p>
+					<p>Comments will be manually approved.</p>
+					<p>Keep it clean and respectful!</p>
+				</div>
+				<div>
+					<h3>Formatting</h3>
+					<p>Express yourself **boldly**, with *emphasis* or with `code`.</p>
+					<p>Here is a [link](https://darryl-yeo.com).</p>
+					<p>```Code blocks work here, too!```</p>
+				</div>
+			</div>
 		</form>
-		<div>
-			<h3>Formatting</h3>
-			<p>**Bold** and *italics* and `code`</p>
-			<p>[Link](https://darryl-yeo.com)</p>
-			<p>```Code Block```</p>
-		</div>
 	</div>
 	
 	<!--<form>
