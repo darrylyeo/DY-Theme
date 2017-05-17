@@ -98,3 +98,7 @@ article aside {
 article section > div {
 	display: block;
 }
+
+article section dy-figure {
+	padding: 1rem;
+}
