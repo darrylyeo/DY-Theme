@@ -17,20 +17,22 @@
 			font-size: 0.9em;
 		}
 	</style>
-	<div id="reaction">
-		<!--<h2><span class="comment-count">Loading</span> <span class="reactions">Reactions</span></h2>-->
-		<h2>Choose One or More Reactions: </h2>
-		<ul>
-			<li>Don't like it. Like it. Love it!</li>
-			<li>Wow. Mind-blowing! HELP, I need a neurosurgeon!!</li>
-			<li>Boring. Helpful.</li>
-			<li>Learned something new.</li>
-			<li>I have a question...</li>
-			<li>I have some feedback...</li>
-		</ul>
+	<div id="inner-wrapper">
+		<h2><span class="comment-count">Loading</span> <span class="reactions">Reactions</span></h2>
+		<!--<div id="reaction">
+			<h3>Choose One or More Reactions: </h3>
+			<ul>
+				<li>Don't like it. Like it. Love it!</li>
+				<li>Wow. Mind-blowing! HELP, I need a neurosurgeon!!</li>
+				<li>Boring. Helpful.</li>
+				<li>Learned something new.</li>
+				<li>I have a question...</li>
+				<li>I have some feedback...</li>
+			</ul>
+		</div>-->
+		<dy-comment-reply></dy-comment-reply>
+		<slot>
 	</div>
-	<dy-comment-reply></dy-comment-reply>
-	<slot>
 </template>
 
 <template id="dy-comment">
