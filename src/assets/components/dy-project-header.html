@@ -30,6 +30,11 @@
 			top: 0;
 			z-index: -1;
 		}
+		#background {
+			-webkit-mask-image: linear-gradient(#fff, #fff calc(100% - var(--padding) * 1.5), transparent);
+			mask-image: linear-gradient(#fff, #fff calc(100% - var(--padding) * 1.5), transparent);
+			-webkit-mask-image: linear-gradient(#fff 80%, transparent);
+		}
 		#background:before {
 			content: '';
 			background: center/contain fixed;
