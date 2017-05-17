@@ -102,6 +102,7 @@ class DYPage extends DYElement {
 						</dy-khan>
 					` : ''}
 					${data.content.rendered}
+					<hr>
 					${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
 				</article>
 				<dy-sidebar></dy-sidebar>
@@ -113,6 +114,7 @@ class DYPage extends DYElement {
 						<img slot="thumbnail" src="${data.featuredImage.source_url}">
 					` : ''}
 					${data.content.rendered}
+					<hr>
 					${data.comment_status === 'open' ? `<dy-comments></dy-comments>` : ''}
 				</article>
 				<dy-sidebar></dy-sidebar>
