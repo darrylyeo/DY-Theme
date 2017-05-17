@@ -68,7 +68,7 @@ class DYPage extends DYElement {
 		window.on('scroll.throttle', e => {
 			this.$toTop.classList[window.scrollY >= window.innerHeight * 0.5 ? 'add' : 'remove']('show')
 		})
-		window.trigger('scroll')
+		//window.trigger('scroll')
 
 		$$('code:not([class*=lanugage-])').addClass('language-*')
 	}
