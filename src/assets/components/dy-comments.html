@@ -266,11 +266,8 @@ const MAX_COMMENT_LENGTH = 1000
 class DYComments extends DYElement {
 	connectedCallback(){
 		const root = this.root
-		window.on('pageload', () => {
-			X('loading comments')
-			console.trace()
-			const id = WP.current.id
-			getJSON(`./wp-json/wp/v2/comments?post=${id}&per_page=100`).then(comments => {
+		//window.on('pagerender', () => {
+			getJSON(`./wp-json/wp/v2/comments?post=${WP.current.id}&per_page=100`).then(comments => {
 				root.updateWithModel({
 					'.comment-count': comments.length,
 					'.reactions': comments.length === 1 ? 'Reaction' : 'Reactions'
@@ -288,7 +285,7 @@ class DYComments extends DYElement {
 						$comments[comment.parent].$replies.append($comments[comment.id])
 				}
 			})
-		})
+		//})
 	}
 }
 customElements.define('dy-comments', DYComments)
