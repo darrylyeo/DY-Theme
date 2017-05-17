@@ -99,7 +99,11 @@ WP.getUser = getJSON('./wp-json/wp/v2/users/me', {
 	X(data)
 	WP.user = data
 	return data
+}).catch(e => {
+	X('User is not logged in.', e)
+	return new Promise(() => {}) // never resolve
 })
+
 /*fetch('./wp-json/wp/v2/users/me', {
 	headers: new Headers({
 		'X-WP-Nonce': WP.nonce
