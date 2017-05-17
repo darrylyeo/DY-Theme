@@ -89,6 +89,7 @@
 		}
 		cite {
 			font-style: normal;
+			margin-right: auto;
 		}
 		#author {
 			font-family: var(--heading-font);
@@ -104,12 +105,16 @@
 			display: inline-block;
 			line-height: 1;
 		}
+
+		:host(.by-me) #reply-button,
+		:host(:not(.by-me)) #edit-button {
+			display: none;
+		}
+
+
 		#content {
 			display: block;
 			margin-top: 0.25em;
-		}
-		#reply-button {
-			margin-left: auto;
 		}
 
 		#replies:not(:empty) {
@@ -127,8 +132,10 @@
 					<a id="author" rel="nofollow"></a>
 				</cite>
 				<a class="link"><dy-date id="comment-date"></dy-date></a>
-				<a id="reply-button">Reply</a>
-				<a id="edit-button">Edit</a>
+				<dy-buttons>
+					<dy-button id="reply-button" theme="plain">Reply</dy-button>
+					<dy-button id="edit-button" theme="plain">Edit</dy-button>
+				</dy-button>
 			</header>
 			<div id="content"></div>
 		</blockquote>
