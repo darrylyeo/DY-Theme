@@ -62,7 +62,7 @@ customElements.define('dy-notifications', DYNotifications)
 			border-bottom-right-radius: 4px;
 			box-shadow: rgba(0,0,0,.118) 0 4px 3px -3px;
 			box-sizing: content-box;
-			display: flex;
+			/*display: flex;*/
 			position: relative;
 			line-height: 1.4;
 			margin: 3px;
@@ -137,6 +137,9 @@ customElements.define('dy-notifications', DYNotifications)
 			right: 100%;
 			top: 0;
 		}
+		dy-button {
+			float: right;
+		}
 		:host > * + dy-button {
 			margin-left: 1ch;
 		}
@@ -145,10 +148,10 @@ customElements.define('dy-notifications', DYNotifications)
 		}
 	</style>
 	<!--<i id="icon">i</i>-->
+	<dy-button theme="accented heavy 3D small">OK</dy-button>
 	<div>
 		<slot>
 	</div>
-	<dy-button theme="accented heavy 3D small">OK</button>
 </template>
 
 
