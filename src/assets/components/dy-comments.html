@@ -309,6 +309,10 @@ class DYComment extends DYElement {
 		root.find('#reply-button').on('click', () => {
 			this.$replies.prependChild(DYCommentReply.$reply)
 		})
+
+		WP.getUser.then(user => {
+			this.toggleClass(data.author === user.id, 'by-me')
+		})
 	}
 
 	get $replies(){
