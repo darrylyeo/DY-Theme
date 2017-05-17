@@ -10,6 +10,9 @@ article {
 		width: 0; /* Shrink as much as necessary to avoid pushing sidebar out */
 		margin-right: var(--padding-neg);
 	}
+	article section h2 ~ * {
+		margin-left: var(--padding);
+	}
 }
 article > * + * {
 	margin-top: 2em;
