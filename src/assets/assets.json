@@ -36,9 +36,6 @@
 		"modal"
 	],
 	"js": [
-		"libraries/web-animations.min",
-		"libraries/gsap/TweenLite",
-		"libraries/gsap/easing/EasePack.min",
 		"libraries/moment.min",
 		"libraries/prism",
 
@@ -63,6 +60,10 @@
 		"main"
 	],
 	"js-unused": [
+		"libraries/web-animations.min",
+		"libraries/gsap/TweenLite",
+		"libraries/gsap/easing/EasePack.min",
+		
 		"libraries/custom-elements",
 		"libraries/html-imports.min",
 		"libraries/shadycss.min",
