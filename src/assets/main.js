@@ -87,6 +87,7 @@ if('getBattery' in navigator) navigator.getBattery().then(battery => {
 							: ''
 				}.`,
 				{
+					id: 'battery',
 					buttonText: 'Thanks!'
 				}
 			)
@@ -94,6 +95,7 @@ if('getBattery' in navigator) navigator.getBattery().then(battery => {
 			notify(
 				'Your battery is fully charged.',
 				{
+					id: 'battery',
 					buttonText: 'Ok'
 				}
 			)
