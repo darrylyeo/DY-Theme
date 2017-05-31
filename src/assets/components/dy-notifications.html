@@ -31,7 +31,7 @@ class DYNotifications extends DYElement {
 
 	notify(message, {dismiss, type = 'info', buttonText, id} = {}){
 		// Check if a notification already has this message.
-		const $notification = [...this.$notifications].find($n =>
+		let $notification = [...this.$notifications].find($n =>
 			$n.dataset.id == id || $n.html() == message // && $this.childNodes.length === 0
 		)
 		
@@ -39,18 +39,21 @@ class DYNotifications extends DYElement {
 			if(id && $notification.html() != message){
 				$notification.html(message)
 			}
-			return $notification.remind()
+			$notification.remind(dismiss)
 		}else{
-			return new DYNotification()
+			$notification = new DYNotification()
 				.html(message)
 				.attr({
 					type,
 					'data-id': id
 				})
-				.appendTo(this)
 				.dismiss(dismiss)
-				.setButtonText(buttonText)
+				.appendTo(this)
 		}
+
+		if(buttonText) $notification.setButtonText(buttonText)
+
+		return $notification
 	}
 
 	get $notifications(){
