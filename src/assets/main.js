@@ -73,7 +73,7 @@ WP.getUser.then(user => {
 
 
 if('getBattery' in navigator) navigator.getBattery().then(battery => {
-	const notifyBatteryStatus = () => {X(battery)
+	const notifyBatteryStatus = () => {
 		const {level, charging, chargingTime, dischargingTime} = battery
 		if(level < 1.00){
 			notify(
