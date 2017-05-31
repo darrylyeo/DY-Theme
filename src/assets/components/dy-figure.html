@@ -21,7 +21,9 @@ class DYFigure extends DYElement {
 		return ['src']
 	}
 
-	set data(data){X(data)
+	set data(data){
+		if(!data) return
+		
 		const title = (
 			typeof data.title === 'object' ?
 				data.title.rendered :
