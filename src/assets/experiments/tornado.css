@@ -12,6 +12,9 @@
 #experiments, nav > ul > li ul {
 	transform: none !important;
 }
+dy-header {
+	z-index: 1;
+}
 html, body, dy-page {
 	transition-duration: 1s !important;
 }
