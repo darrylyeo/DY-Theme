@@ -9,6 +9,9 @@
 	transition: transform 10s;
 	transform: rotate(180deg);
 }
+#experiments, nav > ul > li ul {
+	transform: none !important;
+}
 html, body, dy-page {
 	transition-duration: 1s !important;
 }
