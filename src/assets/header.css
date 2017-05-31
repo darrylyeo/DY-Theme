@@ -150,6 +150,9 @@
 	transform-origin: left;
 	transition: var(--transition-slow) var(--ease-in-out-back);
 }
+#header:not(.full) #logo svg {
+	width: calc(265 / 95 * var(--main-menu-height));
+}
 #header:not(.full) #logo:hover svg {
 	transform: perspective(500px) rotateY(20deg);
 }
