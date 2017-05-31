@@ -15,6 +15,8 @@
 	<link rel="author" href="https://darryl-yeo.com/about">
 
 	<?php wp_head() ?>
+
+	<dy-style></dy-style>
 </head>
 <body>
 	<dy-page></dy-page>
