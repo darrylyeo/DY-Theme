@@ -165,11 +165,15 @@ class DYPage extends DYElement {
 
 				const finalHeight = $main.clientHeight + 'px'
 
-				$main.animate({
-					height: [initialHeight, finalHeight]
-				}, {
-					duration: 1000
-				})
+				$main
+					.animate({
+						height: [initialHeight, finalHeight]
+					}, {
+						duration: 1000
+					})
+					.once('animateend', () => {
+						onAnimateIn && onAnimateIn()
+					})
 			}, true)
 	}
 
