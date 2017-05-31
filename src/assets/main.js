@@ -98,23 +98,35 @@ if('getBattery' in navigator) navigator.getBattery().then(battery => {
 				}
 			)
 		}
-
-function checkOnlineStatus(){
-	if(!navigator.onLine){
-		notify('Whoops! You\'ve lost internet connection.', {
-			dismiss: new Promise(function(resolve){
-				window.once('online', resolve)
 	}
 
 	notifyBatteryStatus()
 	battery.on('chargingchange chargingtimechange dischargingtimechange levelchange', notifyBatteryStatus)
 })
+
+if('onLine' in navigator){
+	/*const checkOnlineStatus = () => {
+		if(!navigator.onLine){
+			notify('Whoops! You\'ve lost internet connection.', {
+				dismiss: new Promise(function(resolve){
+					window.once('online', resolve)
+				})
 			})
-		})
+		}
 	}
+	checkOnlineStatus()
+	window.on('offline', checkOnlineStatus)*/
+
+	const notifyOnlineStatus = () => {
+		if(navigator.onLine){
+			notify('...And we\'re back online!', {id: 'onLine', dismiss: 5, buttonText: 'Hooray!'})
+		}else{
+			notify('Whoops! You\'ve lost internet connection.', {id: 'onLine', buttonText: 'Aw, man!'})
+		}
+	}
+	if(!navigator.onLine) notifyOnlineStatus()
+	window.on('online offline', notifyOnlineStatus)
 }
-checkOnlineStatus()
-window.on('offline', checkOnlineStatus)
 
 
 
