@@ -94,7 +94,10 @@ class DYExperiment {
 		DY.data.experiments[this.handle] = active
 
 		if(wasActive !== active){
-			notify(`${this.name} experiment ${this.isActive ? 'activated' : 'deactivated'}.`)
+			notify(`${this.name} experiment ${this.isActive ? 'activated' : 'deactivated'}.`, {
+				id: this.name,
+				dismiss: this.isActive ? undefined : 5
+			})
 			if(this.isActive){
 				notify('Press <kbd>e</kbd> at any time to disable all experiments.')
 			}
