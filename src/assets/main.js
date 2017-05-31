@@ -72,17 +72,19 @@ WP.getUser.then(user => {
 })
 
 
-navigator.getBattery && navigator.getBattery()
-	.then(function(battery) {
-		const level = battery.level * 100;
-		if(level < 100){
+if('getBattery' in navigator) navigator.getBattery().then(battery => {
+	const notifyBatteryStatus = () => {X(battery)
+		const {level, charging, chargingTime, dischargingTime} = battery
+		if(level < 1.00){
 			notify(
-				`Your battery level is at ${
-					level.toFixed(1)
-				}%${
-					battery.charging ?
-						` and will be fully charged ${moment().add(battery.chargingTime, 's').fromNow()}` :
-						` and will be depleted ${moment().add(battery.dischargingTime, 's').fromNow()}`
+				`Your battery level is at ${(level * 100).toFixed(1)}%${
+					charging
+						? isFinite(chargingTime)
+							? ` and will be fully charged ${moment().add(chargingTime, 's').fromNow()}`
+							: ''
+						: isFinite(dischargingTime)
+							? ` and will be depleted ${moment().add(dischargingTime, 's').fromNow()}`
+							: ''
 				}.`,
 				{
 					buttonText: 'Thanks!'
@@ -96,16 +98,17 @@ navigator.getBattery && navigator.getBattery()
 				}
 			)
 		}
-	})
-	/*.catch(function(e) {
-		console.error(e)
-	})*/
 
 function checkOnlineStatus(){
 	if(!navigator.onLine){
 		notify('Whoops! You\'ve lost internet connection.', {
 			dismiss: new Promise(function(resolve){
 				window.once('online', resolve)
+	}
+
+	notifyBatteryStatus()
+	battery.on('chargingchange chargingtimechange dischargingtimechange levelchange', notifyBatteryStatus)
+})
 			})
 		})
 	}
