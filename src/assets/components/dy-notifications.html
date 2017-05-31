@@ -32,7 +32,7 @@ class DYNotifications extends DYElement {
 	notify(message, {dismiss, type = 'info', buttonText, id} = {}){
 		// Check if a notification already has this message.
 		let $notification = [...this.$notifications].find($n =>
-			$n.dataset.id == id || $n.html() == message // && $this.childNodes.length === 0
+			(id && $n.dataset.id == id) || $n.html() == message // && $this.childNodes.length === 0
 		)
 		
 		if($notification){
