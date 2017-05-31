@@ -36,7 +36,7 @@ const DYNavigation = {
 
 			this.onPageLoad()
 
-			$('dy-page').animateMain(() => {
+			$DYPage.animateMain(() => {
 				this.onPageRender()
 			})
 		})
