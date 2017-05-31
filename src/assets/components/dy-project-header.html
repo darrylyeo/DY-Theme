@@ -204,7 +204,7 @@ class DYProjectHeader extends DYElement {
 		const data = WP.current
 
 		root.updateWithModel({
-			'#title': data.title.rendered,
+			'#title': data.title && data.title.rendered,
 			'#project-date[data-date]': data.meta.projectDate,
 			'#modified-date[data-date]': data.date,
 			'.link[href]': data.link,
