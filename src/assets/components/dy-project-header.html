@@ -244,7 +244,8 @@ class DYProjectHeader extends DYElement {
 			$termsContainer.$terms.on('click', function(){
 				$DYPage.$header.$nav.currentTerm = $termsContainer.$termToTerm.get(this).term_id 
 				notify(
-					`You're navigating projects tagged ${this.outerHTML}. Enjoy!`
+					`You're navigating projects tagged ${this.outerHTML}. Enjoy!`,
+					{id: 'navigation_term'}
 				)
 			})
 		}).delay()
