@@ -217,13 +217,9 @@ class DYProjectHeader extends DYElement {
 		const imageData = data.featuredImage
 		this.$featuredImage.data = imageData
 
-		const imageURL = imageData.source_url
-
-		this.$background.css({
-			'background-image': imageData ? `url(${imageURL})` : ''
-		})
-
 		if(imageData){
+			const imageURL = imageData.source_url
+
 			$DYPage.$background.animateBlurredImage(imageURL)
 
 			this.$featuredImage.modalize().on('modalize', function(e){
@@ -234,6 +230,14 @@ class DYProjectHeader extends DYElement {
 					height: img.naturalHeight + 'px',
 					maxHeight: '80vh',
 				})
+			})
+
+			this.$background.css({
+				'background-image': `url(${imageURL})`
+			})
+		}else{
+			this.$background.css({
+				'background-image': ''
 			})
 		}
 
