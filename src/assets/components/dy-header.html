@@ -168,7 +168,7 @@ class DYHeader extends DYElement {
 		this.$header
 			.toggleClass(this.isFullHeight, 'full-height', 'full')
 			.toggleClass(this.isImmersive, 'immersive')
-			.toggleClass(WP.queryType === 'single', 'single')
+			.toggleClass(WP.queryType === 'single' && WP.postType !== 'page', 'single')
 		this.updateStickyStatus()
 		
 		this.$secondaryMenu
