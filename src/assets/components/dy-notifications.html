@@ -29,17 +29,24 @@ class DYNotifications extends DYElement {
 		window.notify = window.alert = this.notify.bind(this)
 	}
 
-	notify(message, {dismiss, type, buttonText} = {}){
+	notify(message, {dismiss, type = 'info', buttonText, id} = {}){
 		// Check if a notification already has this message.
-		const notification = [...this.$notifications]
-			.find($notification => $notification.html() == message) // && $this.childNodes.length === 0
+		const $notification = [...this.$notifications].find($n =>
+			$n.dataset.id == id || $n.html() == message // && $this.childNodes.length === 0
+		)
 		
-		if(notification){
-			return notification.remind()
+		if($notification){
+			if(id && $notification.html() != message){
+				$notification.html(message)
+			}
+			return $notification.remind()
 		}else{
 			return new DYNotification()
 				.html(message)
-				.attr('type', type || 'info')
+				.attr({
+					type,
+					'data-id': id
+				})
 				.appendTo(this)
 				.dismiss(dismiss)
 				.setButtonText(buttonText)
