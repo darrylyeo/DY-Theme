@@ -273,7 +273,7 @@ class DYComments extends DYElement {
 					'.reactions': comments.length === 1 ? 'Reaction' : 'Reactions'
 				})
 
-				const $comments = []
+				const $comments = {}
 				for(const comment of comments){
 					const $comment = $$$('dy-comment').appendTo(this)
 					X(this, root, $comment)
