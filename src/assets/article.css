@@ -28,6 +28,14 @@ article h1 {
 article section:empty {
 	display: none;
 }
+article section:target:before {
+	content: '';
+	display: block;
+	--anchor-target-offset: calc(var(--main-menu-sticky-height) + 2em);
+	height: var(--anchor-target-offset);
+	margin-top: calc(var(--anchor-target-offset) * -1);
+}
+
 article section > h2 {
 	position: relative;
 	display: flex;
