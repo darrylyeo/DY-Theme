@@ -17,12 +17,14 @@ article {
 article > * + * {
 	margin-top: 2em;
 }
+
 article h1, article section h2 {
 	line-height: 1.5;
 }
 article h1 {
 	font-size: 2em;
 }
+
 article section:empty {
 	display: none;
 }
