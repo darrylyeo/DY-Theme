@@ -129,7 +129,7 @@ class DYProjects extends DYElement {
 
 		$projectsWrapper.on({
 			'click.self': () => this.$focusedProject = undefined,
-			'scroll.throttle': () => this.scrollInView()
+			'scroll.throttle.passive': () => this.scrollInView()
 		})
 
 		DY.getData.then(data => {
