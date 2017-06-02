@@ -206,14 +206,14 @@ a:hover {
 	opacity: 0.75;
 }
 
-article :visited {
+article :not(h2):not(h3) > :visited {
 	--link-color: var(--accent-1-rotate);
 	
 	/* Why doesn't this work? */
 	/*filter: hue-rotate(10deg);*/
 }
 
-article :link:not(.style-scope), article :visited {
+article :not(h2):not(h3) > :link:not(.style-scope), article :visited {
 	--link-underline:
 		var(--link-underline-color) 0 calc(var(--link-underline-size) * 0.2px),
 		var(--link-underline-color) 0 calc(var(--link-underline-size) * -0.4px) inset;
@@ -232,15 +232,15 @@ article :link:not(.style-scope), article :visited {
 	text-shadow: #fff -2px 2px, #fff -1px 2px, #fff 0 2px, #fff 1px 2px, #fff 2px 2px;*/
 }
 
-article ::selection,
-article :link:hover, article :visited:hover,
-article :link:focus, article :visited:focus {
+article :not(h2):not(h3) > ::selection,
+article :not(h2):not(h3) > :link:hover, article :visited:hover,
+article :not(h2):not(h3) > :link:focus, article :visited:focus {
 	/*background-color: var(--accent-1-half);*/
 	--link-color: #fff;
 	text-shadow: var(--shadow-dark-1);
 }
-article :link:hover, article :visited:hover,
-article :link:focus, article :visited:focus {
+article :not(h2):not(h3) > :link:hover, article :visited:hover,
+article :not(h2):not(h3) > :link:focus, article :visited:focus {
 	/*--link-underline-size: 0;*/
 
 	--link-highlight-color: var(--accent-1);
