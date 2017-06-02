@@ -133,8 +133,8 @@ add_action('wp_enqueue_scripts', function(){
 		'parentTheme' => get_template_directory_uri(),
 		'childTheme' => get_stylesheet_directory_uri(),
 		'nonce' => wp_create_nonce( 'wp_rest' ),
-		'post' => $post,
-		'query' => $wp_query
+		//'post' => $post,
+		//'query' => $wp_query
 	] );
 
 	// HTML Imports
