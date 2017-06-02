@@ -548,7 +548,6 @@ Element.prototype.toggleAttr = function(addAttr, ...attrs){
 		}
 	}
 	return this
-	this.setAttribute.bind(this)
 }
 /*Element.prototype.css = function(style){
 	if(arguments.length === 1){
