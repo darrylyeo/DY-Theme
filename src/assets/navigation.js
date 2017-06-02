@@ -2,8 +2,10 @@ const DYNavigation = {
 	navigatingTo: '',
 	prerenderedURLs: [],
 
-	navigateTo(url, host, pushNewState = false){
-		if(!url || host !== location.host/* || url === location.href*/) return false
+	navigateTo(url, pushNewState = false){
+		if(!url) return false
+		const {pathname, host} = new URL(url)
+		if(host !== location.host || pathname === location.pathname) return false
 
 		this.navigatingTo = url
 
@@ -60,7 +62,7 @@ const DYNavigation = {
 			e.preventDefault()
 		}else if(this.href === '#'){
 			e.preventDefault()
-		}else if(DYNavigation.navigateTo(this.href, this.host, true)){
+		}else if(DYNavigation.navigateTo(this.href, true)){
 			e.preventDefault()
 		}
 	},
