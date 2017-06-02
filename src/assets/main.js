@@ -88,7 +88,7 @@ if('getBattery' in navigator) navigator.getBattery().then(battery => {
 				}.`,
 				{
 					id: 'battery',
-					buttonText: 'Thanks!'
+					buttonText: 'Got it!'
 				}
 			)
 		}else{
