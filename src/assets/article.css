@@ -14,7 +14,8 @@ article {
 		margin-left: var(--padding);
 	}
 }
-article > * + * {
+
+dy-page article > * + * {
 	margin-top: 2em;
 }
 
