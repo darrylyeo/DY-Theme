@@ -74,7 +74,7 @@
 	}
 }*/
 
-div, header, main, footer, article, section, aside, nav, nav > ul, nav > ul > li, nav > a, blockquote, form, fieldset, label {
+div, header, main, footer, /*article, section,*/ aside, nav, nav > ul, nav > ul > li, nav > a, blockquote, form, fieldset, label {
 	display: flex;
 }
 body, p, h1, h2, h3, h4, h5, h6, ul, ol, figure, pre, blockquote, hr {
@@ -99,7 +99,7 @@ h1, h2, h3, h4, h5, h6, legend, dt {
 	position: relative;
 	/*perspective: 1000px;*/
 }
-#wrapper, article, section {
+#wrapper/*, article, section*/ {
 	flex-direction: column;
 }
 
