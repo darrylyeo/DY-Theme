@@ -87,6 +87,6 @@ add_action('after_setup_theme', function(){
 	add_theme_support( 'customize-selective-refresh-widgets' );
 	
 	
-    // Allow excerpts on pages.
-    add_post_type_support( 'page', 'excerpt' );
+	// Allow excerpts on pages.
+	add_post_type_support( 'page', 'excerpt' );
 });
