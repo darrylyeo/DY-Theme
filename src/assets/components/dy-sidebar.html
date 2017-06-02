@@ -1,3 +1,5 @@
+<link rel="import" href="dy-table-of-contents.html">
+
 <template id="dy-sidebar">
 	<style>
 		@import './wp-content/themes/DY/assets/sidebar.css';
@@ -5,6 +7,9 @@
 	</style>
 	<aside>
 		<section>
+			<dy-table-of-contents></dy-table-of-contents>
+		</section>
+		<section class="anchor-bottom">
 			<h3>Subscribe For Email Updates!</h3>
 			<form>
 				<input type="email" placeholder="Your Email Address">
@@ -22,6 +27,10 @@ class DYSidebar extends DYElement {
 		super()
 		
 		const root = this.root
+	}
+
+	get $tableOfContents(){
+		return this.root.find('dy-table-of-contents')
 	}
 }
 customElements.define('dy-sidebar', DYSidebar)

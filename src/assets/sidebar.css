@@ -1,22 +1,32 @@
-main > aside, dy-sidebar {
-	flex: 0 12rem;
-	flex-direction: column;
-
-	box-sizing: content-box;
-	margin: 0 auto;
-	padding: var(--padding);
-
-	position: sticky;
-	top: var(--main-menu-sticky-height);
-	height: min-content;
-	max-height: 100vh;
-	overflow-y: auto;
-}
-
 @media (max-width: 60rem) {
 	main > aside, dy-sidebar {
 		margin: 0;
 		margin-top: 2em;
 		width: initial;
 	}
+}
+
+dy-sidebar, :host {
+	flex: 0 16rem;
+	flex-direction: column;
+}
+:host aside {
+	flex: 0 16rem;
+	flex-direction: column;
+
+	margin: 0 auto;
+	padding: var(--padding);
+
+	position: sticky;
+	top: var(--main-menu-sticky-height);
+	height: calc(100vh - var(--main-menu-sticky-height));
+	overflow-y: auto;
+}
+
+:host aside section + section {
+	margin-top: 1rem;
+}
+
+:not(.anchor-bottom) + .anchor-bottom {
+	margin-top: auto;
 }

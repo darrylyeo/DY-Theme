@@ -48,6 +48,12 @@ class DYPage extends DYElement {
 			const content = this.routeAndRender()
 			this.html(content)
 
+			const $article = this.find('article')
+			const $sidebar = this.find('dy-sidebar')
+			if($article && $sidebar){
+				$sidebar.$tableOfContents.$article = $article
+			}
+
 			if('Prism' in window){
 				Prism.highlightAll()
 			}
