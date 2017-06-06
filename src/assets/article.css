@@ -84,10 +84,6 @@ article section > h2:after {
 	margin-left: 1ch;
 }
 
-article section > h2 a {
-	--link-color: currentColor;
-}
-
 @supports (initial-letter: 1) or (-webkit-initial-letter: 1) {
 	article section:first-of-type > p:first-of-type:first-letter,
 	#excerpt {

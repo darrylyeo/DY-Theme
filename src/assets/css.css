@@ -247,6 +247,10 @@ article :not(h2):not(h3) > :link:focus, article :visited:focus {
 	--link-highlight-size: 0.2em;
 }
 
+article .anchor:link {
+	--link-color: currentColor;
+}
+
 /* -- Text underline skip technique - requires background on main container -- */
 /*main {
 	background: linear-gradient(var(--main-background-color), var(--main-background-color)), var(--page-background);
