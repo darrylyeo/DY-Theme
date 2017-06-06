@@ -9,6 +9,15 @@ add_filter('the_content', function($content){
 		},
 		$content
 	).'</section>';
+	$content = preg_replace_callback(
+		'/<h3(?:.*?)>(.*?)<\/h3>/',
+		function($matches){
+			$title = $matches[1];
+			$id = sanitize_title($title);
+			return "<h3 id={$id}><a href=#{$id} class=anchor>{$title}</a></h3>";
+		},
+		$content
+	);	
 	$content = str_replace('<section></section>', '', $content);
 	return $content;
 });
