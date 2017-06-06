@@ -29,13 +29,33 @@ article h1 {
 article section:empty {
 	display: none;
 }
+/*
+Corrected scroll position now handled via JS in navigation.js.
 article section:target:before {
 	content: '';
 	display: block;
 	--anchor-target-offset: calc(var(--main-menu-sticky-height) + 2em);
 	height: var(--anchor-target-offset);
 	margin-top: calc(var(--anchor-target-offset) * -1);
+}*/
+/*article :target, article :target:focus {
+	--anchor-target-offset: calc(var(--main-menu-sticky-height) + 2em);
+	animation: TargetOffset 1ms;
 }
+article :target:active {
+	animation: Reflow 1ms;
+}
+@keyframes TargetOffset {
+	from {
+		transform: translateY(calc(var(--anchor-target-offset) * -1));
+		padding-top: var(--anchor-target-offset);
+		width: auto
+	}
+	to{border-top: 0}
+}
+@keyframes Reflow {
+	to { width: auto }
+}*/
 
 article section > h2 {
 	position: relative;

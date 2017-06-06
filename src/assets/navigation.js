@@ -4,8 +4,24 @@ const DYNavigation = {
 
 	navigateTo(url, pushNewState = false){
 		if(!url) return false
-		const {pathname, host} = new URL(url)
-		if(host !== location.host || pathname === location.pathname) return false
+		const {pathname, host, hash} = new URL(url)
+		if(host === location.host){
+			if(pathname === location.pathname){
+				if(hash){
+					const {pageXOffset, pageYOffset} = window
+					window.on('scroll.once', () => window.scrollTo(pageXOffset, pageYOffset))
+
+					document.body.animateScrollY($(hash).offsetTop - $DYPage.$header.mainMenuStickyHeight - 30)
+					return true
+				}else{
+					return false
+				}
+			}else{
+				// continue
+			}
+		}else{
+			return false
+		}
 
 		this.navigatingTo = url
 
