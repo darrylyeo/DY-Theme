@@ -26,8 +26,16 @@ article h1 {
 	font-size: 2em;
 }
 
+article section {
+	transition: var(--transition-medium);
+}
 article section:empty {
 	display: none;
+}
+article section:target {
+	background-color: rgba(255, 255, 255, 0.5);
+	box-shadow: rgba(255, 255, 255, 0.5) 0 0 0 calc(var(--padding) / 2);
+	border-radius: 1px;
 }
 /*
 Corrected scroll position now handled via JS in navigation.js.
