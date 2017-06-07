@@ -73,17 +73,18 @@ class DYTableOfContents extends DYElement {
 
 		const root = this.root
 
-		const $levels = [ , this.root.find('nav')] //this
-		let currentLevel = 1
+		const $levels = {2: this.root.find('ol')}
+		let currentLevel = 2
 		let $currentLevel = $levels[currentLevel]
 
 		for(const $heading of $article.findAll('h2, h3, h4, h5, h6')){
 			const level = +$heading.tagName[1]
 
 			while(currentLevel < level){
-				const $parentLevel = $currentLevel
-				$currentLevel = $levels[++currentLevel] = $$$('ol')
-				$parentLevel.append($currentLevel)
+				const $parentLevel = $levels[currentLevel]
+				currentLevel++
+				$currentLevel = $levels[currentLevel] = $$$('ol')
+				$parentLevel.children[$parentLevel.children.length - 1].append($currentLevel)
 			}
 			if(currentLevel > level){
 				currentLevel = level
