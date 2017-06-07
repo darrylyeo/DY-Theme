@@ -93,7 +93,7 @@ class DYTableOfContents extends DYElement {
 
 			const $target = $heading.id ? $heading : $heading.closest('section')
 			const $link = $$$('a')
-				.html($heading.html())
+				.html($heading.text())
 				.attr({
 					'href': '#' + $target.id
 				})
