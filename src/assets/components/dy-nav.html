@@ -64,7 +64,6 @@ class DYNav extends DYElement {
 		})
 
 		const showPrev = previousPost && previousPost !== currentPost
-		X(this.root.find('.prev').text)
 		this.root.find('.prev')
 			.html(showPrev ? previousPost.title.rendered : '')
 			.attr('href', showPrev ? previousPost.link : '')
