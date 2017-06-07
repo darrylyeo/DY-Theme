@@ -101,6 +101,11 @@ class DYNav extends DYElement {
 	set currentTerm(termID){
 		this.data.term = termID
 		this.update()
+
+		notify(
+			`You're navigating projects tagged ${this.$currentTerm.innerHTML}. Enjoy!`,
+			{id: 'navigation_term'}
+		)
 	}
 
 	get posts(){

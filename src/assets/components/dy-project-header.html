@@ -245,12 +245,17 @@ class DYProjectHeader extends DYElement {
 		const $termsContainer = this.$termsContainer
 		$termsContainer.initialize(data.terms)
 		;(() => {
+			const $nav = $DYPage.$header.$nav
 			$termsContainer.$terms.on('click', function(){
-				$DYPage.$header.$nav.currentTerm = $termsContainer.$termToTerm.get(this).term_id 
-				notify(
-					`You're navigating projects tagged ${this.outerHTML}. Enjoy!`,
-					{id: 'navigation_term'}
-				)
+				const id = $termsContainer.$termToTerm.get(this).term_id
+				if($nav.currentTerm === id){
+					$nav.currentTerm = undefined
+					this.removeClass('active')
+				}else{
+					$nav.currentTerm = id
+					$termsContainer.$terms.removeClass('active')
+					this.addClass('active')
+				}
 			})
 		}).delay()
 	}
