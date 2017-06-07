@@ -55,7 +55,7 @@ class DYTableOfContents extends DYElement {
 			const {$article, $targets, $targetTo$Link} = this
 			if($article){
 				const $target = [...$targets].reverse().find(
-					$target => $target.top <= $DYPage.$header.mainMenuStickyHeight + 30
+					$target => $target.top <= $DYPage.$header.mainMenuStickyHeight + 40
 				)
 				if($target !== this.$currentTarget){
 					this.$links.removeClass('current')
