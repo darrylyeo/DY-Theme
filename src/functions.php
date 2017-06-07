@@ -23,6 +23,7 @@ $framework = array(
 	// Feature Disabling
 	'disable-jquery',
 	'disable-wp-mediaelement',
+	'remove-emojis',
 	
 	/*
 	// Essentials
