@@ -115,9 +115,9 @@ article section > h2:after {
 		line-height: 1;
 
 		/* Fun Font */
-		font-size: 3.4em;
-		line-height: 1.2;
-		margin-bottom: -0.5em;
+		font-size: 4.75em;
+		line-height: 1;
+		font-weight: thin;
 	}
 }
 /*article section:hover {
