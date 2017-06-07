@@ -45,7 +45,7 @@ class DYFigure extends DYElement {
 		if(attr === 'src'){
 			const src = newVal
 			getJSON(`./wp-json/wp/v2/media?search=${src}`)
-				.then(data => {X(data, src);this.data = data[0]})
+				.then(data => this.data = data[0])
 		}
 	}
 }
