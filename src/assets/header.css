@@ -175,7 +175,7 @@
 	flex: 0;
 	transition: flex var(--transition-slow);
 }
-#header.single.sticky #main-menu:after {
+#header.single/*.sticky*/ #main-menu:after {
 	flex: 1;
 }
 
@@ -185,9 +185,9 @@ dy-nav {
 	transition: var(--transition-slow);
 }
 #header:not(.single) dy-nav {
-	display: none;
+	/*display: none;
 }
-#header.single:not(.sticky) dy-nav {
+#header.single:not(.sticky) dy-nav {*/
 	transform: translateX(100%);
 	opacity: 0;
 	position: absolute;
