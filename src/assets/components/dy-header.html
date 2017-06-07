@@ -233,10 +233,14 @@ class DYHeader extends DYElement {
 		return parseInt(this.$header.computedStyle.getPropertyValue('flex-basis'))
 	}
 	get stickyScrollY(){
-		if(this.isFullHeight)
-			return this.clientBottom - this.mainMenuStickyHeight
-		else
-			return this.$secondaryMenu.clientBottom
+		if(this.isFullHeight){
+			return this.clientHeight - this.mainMenuStickyHeight
+		}else if(WP.route === 'single project'){
+			const $projectHeader = $DYPage.find('dy-project-header')
+			if($projectHeader) return this.clientHeight + $projectHeader.root.find('h1').clientBottom
+			/*return $DYPage.find('dy-project-header').clientHeight*/
+		}
+		return this.$secondaryMenu.clientHeight
 	}
 	get isSticky(){
 		const stickyScrollY = this.stickyScrollY
