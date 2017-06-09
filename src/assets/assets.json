@@ -39,6 +39,24 @@
 		"libraries/moment.min",
 		"libraries/prism",
 
+		"libraries/webcomponents-lite.min",
+		
+		"fit-text",
+		"js",
+		"modal",
+		"DY",
+		"DY.data",
+		"experiments/experiments",
+		"navigation",
+
+		"web-components",
+
+		"main"
+	],
+	"js_": [
+		"libraries/moment.min",
+		"libraries/prism",
+
 		"libraries/custom-elements/custom-elements.min",
 		"libraries/html-imports/html-imports.min",
 		
