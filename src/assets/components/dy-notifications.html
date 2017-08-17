@@ -51,7 +51,7 @@ class DYNotifications extends DYElement {
 				.appendTo(this)
 		}
 
-		if(buttonText) $notification.setButtonText(buttonText)
+		if(buttonText) $notification.buttonText = buttonText
 
 		return $notification
 	}
@@ -210,7 +210,7 @@ class DYNotification extends DYElement {
 	get $button(){
 		return this.root.find('dy-button')
 	}
-	setButtonText(text){
+	set buttonText(text){
 		if(text){
 			this.$button.html(text)
 		}
