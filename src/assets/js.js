@@ -828,9 +828,9 @@ EventTarget.prototype.hover = function(on, off){
 	if(on) this.on('mouseover', on)
 	if(off) this.on('mouseout', off)
 }
-EventTarget.prototype.trigger = function(event){
+EventTarget.prototype.trigger = function(event, options){
 	if(typeof event === 'string'){
-		event = new Event(event)
+		event = new Event(event, options)
 	}
 	this.dispatchEvent(event)
 	return this
