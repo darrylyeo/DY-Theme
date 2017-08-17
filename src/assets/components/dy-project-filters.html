@@ -27,11 +27,9 @@ class DYProjectFilters extends DYTerms {
 		super.initialize()
 
 		;(() => {
-			const _this = this
-
 			this.$terms.on('click', function(){
 				this.toggleClass('active')
-				_this.dispatchEvent(new CustomEvent('dy-filter-change'))
+				this.trigger(new CustomEvent('dy-filter-change', {bubbles: true, composed: true}))
 			})
 
 			if(termIDs){
