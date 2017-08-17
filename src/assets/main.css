@@ -1,11 +1,13 @@
 /*:root:not(.render) {
 	background: url(../logo/DY-Logo-Animated.svg) center/25vmin no-repeat fixed, var(--page-background);
+	background-blend-mode: luminosity;
 }*/
 dy-page {
 	background: var(--page-background);
 }
 dy-page:not(.render) {
 	background: url(../logo/DY-Logo-Animated.svg) center/25vmin no-repeat fixed, var(--page-background);
+	background-blend-mode: luminosity;
 }
 
 /*:root.load * {
