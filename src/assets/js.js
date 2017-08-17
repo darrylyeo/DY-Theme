@@ -157,11 +157,11 @@ Number.prototype.constrain = function(a = 0, b = 1){
 }
 
 Number.prototype.min = function(){
-	return Math.min(...[this, ...arguments])
+	return Math.min(this, ...arguments)
 }
 
 Number.prototype.max = function(a){
-	return Math.max(...[this, ...arguments])
+	return Math.max(this, ...arguments)
 }
 
 Number.prototype.sign = function(){
