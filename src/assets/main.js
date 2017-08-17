@@ -12,9 +12,6 @@ windowLoad.then(() => {
 	$html.addClass('load')
 	console.timeEnd('load')
 })
-window.on('pagerender', (() => {
-	(() => $html.addClass('render')).delay()
-}))
 
 
 {
