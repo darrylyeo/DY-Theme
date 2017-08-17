@@ -305,7 +305,7 @@ class DYComment extends DYElement {
 			'#comment-date[data-date]': data.date,
 			'.link[href]': data.link,
 			'#author': data.author_name,
-			'#author[href]': data.author_url,
+			'#author[href]': data.author_url || undefined,
 			'#avatar[src]': data.author_avatar_urls[96]
 		})
 
