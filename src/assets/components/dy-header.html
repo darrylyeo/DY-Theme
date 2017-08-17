@@ -168,7 +168,7 @@ class DYHeader extends DYElement {
 		this.$header
 			.toggleClass(this.isFullHeight, 'full-height', 'full')
 			.toggleClass(this.isImmersive, 'immersive')
-			.toggleClass(WP.queryType === 'single' && WP.postType !== 'page', 'single')
+			.toggleClass(this.isSinglePost, 'single')
 		this.updateStickyStatus()
 		
 		this.$secondaryMenu
@@ -255,6 +255,10 @@ class DYHeader extends DYElement {
 	}
 	get isImmersive(){
 		return this.isFull
+	}
+
+	get isSinglePost(){
+		return WP.queryType === 'single' && WP.postType !== 'page'
 	}
 }
 customElements.define('dy-header', DYHeader, {
