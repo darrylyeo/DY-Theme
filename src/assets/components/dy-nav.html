@@ -60,7 +60,8 @@ class DYNav extends DYElement {
 	}
 
 	update(){
-		if(WP.queryType !== 'single') return
+		const isSinglePost = WP.queryType === 'single' && WP.postType !== 'page'
+		if(!isSinglePost) return
 
 		const currentPost = WP.current
 		const previousPost = this.previousPost
