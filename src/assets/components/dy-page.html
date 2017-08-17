@@ -18,6 +18,14 @@
 			flex: 100%;
 		}
 
+		dy-background, #wrapper {
+			transition: 0.25s ease-out;
+		}
+		:host(:not(.render)) dy-background, :host(:not(.render)) #wrapper {
+			opacity: 0;
+			transform: perspective(100rem) scale(0.9) rotateX(10deg) translateY(10em);
+		}
+
 		#to-top.show ~ dy-notifications {
 			padding-bottom: 34px;
 		}
@@ -47,6 +55,8 @@ class DYPage extends DYElement {
 		window.on('pagerender', () => {
 			const content = this.routeAndRender()
 			this.html(content)
+
+			;(() => this.addClass('render')).delay()
 
 			const $article = this.find('article')
 			const $sidebar = this.find('dy-sidebar')

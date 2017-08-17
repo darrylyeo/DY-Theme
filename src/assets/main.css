@@ -1,13 +1,11 @@
-:root:not(.render) {
-	background: url(../logo/DY-Logo-Animated.svg) center/25vmin no-repeat fixed;
+/*:root:not(.render) {
+	background: url(../logo/DY-Logo-Animated.svg) center/25vmin no-repeat fixed, var(--page-background);
+}*/
+dy-page {
+	background: var(--page-background);
 }
-#background, #wrapper {
-	transition: 0.25s ease-out;
-}
-:root:not(.render) #background,
-:root:not(.render) #wrapper {
-	opacity: 0;
-	transform: perspective(100rem) scale(0.9) rotateX(10deg) translateY(10em);
+dy-page:not(.render) {
+	background: url(../logo/DY-Logo-Animated.svg) center/25vmin no-repeat fixed, var(--page-background);
 }
 
 /*:root.load * {
